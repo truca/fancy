@@ -3,12 +3,16 @@ import { Link } from 'react-router';
 
 const App = ({ children }) =>
     <div>
-        <h1>Filter table</h1>
-        { children }
+        <h1>Mapea Chile</h1>
+
         <footer>
-            <Link to="/">Filterable Table</Link>
-            <Link to="/about">About</Link>
+          <Link to="/conexion">Conectarse</Link>
+          <Link to="/registro">Registro</Link>
+          <Link to="/mapa">Mapa</Link>
+          <Link to="/lista">Lista</Link>
+          <Link to="/acerca">Acerca</Link>
         </footer>
+        { children }
     </div>;
 
 App.propTypes = {

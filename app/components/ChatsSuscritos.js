@@ -1,10 +1,10 @@
 import React from 'react';
 
-const About = () =>
+const ChatsSuscritos = () =>
     <div>
-        <h2>Acerca</h2>
+        <h2>Chats Suscritos</h2>
         Somos una StartUp que busca lograr llevar adelante sus proyectos
     </div>;
 
 
-export default About;
+export default ChatsSuscritos;

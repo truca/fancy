@@ -6,3 +6,10 @@ export function filterTable(filter) {
         filter
     };
 }
+
+export function setEvents(events) {
+    return {
+        type: types.SET_EVENTS,
+        events
+    };
+}

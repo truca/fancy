@@ -1,21 +1,35 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
-import FilterableTable from './containers/FilterableTable';
 import About from './components/About';
 import Login from './components/Login';
 import Register from './components/Register';
 import Mapa from './containers/Map';
-import ItemView from './components/ItemView';
+import PersonalPanel from './components/PersonalPanel';
+import Profile from './components/Profile';
+import EventList from './components/lists/EventList';
+import OwnChatList from './components/lists/OwnChatList';
+import PersonalChatList from './components/lists/PersonalChatList';
+import SubscribedChatList from './components/lists/SubscribedChatList';
+import ChatElement from './components/elements/ChatElement';
+import ConfigChatElement from './components/elements/ConfigChatElement';
 
 export default (
-	<Route path="/" component={App}>
-		<IndexRoute component={Login} />
-		<Route path="/conexion" component={Login} />
-		<Route path="/registro" component={Register} />
-		<Route path="/mapa" component={Mapa} />
-		<Route path="/lista" component={FilterableTable} />
-		<Route path="/evento" component={ItemView} />
-		<Route path="/acerca" component={About} />
+	<Route>
+		<Route path="/" component={App}>
+			<IndexRoute component={Mapa} />
+			<Route path="/conexion" component={Login} />
+			<Route path="/registro" component={Register} />
+			<Route path="/mapa" component={Mapa} />
+			<Route path="/lista" component={EventList} />
+			<Route path="/panelPersonal" component={PersonalPanel} />
+			<Route path="/perfil" component={Profile} />
+			<Route path="/chatsPropios" component={OwnChatList} />
+			<Route path="/chatsPersonales" component={PersonalChatList} />
+			<Route path="/chatsSuscritos" component={SubscribedChatList} />
+			<Route path="/chats/:id" component={ChatElement} />
+			<Route path="/chats/config/:id" component={ConfigChatElement} />
+			<Route path="/acerca" component={About} />
+		</Route>
 	</Route>
 );

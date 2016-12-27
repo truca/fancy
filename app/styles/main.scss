@@ -1,9 +1,77 @@
-body{
-	padding: 5px 10px;
-}
+$verde: rgb(41,180,115);
+html{ width: 100%; }
+html, body, #root, #root > div, .container, .row, #main, .page{ height: 100%; }
 .filterable-table {
 	padding: 20px;
-	background-color: beige;
+}
+
+#root > div > .container{
+	margin: 0;
+	width: 100%;
+}
+
+#main{
+	height: calc(100% - 50px);
+	padding: 0 20px;
+	padding-top: 10px;
+	transition: margin-left .5s;
+	margin-top: 0px;
+}
+
+#main > div{
+	height: 100%;
+}
+
+.left{ float: left; }
+.right{ float: right; }
+
+.filterable-table{
+	position: relative;
+	height: 100%;
+	.dropdown{
+		background: $verde;
+		height: 50px;
+		margin-left: -25px;
+		margin-right: -25px;
+		margin-bottom: -20px;
+		padding: 0 20px;
+	}
+}
+
+#nav{
+	height: 50px;
+	width: 100%;
+	color: white;
+	position: 'relative';
+	padding: 12px 10px;
+
+	.back{
+		position: absolute;
+		left: 10px;
+	}
+	.logo{
+		width: 160px;
+		display: block;
+		margin: 0 auto;
+		margin-top: -6px;
+	}
+	.menu{
+		position: absolute;
+		right: 10px;
+		top: 12px;
+	}
+}
+
+.page{
+	margin-left: -20px;
+	margin-right: -20px;
+	padding: 10px;
+}
+
+#map{
+	height: 90%;
+	margin: 0px -15px;
+	margin-bottom: 0px;
 }
 
 footer {
@@ -12,4 +80,209 @@ footer {
 	a {
 		padding: 5px 10px 5px 0;
 	}
+}
+input{
+	margin-bottom: 20px;
+	border: none;
+	border-bottom: 2px solid grey;
+	padding: 5px 2px;
+}
+input:not([type="checkbox"]){
+	width: 100%;
+}
+.bg-green{
+	background: $verde;
+}
+.bg-img-green{
+	background-image: url("../img/fondo.svg");
+	color: white;
+	height: 100%;
+	margin-left: -20px;
+	margin-right: -20px;
+	padding: 20px;
+	margin-top: -20px;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: 0 0;
+	font-size: 1.1em;
+
+	.logo{
+		width: 100px;
+		margin: 40px auto 60px auto;
+		display: block;
+	}
+
+	input, input:focus{
+		background-color: transparent;
+		border: none;
+		border-bottom: 1px solid white;
+		color: white;
+		outline: none;
+	}
+	input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: white;
+	}
+	input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	   color: white;
+	   opacity:  1;
+	}
+	input::-moz-placeholder { /* Mozilla Firefox 19+ */
+	   color: white;
+	   opacity:  1;
+	}
+	input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	   color: white;
+	}
+	a, a:visited, a:hover, a:focus{
+		color: white;
+	}
+
+	.btn{
+		background-color: white;
+		color: $verde;
+		border: none;
+		border-radius: 0;
+		font-size: 1.1em;
+	}
+}
+
+#chat{
+	position: relative;
+	height: 100%;
+
+	input{
+		margin-bottom: 0px;
+		margin-top: 20px;
+		border-bottom: 2px solid white;
+		outline: none;
+		color: white;
+	}
+	input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: white;
+	}
+	input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	   color: white;
+	   opacity:  1;
+	}
+	input::-moz-placeholder { /* Mozilla Firefox 19+ */
+	   color: white;
+	   opacity:  1;
+	}
+	input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	   color: white;
+	}
+
+	.input-div{
+		margin-left: -10px;
+    margin-right: -10px;
+    height: 71px;
+    padding: 0 10px;
+		border-top: 2px solid black;
+	}
+
+	.messages-container > div{
+		width: 70%;
+		background-color: $verde;
+		margin-bottom: 5px;
+		color: white;
+		padding: 5px;
+		border-radius: 5px;
+	}
+
+	.messages-container > div:nth-child(2n) { float: left; }
+
+	.messages-container > div:nth-child(2n+1) { float: right; }
+}
+
+#mapa{
+	padding-top: 0px;
+	background: $verde;
+
+	select{
+		width: 50%;
+    padding: 5px;
+    border: none;
+    border-radius: 0;
+    color: $verde;
+    display: block;
+    margin: 0 auto;
+    margin-top: 20px;
+	}
+}
+
+select{
+	width: 100%;
+	border: 1px solid grey;
+	border-radius: 2px;
+	margin-top: 10px;
+}
+textarea{
+	width: 100%;
+	border: 1px solid grey;
+	border-radius: 2px;
+	margin-top: 10px;
+}
+
+button{
+	width: 100%;
+	margin: 15px auto 5px auto;
+	display: block !important;
+}
+
+.item{
+	padding: 5px 0;
+	border-bottom: 1px solid darkgrey;
+}
+.centered{
+	display: block;
+	text-align: center;
+	margin-top: 10px;
+}
+
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    right: 0;
+    background-color: white; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+		color: $verde;
+
+		/* The navigation menu links */
+		a{
+			color: $verde;
+			padding: 8px 8px 8px 32px;
+	    text-decoration: none;
+	    font-size: 20px;
+	    display: block;
+	    transition: 0.3s
+		}
+}
+
+
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    left: 0px;
+    font-size: 36px;
+}
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
 }

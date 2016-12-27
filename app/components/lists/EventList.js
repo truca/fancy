@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import FilterableList from '../../containers/FilterableList';
-import { Event } from '../items/Event';
+import Evento from '../items/Event';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
 
@@ -10,10 +10,11 @@ class EventList extends Component {
 		this.props.initU().get('chats.json', actions.noAction, actions.setEvents, actions.noAction);
 	}
 	render() {
+		console.log('Evento: ', Evento);
 		return (
 			<div>
 				<h2>Eventos</h2>
-				<FilterableList items={this.props.events} item={Event} path="chats" />
+				<FilterableList items={this.props.events} item={Evento} path="chats" />
 			</div>
 		);
 	}

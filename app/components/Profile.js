@@ -4,7 +4,7 @@ const Profile = () =>
 	<div>
 		<h2>Perfil</h2>
 		<div>
-			Notificaciones <input type="checkbox" />
+			<span>Notificaciones</span> <input type="checkbox" style={{float: 'right'}}/>
 		</div>
 		<div>
 			<span style={{display: 'block'}}>Nombre</span>

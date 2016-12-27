@@ -5,6 +5,8 @@ import About from './components/About';
 import Login from './components/Login';
 import Register from './components/Register';
 import Mapa from './containers/Map';
+import CreateChat from './components/CreateChat';
+import UpdateChat from './components/UpdateChat';
 import PersonalPanel from './components/PersonalPanel';
 import Profile from './components/Profile';
 import EventList from './components/lists/EventList';
@@ -12,7 +14,6 @@ import OwnChatList from './components/lists/OwnChatList';
 import PersonalChatList from './components/lists/PersonalChatList';
 import SubscribedChatList from './components/lists/SubscribedChatList';
 import ChatElement from './components/elements/ChatElement';
-import ConfigChatElement from './components/elements/ConfigChatElement';
 
 export default (
 	<Route>
@@ -28,7 +29,8 @@ export default (
 			<Route path="/chatsPersonales" component={PersonalChatList} />
 			<Route path="/chatsSuscritos" component={SubscribedChatList} />
 			<Route path="/chats/:id" component={ChatElement} />
-			<Route path="/chats/config/:id" component={ConfigChatElement} />
+			<Route path="/create/chats" component={CreateChat} />
+			<Route path="/chats/update/:id" component={UpdateChat} />
 			<Route path="/acerca" component={About} />
 		</Route>
 	</Route>

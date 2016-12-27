@@ -1,40 +1,68 @@
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { filterTable } from '../actions';
+import { filterTable, filterTableCategory } from '../actions';
 import ItemList from '../components/ItemList';
+//	import R from 'ramda';
 
-const FilterableList = ({ filter, onFilter, items, item, path }) => {
-	let input;
+class FilterableList extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			active_category: null
+		};
+	}
+	changeCategory() {}
+	render() {
+		let input;
 
-	return (
-		<div className="filterable-table">
-			<input
-				value={filter}
-				ref={node => {input = node;}}
-				onChange={() => onFilter(input.value)} />
+		return (
+			<div className="filterable-table">
+				<div className="row">
+					<input
+						value={this.props.filter}
+						ref={node => {input = node;}}
+						onChange={() => this.props.onFilter(input.value)}
+						placeholder="Filtrar" />
+					<ItemList filter={this.props.filter} items={this.props.items} item={this.props.item} path={this.props.path} />
+					<div className="dropdown">
+						<select ref="category" onChange={ this.changeCategory.bind(this) }>
+							<option value={-1} >Todas las Categorías</option>
+							{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}
+						</select>
+					</div>
+				</div>
+			</div>
+		);
+	}
+}
 
-			<ItemList filter={filter} items={items} item={item} path={path} />
-		</div>
-	);
+//	<ItemList filter={this.props.filter} items={this.props.items} item={this.props.item} path={this.props.path} />
+
+FilterableList.defaultProps = {
+	categories: []
 };
 
 FilterableList.propTypes = {
 	filter: PropTypes.string,
 	path: PropTypes.string,
 	items: PropTypes.array,
+	categories: PropTypes.array,
 	item: PropTypes.func,
 	onFilter: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
 	return {
-		filter: state.filter
+		filter: state.filter,
+		filterCategory: state.filterCategory,
+		categories: state.categories
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onFilter: filterText => dispatch(filterTable(filterText))
+		onFilter: filterText => dispatch(filterTable(filterText)),
+		onFilterCategory: filterCategoryId => dispatch(filterTableCategory(filterCategoryId))
 	};
 };
 

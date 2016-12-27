@@ -1,5 +1,6 @@
 import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
+import R from 'ramda';
 import * as types from '../actions/types';
 //  import _ from 'underscore';
 
@@ -12,8 +13,19 @@ const filter = (state = '', action) => {
 	}
 };
 
-const personalChats = (state = [{id: 1, name: 'PPedro'}, {id: 2, name: 'PPablo'}], action) => {
+const chat = (state = {}, action) => {
 	switch (action.type) {
+		case types.SET_CHAT:
+			return action.chat;
+		default:
+			return state;
+	}
+};
+
+const personalChats = (state = [{id: 1, name: 'PPedro', favorite: false}, {id: 2, name: 'PPablo', favorite: true}], action) => {
+	switch (action.type) {
+		case types.TOGGLE_FAVORITE:
+			return state.map((event) => { return event.id == action.eventID ? R.merge(event, { favorite: event.favorite }) : event; } );
 		case types.SET_PERSONAL_CHATS:
 			return action.personalChats;
 		default:
@@ -48,6 +60,15 @@ const events = (state = [], action) => {
 	}
 };
 
+const categories = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_CATEGORIES:
+			return action.categories;
+		default:
+			return state;
+	}
+};
+
 const user = (state = null, action) => {
 	switch (action.type) {
 		case types.SET_USER:
@@ -66,7 +87,9 @@ const rootReducer = combineReducers({
 	ownChats,
 	subscribedChats,
 	events,
-	user
+	categories,
+	user,
+	chat
 });
 
 export default rootReducer;

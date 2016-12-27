@@ -10,14 +10,14 @@ const ItemList = ({ items, item, filter, path }) => {
 				<h2>{name}</h2>
 			</div>
 			<div>
-				<div className="row">
+				<div>
 					<div className="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-					{items.map((element, i) => {
-						const nameLC = (element.name).toLowerCase();
-						if (nameLC.indexOf(filterLC) !== -1) return (<Item key={i} item={element} path={path + '/' + element.id} />);
-						return (null);
-					})}
-				</div>
+						{items.map((element, i) => {
+							const nameLC = (element.name).toLowerCase();
+							if (nameLC.indexOf(filterLC) !== -1) return (<Item key={i} item={element} path={path + '/' + element.id} />);
+							return (null);
+						})}
+					</div>
 				</div>
 			</div>
 		</div>

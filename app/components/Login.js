@@ -7,18 +7,15 @@ require('firebase/auth');
 class Login extends Component {
 	render() {
 		return (
-			<div>
-				<h2>Conectarse</h2>
-
-				<span>Usuario</span><br />
-				<input ref="mail" type="text" placeholder="Usuario" /><br />
-				<span>Contraseña</span><br />
-				<input ref="pass" type="password" placeholder="Contraseña" /><br />
+			<div className="bg-img-green page">
+				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
+				<input ref="mail" type="text" placeholder="E-MAIL" /><br />
+				<input ref="pass" type="password" placeholder="CONTRASEÑA" /><br />
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.login.bind(this)}>
-					Conectarse
+					LOGIN <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
 				</button>
 
-				<div><Link to="/registro">Registro</Link></div>
+				<div><Link className="centered" to="/registro">Registro</Link></div>
 			</div>
 		);
 	}

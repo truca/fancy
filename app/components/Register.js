@@ -7,20 +7,16 @@ require('firebase/auth');
 class Register extends Component {
 	render() {
 		return (
-			<div>
-				<h2>Registro</h2>
-
-				<span>Usuario</span><br />
-				<input ref="mail" type="text" placeholder="ejemplo@mail.com" /><br />
-				<span>Contraseña</span><br />
-				<input ref="pass" type="password" /><br />
-				<span>Repita Contraseña</span><br />
-				<input ref="pass_conf" type="password" /><br />
+			<div className="bg-img-green page">
+				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
+				<input ref="mail" type="text" placeholder="E-MAIL" /><br />
+				<input ref="pass" type="password" placeholder="CONTRASEÑA" /><br />
+				<input ref="pass_conf" type="password" placeholder="CONFIRMAR CONTRASEÑA" /><br />
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.register.bind(this)}>
-					Registrarse
+					REGISTRARSE <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
 				</button>
 
-				<div><Link to="/conexion">Conectarse</Link></div>
+				<div><Link className="centered" to="/conexion">Conectarse</Link></div>
 			</div>
 		);
 	}

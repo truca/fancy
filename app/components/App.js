@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import fU from '../Utils.js';
@@ -9,6 +9,9 @@ require('firebase/auth');
 
 class App extends Component {
 	componentDidMount() {
+		const anchor = document.getElementById('main');
+		if(anchor.addEventListener) anchor.addEventListener('click', this.props.closeNav, false);
+
 		if (firebase.apps.length === 0) {
 			const config = {
 				apiKey: 'AIzaSyABifHRllp38ueVG59B9AeOgdIZpL6TaNs',
@@ -21,34 +24,44 @@ class App extends Component {
 		}
 		this.props.userHandler(this);
 	}
+	goBack() {
+		browserHistory.goBack();
+	}
 	render() {
 		return (
 			<div className="container">
 				<div className="row">
-					<div className="col-md-3">
-						<div>
-							<h4>Nav</h4>
-							<ul>
-								<li><Link to="/mapa">Mapa</Link></li>
-								<li><Link to="/lista">Lista</Link></li>
-								{this.props.user ? (
-									<div>
-										<li><Link to="/chatsPersonales">Chats Personales</Link></li>
-										<li><Link to="/chatsSuscritos">Chats Suscritos</Link></li>
-										<li><Link to="/panelPersonal">Panel Personal</Link></li>
-										<li><a style={{cursor: 'pointer'}} onClick={this.props.logout}>Desconectarse</a></li>
-									</div>
-								) : (
-									<div>
-										<li><Link to="/conexion">Conexión</Link></li>
-										<li><Link to="/registro">Registro</Link></li>
-									</div>
-								)}
-								<li><Link to="/acerca">Acerca</Link></li>
-							</ul>
-						</div>
+					<div id="mySidenav" className="sidenav">
+						<ul>
+							<a className="closebtn" onClick={this.props.closeNav} style={{cursor: 'pointer'}}>&times;</a>
+							<li><Link onClick={this.props.closeNav} to="/mapa">Mapa</Link></li>
+							<li><Link onClick={this.props.closeNav} to="/lista">Lista</Link></li>
+							{this.props.user ? (
+								<div>
+									<li><Link onClick={this.props.closeNav} to="/chatsSuscritos">Chats Suscritos</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/chatsPersonales">Chats Personales</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/panelPersonal">Panel Personal</Link></li>
+									<li><a style={{cursor: 'pointer'}} onClick={this.props.logout}>Desconectarse</a></li>
+								</div>
+							) : (
+								<div>
+									<li><Link onClick={this.props.closeNav} to="/conexion">Conexión</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/registro">Registro</Link></li>
+								</div>
+							)}
+							<li><Link to="/acerca">Acerca</Link></li>
+						</ul>
 					</div>
-					<div className="col-md-9">
+					<div id="nav" className="bg-green">
+						<span className="back" onClick={this.goBack}>
+							<i className="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
+						</span>
+						<img className="logo" src="app/img/logo-blanco2.svg" ></img>
+						<span className="menu" onClick={this.props.openNav}>
+							<i className="fa fa-bars fa-2x" aria-hidden="true"></i>
+						</span>
+					</div>
+					<div id="main" className="">
 						{ this.props.children }
 					</div>
 				</div>
@@ -63,7 +76,9 @@ App.propTypes = {
 	logout: PropTypes.func,
 	initU: PropTypes.func,
 	history: PropTypes.object,
-	userHandler: PropTypes.func
+	userHandler: PropTypes.func,
+	openNav: PropTypes.func,
+	closeNav: PropTypes.func
 };
 
 const mapStateToProps = (state) => {
@@ -79,23 +94,39 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(actions.logout());
 		},
 		initU: () => { return fU(dispatch); },
+		openNav: () => {
+			/* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+			document.getElementById('mySidenav').style.width = '250px';
+			//	document.getElementById('main').style.marginLeft = '250px';
+			document.body.style.backgroundColor = 'rgba(0,0,0,0.4)';
+		},
+		closeNav: () => {
+			/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+			document.getElementById('mySidenav').style.width = '0';
+			//	document.getElementById('main').style.marginLeft = '0';
+			document.body.style.backgroundColor = 'white';
+		},
 		userHandler: (self) => {
 			firebase.auth().onAuthStateChanged(function(user) {
 				if(user && user.providerData.length === 1) {
 					console.log('changed', {user: user.providerData[0]});
-					axios.post(self.props.initU().apiUrl + '/users/sign_in.json', {user: user.providerData[0]})
+					axios.post(self.props.initU().apiUrl + 'users/sign_in.json', {user: user.providerData[0]})
 						.then(userRegister => {
 							console.log('THEN sign_in', {user: userRegister.data} );
 							dispatch(actions.setUser(userRegister.data));
+							console.log('Hola');
+							self.props.history.push('/mapa');
 							//	self.props.history.push(null, '/mapa');
 							//	self.context.router.push(null, '/mapa');
 						})
 						.catch(errorRegister => {
 							console.log('CATCH sign_in', errorRegister);
-							axios.post(self.props.initU().apiUrl + '/users/sign_up.json', {user: user.providerData[0]})
+							axios.post(self.props.initU().apiUrl + 'users/sign_up.json', {user: user.providerData[0]})
 								.then(userLogin => {
 									console.log('THEN sign_up', {user: userLogin.data});
 									dispatch(actions.setUser(userLogin.data));
+									console.log('Hola');
+									self.props.history.push('/mapa');
 									//	self.props.history.push(null, '/mapa');
 									//	self.context.router.push(null, '/mapa');
 								})
@@ -103,6 +134,7 @@ const mapDispatchToProps = (dispatch) => {
 						});
 				}else{
 					console.log('changed', user);
+					self.props.history.push('/mapa');
 				}
 			});
 		}

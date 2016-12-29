@@ -51,11 +51,11 @@ const mapDispatchToProps = () => {
 		registerWithMail: (mail, pass) => {
 			if (firebase.apps.length === 0) {
 				const config = {
-					apiKey: 'AIzaSyABifHRllp38ueVG59B9AeOgdIZpL6TaNs',
-					authDomain: 'test-auth-27d2f.firebaseapp.com',
-					databaseURL: 'https://test-auth-27d2f.firebaseio.com',
-					storageBucket: 'test-auth-27d2f.appspot.com',
-					messagingSenderId: '508207233116'
+					apiKey: 'AIzaSyDw-u_c-vvKMtoE-Ha0KjBgXbCPcSUWENs',
+					authDomain: 'clanapp-d35d2.firebaseapp.com',
+					databaseURL: 'https://clanapp-d35d2.firebaseio.com',
+					storageBucket: 'clanapp-d35d2.appspot.com',
+					messagingSenderId: '935866938730'
 				};
 				firebase.initializeApp(config);
 			}

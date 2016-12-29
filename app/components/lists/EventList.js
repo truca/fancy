@@ -10,9 +10,8 @@ class EventList extends Component {
 		this.props.initU().get('chats.json', actions.noAction, actions.setEvents, actions.noAction);
 	}
 	render() {
-		console.log('Evento: ', Evento);
 		return (
-			<div>
+			<div id="list">
 				<h2>Eventos</h2>
 				<FilterableList items={this.props.events} item={Evento} path="chats" />
 			</div>

@@ -2,18 +2,25 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { filterTable, filterTableCategory } from '../actions';
 import ItemList from '../components/ItemList';
-//	import R from 'ramda';
+import R from 'ramda';
 
 class FilterableList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			active_category: null
+			active_category: -1
 		};
 	}
-	changeCategory() {}
+	filterCategory(items) {
+		if(this.state.active_category == -1) return items;
+		return R.filter(item => item.category.id == this.state.active_category, items);
+	}
+	changeCategory() {
+		this.setState({ active_category: parseInt(this.refs.category.value, 10) });
+	}
 	render() {
 		let input;
+		let filteredItems = this.filterCategory(this.props.items);
 
 		return (
 			<div className="filterable-table">
@@ -23,7 +30,7 @@ class FilterableList extends Component {
 						ref={node => {input = node;}}
 						onChange={() => this.props.onFilter(input.value)}
 						placeholder="Filtrar" />
-					<ItemList filter={this.props.filter} items={this.props.items} item={this.props.item} path={this.props.path} />
+					<ItemList filter={this.props.filter} items={filteredItems} item={this.props.item} path={this.props.path} />
 					<div className="dropdown">
 						<select ref="category" onChange={ this.changeCategory.bind(this) }>
 							<option value={-1} >Todas las Categorías</option>

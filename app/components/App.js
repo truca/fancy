@@ -14,11 +14,11 @@ class App extends Component {
 
 		if (firebase.apps.length === 0) {
 			const config = {
-				apiKey: 'AIzaSyABifHRllp38ueVG59B9AeOgdIZpL6TaNs',
-				authDomain: 'test-auth-27d2f.firebaseapp.com',
-				databaseURL: 'https://test-auth-27d2f.firebaseio.com',
-				storageBucket: 'test-auth-27d2f.appspot.com',
-				messagingSenderId: '508207233116'
+				apiKey: 'AIzaSyDw-u_c-vvKMtoE-Ha0KjBgXbCPcSUWENs',
+				authDomain: 'clanapp-d35d2.firebaseapp.com',
+				databaseURL: 'https://clanapp-d35d2.firebaseio.com',
+				storageBucket: 'clanapp-d35d2.appspot.com',
+				messagingSenderId: '935866938730'
 			};
 			firebase.initializeApp(config);
 		}
@@ -56,7 +56,7 @@ class App extends Component {
 						<span className="back" onClick={this.goBack}>
 							<i className="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
 						</span>
-						<img className="logo" src="app/img/logo-blanco2.svg" ></img>
+						<Link to="/"><img className="logo" src="app/img/logo-blanco2.svg" ></img></Link>
 						<span className="menu" onClick={this.props.openNav}>
 							<i className="fa fa-bars fa-2x" aria-hidden="true"></i>
 						</span>

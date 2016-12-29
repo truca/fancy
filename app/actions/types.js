@@ -3,6 +3,7 @@ export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE';
 
 export const NO_ACTION = 'NO_ACTION';
 export const SET_EVENTS = 'SET_EVENTS';
+export const SET_FAVORITES = 'SET_FAVORITES';
 export const SET_CHAT = 'SET_CHAT';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_PERSONAL_CHATS = 'SET_PERSONAL_CHATS';

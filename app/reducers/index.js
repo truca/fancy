@@ -5,6 +5,7 @@ import * as types from '../actions/types';
 //  import _ from 'underscore';
 
 const filter = (state = '', action) => {
+	console.log(action.type, action);
 	switch (action.type) {
 		case types.FILTER:
 			return action.filter;
@@ -22,7 +23,7 @@ const chat = (state = {}, action) => {
 	}
 };
 
-const personalChats = (state = [{id: 1, name: 'PPedro', favorite: false}, {id: 2, name: 'PPablo', favorite: true}], action) => {
+const personalChats = (state = [], action) => {
 	switch (action.type) {
 		case types.TOGGLE_FAVORITE:
 			return state.map((event) => { return event.id == action.eventID ? R.merge(event, { favorite: event.favorite }) : event; } );
@@ -60,6 +61,15 @@ const events = (state = [], action) => {
 	}
 };
 
+const favorites = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_FAVORITES:
+			return action.favorites;
+		default:
+			return state;
+	}
+};
+
 const categories = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_CATEGORIES:
@@ -87,6 +97,7 @@ const rootReducer = combineReducers({
 	ownChats,
 	subscribedChats,
 	events,
+	favorites,
 	categories,
 	user,
 	chat

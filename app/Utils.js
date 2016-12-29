@@ -4,33 +4,41 @@ import _ from 'underscore';
 export default function(dispatch) {
 	return {
 		apiUrl: 'http://138.197.8.69/',
-		get: function(path, sending, success, failure) {
+		get: function(path, sending, success, failure, headers) {
+			const auxHeaders = headers ? headers : {};
+			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('GET', this.apiUrl + path);
 			dispatch(sending());
 			axios.get(this.apiUrl + path)
 				.then(response => { console.log(path, response); dispatch(success(response.data)); })
 				.catch(error => { console.log(path, error); dispatch(failure(error)); });
 		},
-		post: function(path, sending, success, failure, data) {
+		post: function(path, sending, success, failure, data, headers) {
+			const auxHeaders = headers ? headers : {};
+			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('POST', this.apiUrl + path, data);
 			dispatch(sending(data));
 			axios.post(this.apiUrl + path, data)
 				.then(response => { console.log(path, response); dispatch(success(response.data.data)); })
-				.catch(error => { console.log(path, error); dispatch(error); });
+				.catch(error => { console.log(path, error); dispatch(failure(error)); });
 		},
-		patch: function(path, sending, success, failure, data) {
+		put: function(path, sending, success, failure, data, headers) {
+			const auxHeaders = headers ? headers : {};
+			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('PATCH', this.apiUrl + path, data);
-			//	dispatch(sending())
-			axios.patch(this.apiUrl + path, data)
-				.then(response => { console.log(path, response); /*	dispatch(success(response.data.data));*/ })
-				.catch(error => { console.log(path, error); /*	dispatch(error);*/ });
+			dispatch(sending());
+			axios.put(this.apiUrl + path, data, {withCredentials: true, headers: {'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJkYXRhIjoicHJ1ZWJhQGdtYWlsLmNvbSIsImlzcyI6IkNsYW5BcHAifQ.CF2aT1uvOl98iDs4ds26RhuN9t4xwQgtaHgpxmQWFjt5Wro9eDC6lW0VlbPa7aSGR4PWF9lzYF9Pcai3_p91dw'}})
+				.then(response => { console.log(path, response);	dispatch(success(response.data.data)); })
+				.catch(error => { console.log(path, error);	 dispatch(failure(error)); });
 		},
-		delete: function(path, sending, success, failure, data) {
+		delete: function(path, sending, success, failure, data, headers) {
+			const auxHeaders = headers ? headers : {};
+			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('DELETE', this.apiUrl + path);
 			dispatch(sending());
 			axios.delete(this.apiUrl + path, data)
 				.then(response => { console.log(path, response); dispatch(success(response.data.data)); })
-				.catch(error => { console.log(path, error); dispatch(error); });
+				.catch(error => { console.log(path, error); dispatch(failure(error)); });
 		},
 		toast: function(msg) {
 			if (window.plugins) {

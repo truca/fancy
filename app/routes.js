@@ -4,6 +4,7 @@ import App from './components/App';
 import About from './components/About';
 import Login from './components/Login';
 import Register from './components/Register';
+import UserProfile from './components/UserProfile';
 import Mapa from './containers/Map';
 import CreateChat from './components/CreateChat';
 import UpdateChat from './components/UpdateChat';
@@ -29,6 +30,7 @@ export default (
 			<Route path="/chatsPersonales" component={PersonalChatList} />
 			<Route path="/chatsSuscritos" component={SubscribedChatList} />
 			<Route path="/chats/:id" component={ChatElement} />
+			<Route path="/profile/:id" component={UserProfile} />
 			<Route path="/create/chats" component={CreateChat} />
 			<Route path="/chats/update/:id" component={UpdateChat} />
 			<Route path="/acerca" component={About} />

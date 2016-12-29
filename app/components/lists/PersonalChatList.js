@@ -1,29 +1,41 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import FilterableList from '../../containers/FilterableList';
-import { PersonalChat } from '../items/PersonalChat';
+import Evento from '../items/Event';
+import * as actions from '../../actions';
+import fU from '../../Utils.js';
 
-const PersonalChatList = ({ personalChats }) => {
-	return (
-		<div>
-			<h2>Chats Personales</h2>
-			<FilterableList items={personalChats} item={PersonalChat} path="chats" />
-		</div>
-	);
-};
+class PersonalChatList extends Component {
+	componentDidMount() {
+		this.props.initU().get('user/chats/personal.json', actions.noAction, actions.setPersonalChats, actions.noAction, {Authorization: this.props.user.token});
+	}
+	render() {
+		return (
+			<div id="list">
+				<h2>Chats Personales</h2>
+				<FilterableList items={this.props.personalChats} item={Evento} path="chats" />
+			</div>
+		);
+	}
+}
 
 PersonalChatList.propTypes = {
-	personalChats: PropTypes.array
+	personalChats: PropTypes.array,
+	initU: PropTypes.func,
+	user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
-		personalChats: state.personalChats
+		personalChats: state.personalChats,
+		user: state.user
 	};
 };
 
-const mapDispatchToProps = () => {
-	return {};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		initU: () => { return fU(dispatch); }
+	};
 };
 
 export default connect(

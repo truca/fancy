@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class CreateChat extends Component {
 	render() {
 		return (
-			<div>
+			<div id="createChat">
         <h2>Crear Chat</h2>
         <ChatForm chat={{}}/>
 			</div>

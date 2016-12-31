@@ -17,7 +17,7 @@ class Profile extends Component {
 		};
 		console.log(data);
 		this.props.initU().put('user',
-			actions.noAction, actions.noAction, actions.noAction, data, {Authorization: this.props.user.token});
+			actions.noAction, actions.setUser, actions.noAction, data, {Authorization: this.props.user.token});
 	}
 	render() {
 		const ages = [];

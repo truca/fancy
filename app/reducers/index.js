@@ -23,39 +23,15 @@ const chat = (state = {}, action) => {
 	}
 };
 
-const personalChats = (state = [], action) => {
-	switch (action.type) {
-		case types.TOGGLE_FAVORITE:
-			return state.map((event) => { return event.id == action.eventID ? R.merge(event, { favorite: event.favorite }) : event; } );
-		case types.SET_PERSONAL_CHATS:
-			return action.personalChats;
-		default:
-			return state;
-	}
-};
-
-const ownChats = (state = [{id: 1, name: 'OPedro'}, {id: 2, name: 'OPablo'}], action) => {
-	switch (action.type) {
-		case types.SET_OWN_CHATS:
-			return action.ownChats;
-		default:
-			return state;
-	}
-};
-
-const subscribedChats = (state = [{id: 1, name: 'SPedro'}, {id: 2, name: 'SPablo'}], action) => {
-	switch (action.type) {
-		case types.SET_SUBSCRIBED_CHATS:
-			return action.ownChats;
-		default:
-			return state;
-	}
-};
-
 const events = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_EVENTS:
 			return action.events;
+		case types.TOGGLE_FAVORITE:
+			return R.map(event => {
+				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;
+				return event.id == favoriteID ? R.merge( event, { favorite: action.favorite.subscribed } ) : event;
+			}, state);
 		default:
 			return state;
 	}
@@ -65,6 +41,36 @@ const favorites = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_FAVORITES:
 			return action.favorites;
+		case types.DELETE_FAVORITE:
+			return R.filter(event => event.id != action.favorite.chat_id, state);
+		default:
+			return state;
+	}
+};
+
+const personal = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_PERSONAL:
+			return action.personal;
+		case types.TOGGLE_FAVORITE:
+			return R.map(event => {
+				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;
+				return event.id == favoriteID ? R.merge( event, { favorite: action.favorite.subscribed } ) : event;
+			}, state);
+		default:
+			return state;
+	}
+};
+
+const own = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_OWN:
+			return action.own;
+		case types.TOGGLE_FAVORITE:
+			return R.map(event => {
+				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;
+				return event.id == favoriteID ? R.merge( event, { favorite: action.favorite.subscribed } ) : event;
+			}, state);
 		default:
 			return state;
 	}
@@ -82,9 +88,18 @@ const categories = (state = [], action) => {
 const user = (state = null, action) => {
 	switch (action.type) {
 		case types.SET_USER:
-			return action.user;
+			return typeof action.user == 'object' ? action.user : JSON.parse(action.user);
 		case types.LOG_OUT:
 			return null;
+		default:
+			return state;
+	}
+};
+
+const userInspected = (state = null, action) => {
+	switch (action.type) {
+		case types.SET_USER_INSPECTED:
+			return typeof action.userInspected == 'object' ? action.userInspected : JSON.parse(action.userInspected);
 		default:
 			return state;
 	}
@@ -93,13 +108,13 @@ const user = (state = null, action) => {
 const rootReducer = combineReducers({
 	filter,
 	routing,
-	personalChats,
-	ownChats,
-	subscribedChats,
 	events,
 	favorites,
+	personal,
+	own,
 	categories,
 	user,
+	userInspected,
 	chat
 });
 

@@ -8,33 +8,28 @@ import fU from '../../Utils.js';
 class Evento extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			favorite: false
-		};
+		this.state = {};
 	}
-	componentDidMount() {
-		//	get al favorito del local
-		this.props.initU().get('chats/' + this.props.item.id + '/subscribe.json',
-			actions.noAction, actions.noAction, actions.noAction, {}, {Authorization: this.props.user.token});
-		this.setState({ favorite: true });
-	}
-	toggleFavorite(eventID) {
-		console.log(eventID);
-		if(this.state.favorite) {
-			this.props.initU().delete('chats/' + eventID + '/subscribe.json',
-				actions.noAction, actions.noAction, actions.noAction, {}, {Authorization: this.props.user.token});
+	componentDidMount() {}
+	toggleFavorite() {
+		if(this.props.item.favorite) {
+			this.props.initU().delete('chats/' + this.props.item.id + '/subscribe.json',
+				actions.noAction,
+				() => { return { type: 'TOGGLE_FAVORITE', favorite: { chat_id: this.props.item.id, subscribed: false }}; },
+				actions.noAction, {}, {Authorization: this.props.user.token});
 		}else {
-			this.props.initU().post('chats/' + eventID + '/subscribe.json',
-				actions.noAction, actions.noAction, actions.noAction, {}, {Authorization: this.props.user.token});
+			this.props.initU().post('chats/' + this.props.item.id + '/subscribe.json',
+				actions.noAction,
+				() => { return { type: 'TOGGLE_FAVORITE', favorite: { chat_id: this.props.item.id, subscribed: true }}; },
+				actions.noAction, {}, {Authorization: this.props.user.token});
 		}
-		this.setState({ favorite: !this.state.favorite });
 	}
 	render() {
 		return (
 			<div className="item">
 				<Link to={this.props.path}>{this.props.item.name}</Link>
-				<i onClick={this.toggleFavorite.bind(this, this.props.item && this.props.item.id)}
-					className={ this.state.favorite ? 'fa fa-star right' : 'fa fa-star-o right'} aria-hidden="true"></i>
+				<i onClick={this.toggleFavorite.bind(this)}
+					className={ this.props.item.favorite ? 'fa fa-star right' : 'fa fa-star-o right'} aria-hidden="true"></i>
 			</div>
 		);
 	}

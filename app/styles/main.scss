@@ -27,6 +27,10 @@ html, body, #root, #root > div, .container, .row, #main, .page{ height: 100%; }
 .left{ float: left; }
 .right{ float: right; }
 
+textarea {
+	resize: none;
+}
+
 select{
 	width: 100%;
 	margin-bottom: 20px;
@@ -211,6 +215,10 @@ button{
 	#messages-container > div.left { float: left; }
 
 	#messages-container > div.right { float: right; }
+}
+/*CREATE CHAT-------------------------------------------------------------------------------------------------------*/
+#createChat{
+	padding-top: 15px;
 }
 /*PROFILE-----------------------------------------------------------------------------------------------------------*/
 #profile{

@@ -27,7 +27,7 @@ export default function(dispatch) {
 			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('PATCH', this.apiUrl + path, data);
 			dispatch(sending());
-			axios.put(this.apiUrl + path, data, {withCredentials: true, headers: {'Authorization': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJkYXRhIjoicHJ1ZWJhQGdtYWlsLmNvbSIsImlzcyI6IkNsYW5BcHAifQ.CF2aT1uvOl98iDs4ds26RhuN9t4xwQgtaHgpxmQWFjt5Wro9eDC6lW0VlbPa7aSGR4PWF9lzYF9Pcai3_p91dw'}})
+			axios.put(this.apiUrl + path, data)
 				.then(response => { console.log(path, response);	dispatch(success(response.data.data)); })
 				.catch(error => { console.log(path, error);	 dispatch(failure(error)); });
 		},

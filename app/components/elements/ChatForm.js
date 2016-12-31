@@ -7,34 +7,17 @@ class ChatForm extends Component {
 	componentDidMount() {
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
 	}
+	createChat() {
+		//	POST a /chat con attribs { category_id, name, address, image }
+	}
 	render() {
 		return (
 			<div>
 				<div>
-					<h5 style={{display: 'block'}}>Nombre</h5>
-					<input type="text" />
+					<input type="text" placeholder="NOMBRE"/>
 				</div>
 				<div>
-					<h5 style={{display: 'block'}}>Dirección</h5>
-					<input type="text" />
-				</div>
-				<div>
-					<h5 style={{display: 'block'}}>Activo por</h5>
-					<select>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>10</option>
-						<option>Infinito</option>
-					</select>
-					<select>
-						<option>Horas</option>
-						<option>Días</option>
-						<option>Semanas</option>
-						<option>Días</option>
-					</select>
+					<input type="text" placeholder="DIRECCIÓN"/>
 				</div>
 				<div>
 					<h5 style={{display: 'block'}}>Categoría</h5>
@@ -47,7 +30,7 @@ class ChatForm extends Component {
 					<h5 style={{display: 'block'}}>Descripción</h5>
 					<textarea rows="4" cols="50"> </textarea>
 				</div>
-				<button className="btn btn-primary">Enviar</button>
+				<button onClick={this.createChat} >Enviar</button>
 			</div>
 		);
 	}

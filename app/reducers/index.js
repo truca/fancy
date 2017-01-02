@@ -14,6 +14,15 @@ const filter = (state = '', action) => {
 	}
 };
 
+const language = (state = 'english', action) => {
+	switch (action.type) {
+		case types.SET_LANGUAGE:
+			return action.language;
+		default:
+			return state;
+	}
+};
+
 const chat = (state = {}, action) => {
 	switch (action.type) {
 		case types.SET_CHAT:
@@ -107,6 +116,7 @@ const userInspected = (state = null, action) => {
 
 const rootReducer = combineReducers({
 	filter,
+	language,
 	routing,
 	events,
 	favorites,

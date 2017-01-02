@@ -3,19 +3,22 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 const firebase = require('firebase/app');
 require('firebase/auth');
+import languages from '../translate.js';
 
 class Login extends Component {
 	render() {
 		return (
 			<div className="bg-img-green page">
 				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
-				<input ref="mail" type="text" placeholder="E-MAIL" /><br />
-				<input ref="pass" type="password" placeholder="CONTRASEÑA" /><br />
+				<input ref="mail" type="text" placeholder={languages[this.props.language].ingreso.email} /><br />
+				<input ref="pass" type="password" placeholder={languages[this.props.language].ingreso.clave} /><br />
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.login.bind(this)}>
-					LOGIN <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
+					{languages[this.props.language].ingreso.ingresar} <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
 				</button>
 
-				<div><Link className="centered" to="/registro">Registro</Link></div>
+				<div><Link className="centered" to="/registro">
+					{languages[this.props.language].ingreso.registro}
+				</Link></div>
 			</div>
 		);
 	}
@@ -23,11 +26,14 @@ class Login extends Component {
 
 Login.propTypes = {
 	loginWithMail: PropTypes.func,
-	login: PropTypes.func
+	login: PropTypes.func,
+	language: PropTypes.string,
 };
 
-const mapStateToProps = () => {
-	return {};
+const mapStateToProps = (state) => {
+	return {
+		language: state.language
+	};
 };
 
 const mapDispatchToProps = () => {

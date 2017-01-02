@@ -6,9 +6,12 @@ import fU from '../Utils.js';
 const axios = require('axios');
 const firebase = require('firebase/app');
 require('firebase/auth');
+import languages from '../translate.js';
 
 class App extends Component {
 	componentDidMount() {
+		console.log('App', languages);
+
 		const anchor = document.getElementById('main');
 		if(anchor.addEventListener) anchor.addEventListener('click', this.props.closeNav, false);
 
@@ -34,23 +37,26 @@ class App extends Component {
 					<div id="mySidenav" className="sidenav">
 						<ul>
 							<a className="closebtn" onClick={this.props.closeNav} style={{cursor: 'pointer'}}>&times;</a>
-							<li><Link onClick={this.props.closeNav} to="/mapa">Mapa</Link></li>
-							<li><Link onClick={this.props.closeNav} to="/lista">Lista</Link></li>
+							<li><Link onClick={this.props.closeNav} to="/mapa">{languages[this.props.language].menu.mapa}</Link></li>
+							<li><Link onClick={this.props.closeNav} to="/lista">{languages[this.props.language].menu.lista}</Link></li>
 							{this.props.user ? (
 								<div>
-									<li><Link onClick={this.props.closeNav} to="/chatsSuscritos">Chats Suscritos</Link></li>
-									<li><Link onClick={this.props.closeNav} to="/chatsPersonales">Chats Personales</Link></li>
-									<li><Link onClick={this.props.closeNav} to="/panelPersonal">Panel Personal</Link></li>
-									<li><a style={{cursor: 'pointer'}} onClick={this.props.logout}>Desconectarse</a></li>
+									<li><Link onClick={this.props.closeNav} to="/chatsSuscritos">{languages[this.props.language].menu.chats_suscritos}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/chatsPersonales">{languages[this.props.language].menu.chats_personales}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/panelPersonal">{languages[this.props.language].menu.panel_personal}</Link></li>
+									<li><a style={{cursor: 'pointer'}} onClick={this.props.logout}>{languages[this.props.language].menu.desconectarse}</a></li>
 								</div>
 							) : (
 								<div>
-									<li><Link onClick={this.props.closeNav} to="/conexion">Conexión</Link></li>
-									<li><Link onClick={this.props.closeNav} to="/registro">Registro</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/conexion">{languages[this.props.language].menu.conexion}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/registro">{languages[this.props.language].menu.registro}</Link></li>
 								</div>
 							)}
-							<li><Link to="/acerca">Acerca</Link></li>
+							<li><Link to="/acerca">{languages[this.props.language].menu.acerca}</Link></li>
 						</ul>
+						<select ref="language" onChange={this.props.setLanguage.bind(this)}>
+							{this.props.languages.map((language, i) => <option key={i} value={language} >{language.toUpperCase()}</option> )}
+						</select>
 					</div>
 					<div id="nav" className="bg-green">
 						<span className="back" onClick={this.goBack}>
@@ -70,6 +76,10 @@ class App extends Component {
 	}
 }
 
+App.defaultProps = {
+	languages: ['english', 'español']
+};
+
 App.propTypes = {
 	children: PropTypes.object,
 	user: PropTypes.object,
@@ -78,17 +88,24 @@ App.propTypes = {
 	history: PropTypes.object,
 	userHandler: PropTypes.func,
 	openNav: PropTypes.func,
-	closeNav: PropTypes.func
+	closeNav: PropTypes.func,
+	language: PropTypes.string,
+	setLanguage: PropTypes.func,
+	languages: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.user,
+		language: state.language
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		setLanguage() {
+			dispatch(actions.setLanguage(this.refs.language.value));
+		},
 		logout: () => {
 			firebase.auth().signOut();
 			dispatch(actions.logout());
@@ -114,7 +131,11 @@ const mapDispatchToProps = (dispatch) => {
 						.then(userRegister => {
 							console.log('THEN sign_in', {user: userRegister.data} );
 							dispatch(actions.setUser(userRegister.data));
-							console.log('Hola');
+							self.props.initU().put('user',
+								actions.noAction, actions.setUser, actions.noAction, { user: {notify: localStorage.getItem('clanapp_user_token') }},
+									{Authorization: self.props.user.token});
+
+
 							self.props.history.push('/mapa');
 							//	self.props.history.push(null, '/mapa');
 							//	self.context.router.push(null, '/mapa');
@@ -125,7 +146,10 @@ const mapDispatchToProps = (dispatch) => {
 								.then(userLogin => {
 									console.log('THEN sign_up', {user: userLogin.data});
 									dispatch(actions.setUser(userLogin.data));
-									console.log('Hola');
+									self.props.initU().put('user',
+										actions.noAction, actions.setUser, actions.noAction, { user: {notify: localStorage.getItem('clanapp_user_token') }},
+											{Authorization: self.props.user.token});
+
 									self.props.history.push('/mapa');
 									//	self.props.history.push(null, '/mapa');
 									//	self.context.router.push(null, '/mapa');

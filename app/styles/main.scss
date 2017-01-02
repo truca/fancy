@@ -217,7 +217,7 @@ button{
 	#messages-container > div.right { float: right; }
 }
 /*CREATE CHAT-------------------------------------------------------------------------------------------------------*/
-#createChat{
+#createChat, #updateChat{
 	padding-top: 15px;
 }
 /*PROFILE-----------------------------------------------------------------------------------------------------------*/
@@ -423,6 +423,14 @@ input:not([type="checkbox"]){
 	    font-size: 20px;
 	    display: block;
 	    transition: 0.3s
+		}
+		select{
+			width: 80%;
+	    margin: 0 auto;
+	    display: block;
+	    margin-top: 50px;
+	    color: $verde;
+	    border-color: $verde;
 		}
 }
 

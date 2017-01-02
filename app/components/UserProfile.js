@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import fU from '../Utils.js';
 import axios from 'axios';
+import languages from '../translate.js';
 
 class UserProfile extends Component {
 	componentDidMount() {
@@ -29,23 +30,29 @@ class UserProfile extends Component {
 	render() {
 		return (
 			<div id="userProfile">
-				<h2>Perfil de usuario</h2>
+				<h2>{languages[this.props.language].perfil_de_usuario.perfil_de_usuario}</h2>
 				<img className="avatar" src={'http://138.197.8.69/' + ((this.props.userInspected && this.props.userInspected.image) || '/assets/default-avatar.jpg')} />
 				<div className="userData">
 					<div>
-						<span>Nombre:</span> <span className="right">{(this.props.userInspected && this.props.userInspected.name) || 'No disponible'}</span>
+						<span>{languages[this.props.language].perfil_de_usuario.nombre}:</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.name) || 'No disponible'}</span>
 					</div>
 					<div>
-						<span>Edad:</span> <span className="right">{(this.props.userInspected && this.props.userInspected.age) || 'No disponible'}</span>
+						<span>{languages[this.props.language].perfil_de_usuario.edad}:</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.age) || 'No disponible'}</span>
 					</div>
 					<div>
-						<span>País:</span> <span className="right">{(this.props.userInspected && this.props.userInspected.country) || 'No disponible'}</span>
+						<span>{languages[this.props.language].perfil_de_usuario.pais}:</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.country) || 'No disponible'}</span>
 					</div>
 					<div>
-						<span>Género:</span> <span className="right">{(this.props.userInspected && this.props.userInspected.gender) || 'No disponible'}</span>
+						<span>{languages[this.props.language].perfil_de_usuario.genero}:</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.gender) || 'No disponible'}</span>
 					</div>
 				</div>
-				<button onClick={this.createChat.bind(this)} >Chatear</button>
+				<button onClick={this.createChat.bind(this)} >
+					{languages[this.props.language].perfil_de_usuario.chatear}
+				</button>
 			</div>
 		);
 	}
@@ -57,12 +64,14 @@ UserProfile.propTypes = {
 	params: PropTypes.object,
 	userInspected: PropTypes.object,
 	history: PropTypes.object,
+	language: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
-		userInspected: state.userInspected
+		userInspected: state.userInspected,
+		language: state.language,
 	};
 };
 

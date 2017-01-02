@@ -4,6 +4,7 @@ import {Socket} from 'phoenix-socket';
 import R from 'ramda';
 import fU from '../../Utils.js';
 import * as actions from '../../actions';
+import languages from '../../translate.js';
 
 class ChatElement extends Component {
 	constructor(props) {
@@ -82,13 +83,13 @@ class ChatElement extends Component {
 				<div id="messages-container" style={{height: '80%', overflowY: 'scroll'}}>
 					{this.state.messages.map((message, i) => {
 						return (<div key={i} className={this.props.user.id == message.user_id ? 'right' : 'left' }>
-											<div onClick={ this.viewUser.bind(this, message.user_id) }>{message.name}:</div>
+											<div onClick={ this.viewUser.bind(this, message.user_id) }>{message.name || 'Anónimo' }:</div>
 											<div>{message.content}</div>
 										</div>); })
 					}
 				</div>
 				<div className="bg-green input-div">
-					<input ref="message" type="text" placeholder="Escribe un mensaje .." />
+					<input ref="message" type="text" placeholder={languages[this.props.language].chat.escribe_un_mensaje} />
 					<span onClick={this.sendMessage.bind(this)}>
 						<i className="fa fa-paper-plane fa-2x" aria-hidden="true"></i>
 					</span>
@@ -102,12 +103,14 @@ ChatElement.propTypes = {
 	params: PropTypes.object,
 	user: PropTypes.object,
 	history: PropTypes.object,
-	initU: PropTypes.func
+	initU: PropTypes.func,
+	language: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.user,
+		language: state.language,
 	};
 };
 

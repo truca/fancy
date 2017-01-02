@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 const GoogleMapsLoader = require('google-maps');
 import * as actions from '../actions';
 import fU from '../Utils.js';
+import languages from '../translate.js';
 
 let map = null;
 //	let loader = GoogleMapsLoader;
@@ -66,11 +67,11 @@ class MapContainer extends Component {
 			<div id="mapa" className="page">
 			  <div id="map">
 					<i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
-					<span className="sr-only">Cargando...</span>
+					<span className="sr-only">{languages[this.props.language].mapa.cargando}</span>
 			  </div>
 				<div className="dropdown">
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
-						<option value={-1} >Todas las Categorías</option>
+						<option value={-1} >{languages[this.props.language].mapa.todas_las_categorias}</option>
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}
 					</select>
 				</div>
@@ -85,14 +86,16 @@ MapContainer.propTypes = {
 	events: PropTypes.array,
 	categories: PropTypes.array,
 	initU: PropTypes.func,
-	history: PropTypes.object
+	history: PropTypes.object,
+	language: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		filter: state.filter,
 		events: state.events,
-		categories: state.categories
+		categories: state.categories,
+		language: state.language,
 	};
 };
 

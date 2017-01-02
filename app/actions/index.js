@@ -15,5 +15,6 @@ export function setCategories(categories) { return { type: types.SET_CATEGORIES,
 export function setMessages(messages) { return { type: types.SET_MESSAGES, messages }; }
 
 export function setUser(user) { return { type: types.SET_USER, user }; }
+export function setLanguage(language) { return { type: types.SET_LANGUAGE, language }; }
 export function setUserInspected(userInspected) { return { type: types.SET_USER_INSPECTED, userInspected }; }
 export function logout() { return { type: types.LOG_OUT }; }

@@ -3,6 +3,7 @@ import R from 'ramda';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import fU from '../Utils.js';
+import languages from '../translate.js';
 
 class Profile extends Component {
 	updateUser() {
@@ -30,44 +31,44 @@ class Profile extends Component {
 
 		return (
 			<div id="profile">
-				<h2>Perfil</h2>
+				<h2>{languages[this.props.language].perfil.perfil}</h2>
 				<div className="notifications">
-					<span>NOTIFICACIONES</span> <input type="checkbox" style={{float: 'right'}}/>
+					<span>{languages[this.props.language].perfil.notificaciones}</span> <input type="checkbox" style={{float: 'right'}}/>
 				</div>
 				<div>
-					<input ref="name" type="text" placeholder="NOMBRE" defaultValue={this.props.user && this.props.user.name} />
+					<input ref="name" type="text" placeholder={languages[this.props.language].perfil.nombre} defaultValue={this.props.user && this.props.user.name} />
 				</div>
 				<div>
 					<select ref="age" defaultValue={this.props.user && this.props.user.age}>
-						<option disabled >EDAD</option>
+						<option>{languages[this.props.language].perfil.edad}</option>
 						{ R.map(function(anio) { return (<option key={anio}>{anio}</option>); }, ages) }
 					</select>
 				</div>
 				<div>
 					<select ref="gender" defaultValue={this.props.user && this.props.user.gender}>
-						<option disabled >GÉNERO</option>
+						<option>{languages[this.props.language].perfil.genero}</option>
 						<option value="m">MASCULINO</option>
 						<option value="f">FEMENINO</option>
 					</select>
 				</div>
 				<div>
 					<select ref="language" defaultValue={this.props.user && this.props.user.language}>
-						<option disabled >LENGUAJE</option>
+						<option>{languages[this.props.language].perfil.lenguaje}</option>
 						<option value={0}>ESPAÑOL</option>
 						<option value={1}>ENGLISH</option>
 					</select>
 				</div>
 				<div>
 					<select ref="country" defaultValue={this.props.user && this.props.user.country}>
-						<option disabled >PAÍS</option>
+						<option>{languages[this.props.language].perfil.pais}</option>
 						<option value={0}>CHILE</option>
 						<option value={1}>ARGENTINA</option>
 					</select>
 				</div>
 				<div>
-					<input type="text" placeholder="AVATAR" defaultValue={this.props.user && this.props.user.image} />
+					<input type="text" placeholder={languages[this.props.language].perfil.avatar} defaultValue={this.props.user && this.props.user.image} />
 				</div>
-				<button onClick={this.updateUser.bind(this)} >Enviar Cambios</button>
+				<button onClick={this.updateUser.bind(this)} >{languages[this.props.language].perfil.enviar_cambios}</button>
 			</div>
 		);
 	}
@@ -75,11 +76,13 @@ class Profile extends Component {
 
 Profile.propTypes = {
 	initU: PropTypes.func,
-	user: PropTypes.object
+	user: PropTypes.object,
+	language: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
 	return {
+		language: state.language,
 		user: state.user
 	};
 };

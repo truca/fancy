@@ -2,35 +2,49 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
+import languages from '../../translate.js';
 
 class ChatForm extends Component {
 	componentDidMount() {
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
 	}
-	createChat() {
-		//	POST a /chat con attribs { category_id, name, address, image }
+	buttonAction() {
+		const data = {
+			chat: {
+				category_id: this.refs.category.value,
+				name: this.refs.name.value,
+				address: this.refs.address.value,
+				description: this.refs.description.value
+			}
+		};
+
+		this.props.buttonAction(data);
+		//	this.props.initU().post('chats', actions.noAction, actions.noAction, actions.noAction, data, {Authorization: this.props.user.token} );
+		//	POST a /chat con attribs { category_id, name, address, image, description }
 	}
 	render() {
 		return (
 			<div>
 				<div>
-					<input type="text" placeholder="NOMBRE"/>
+					<input ref="name" type="text" placeholder={languages[this.props.language].crear_chat.nombre}
+						defaultValue={ this.props.item && this.props.item.name } />
 				</div>
 				<div>
-					<input type="text" placeholder="DIRECCIÓN"/>
+					<input ref="address" type="text" placeholder={languages[this.props.language].crear_chat.direccion}
+						defaultValue={ this.props.item && this.props.item.address } />
 				</div>
 				<div>
-					<h5 style={{display: 'block'}}>Categoría</h5>
-					<select>
-						<option>Elija categoría</option>
+					<h5 style={{display: 'block'}}>{languages[this.props.language].crear_chat.categoria}</h5>
+					<select ref="category" defaultValue={ this.props.item && this.props.item.category && this.props.item.category.id } >
+						<option>{languages[this.props.language].crear_chat.categoria}</option>
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id}>{category.name}</option>); })}
 					</select>
 				</div>
 				<div>
-					<h5 style={{display: 'block'}}>Descripción</h5>
-					<textarea rows="4" cols="50"> </textarea>
+					<h5 style={{display: 'block'}}>{languages[this.props.language].crear_chat.descripcion}</h5>
+					<textarea ref="description" rows="4" cols="50" defaultValue={ this.props.item && this.props.item.description }></textarea>
 				</div>
-				<button onClick={this.createChat} >Enviar</button>
+				<button onClick={this.buttonAction.bind(this)} >{this.props.buttonText}</button>
 			</div>
 		);
 	}
@@ -38,7 +52,12 @@ class ChatForm extends Component {
 
 ChatForm.propTypes = {
 	categories: PropTypes.array,
-	initU: PropTypes.func
+	initU: PropTypes.func,
+	language: PropTypes.string,
+	user: PropTypes.object,
+	item: PropTypes.object,
+	buttonAction: PropTypes.func,
+	buttonText: PropTypes.string,
 };
 /*	ChatForm.defaultProps = {
 	categories: []
@@ -46,7 +65,9 @@ ChatForm.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
-		categories: state.categories
+		categories: state.categories,
+		language: state.language,
+		user: state.user,
 	};
 };
 

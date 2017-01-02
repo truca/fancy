@@ -6,11 +6,12 @@ import FilterableList from '../../containers/FilterableList';
 import Evento from '../items/Event';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
+import languages from '../../translate.js';
 
 class OwnChatList extends Component {
 	componentDidMount() {
 		if(this.props.own.length == 0 ) {
-			this.props.initU().get('chats.json', actions.noAction, actions.setOwn, actions.noAction);
+			this.props.initU().get('/user/chats/mine', actions.noAction, actions.setOwn, actions.noAction, {Authorization: this.props.user.token});
 		}
 	}
 	createChat() {
@@ -19,9 +20,9 @@ class OwnChatList extends Component {
 	render() {
 		return (
 			<div id="list">
-				<h2>Chats Propios</h2>
-				<button onClick={this.createChat.bind(this)}>Crear Chat</button>
-				<FilterableList items={this.props.own} item={Evento} path="chats/config" />
+				<h2>{languages[this.props.language].lista.chats_propios}</h2>
+				<button onClick={this.createChat.bind(this)}>{languages[this.props.language].lista.crear_chat}</button>
+				<FilterableList items={this.props.own} item={Evento} path="/update/chats" />
 			</div>
 		);
 	}
@@ -31,11 +32,15 @@ OwnChatList.propTypes = {
 	own: PropTypes.array,
 	initU: PropTypes.func,
 	history: PropTypes.object,
+	language: PropTypes.string,
+	user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
-		own: state.own
+		own: state.own,
+		language: state.language,
+		user: state.user,
 	};
 };
 

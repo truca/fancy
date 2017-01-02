@@ -3,20 +3,21 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 const firebase = require('firebase/app');
 require('firebase/auth');
+import languages from '../translate.js';
 
 class Register extends Component {
 	render() {
 		return (
 			<div className="bg-img-green page">
 				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
-				<input ref="mail" type="text" placeholder="E-MAIL" /><br />
-				<input ref="pass" type="password" placeholder="CONTRASEÑA" /><br />
-				<input ref="pass_conf" type="password" placeholder="CONFIRMAR CONTRASEÑA" /><br />
+				<input ref="mail" type="text" placeholder={languages[this.props.language].registro.email} /><br />
+				<input ref="pass" type="password" placeholder={languages[this.props.language].registro.clave} /><br />
+				<input ref="pass_conf" type="password" placeholder={languages[this.props.language].registro.confirmar_clave} /><br />
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.register.bind(this)}>
-					REGISTRARSE <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
+					{languages[this.props.language].registro.registrarse} <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
 				</button>
 
-				<div><Link className="centered" to="/conexion">Conectarse</Link></div>
+				<div><Link className="centered" to="/conexion">{languages[this.props.language].registro.ingreso}</Link></div>
 			</div>
 		);
 	}
@@ -24,11 +25,14 @@ class Register extends Component {
 
 Register.propTypes = {
 	register: PropTypes.func,
-	registerWithMail: PropTypes.func
+	registerWithMail: PropTypes.func,
+	language: PropTypes.string,
 };
 
-const mapStateToProps = () => {
-	return {};
+const mapStateToProps = (state) => {
+	return {
+		language: state.language
+	};
 };
 
 const mapDispatchToProps = () => {

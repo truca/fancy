@@ -6,6 +6,7 @@ import FilterableList from '../../containers/FilterableList';
 import Evento from '../items/Event';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
+import languages from '../../translate.js';
 
 class EventList extends Component {
 	componentDidMount() {
@@ -14,7 +15,7 @@ class EventList extends Component {
 	render() {
 		return (
 			<div id="list">
-				<h2>Eventos</h2>
+				<h2>{languages[this.props.language].lista.eventos}</h2>
 				<FilterableList items={this.props.events} item={Evento} path="chats" />
 			</div>
 		);
@@ -26,11 +27,13 @@ EventList.propTypes = {
 	initU: PropTypes.func,
 	user: PropTypes.object,
 	getEvents: PropTypes.func,
+	language: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		events: state.events,
+		language: state.language,
 		user: state.user
 	};
 };

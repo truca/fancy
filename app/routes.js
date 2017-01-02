@@ -30,10 +30,10 @@ export default (
 			<Route path="/chatsPersonales" component={PersonalChatList} />
 			<Route path="/chatsSuscritos" component={SubscribedChatList} />
 			<Route path="/chats/:id" component={ChatElement} />
-			<Route path="/create/chats" component={ChatElement} />
+			<Route path="/create/chats" component={CreateChat} />
 			<Route path="/profile/:id" component={UserProfile} />
 			<Route path="/create/chats" component={CreateChat} />
-			<Route path="/chats/update/:id" component={UpdateChat} />
+			<Route path="/update/chats/:id" component={UpdateChat} />
 			<Route path="/acerca" component={About} />
 		</Route>
 	</Route>

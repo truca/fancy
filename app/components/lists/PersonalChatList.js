@@ -6,6 +6,7 @@ import FilterableList from '../../containers/FilterableList';
 import Evento from '../items/Event';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
+import languages from '../../translate.js';
 
 class PersonalChatList extends Component {
 	componentDidMount() {
@@ -16,7 +17,7 @@ class PersonalChatList extends Component {
 	render() {
 		return (
 			<div id="list">
-				<h2>Chats Personales</h2>
+				<h2>{languages[this.props.language].lista.chats_personales}</h2>
 				<FilterableList items={this.props.personal} item={Evento} path="chats" />
 			</div>
 		);
@@ -27,12 +28,14 @@ PersonalChatList.propTypes = {
 	personal: PropTypes.array,
 	initU: PropTypes.func,
 	user: PropTypes.object,
+	language: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		personal: state.personal,
-		user: state.user
+		user: state.user,
+		language: state.language,
 	};
 };
 

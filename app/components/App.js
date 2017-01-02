@@ -6,11 +6,10 @@ import fU from '../Utils.js';
 const axios = require('axios');
 const firebase = require('firebase/app');
 require('firebase/auth');
-import languages from '../translate.js';
 
 class App extends Component {
 	componentDidMount() {
-		console.log('App', languages);
+		this.props.initU().get('languages.json', actions.noAction, actions.setLanguages, actions.noAction);
 
 		const anchor = document.getElementById('main');
 		if(anchor.addEventListener) anchor.addEventListener('click', this.props.closeNav, false);
@@ -37,25 +36,25 @@ class App extends Component {
 					<div id="mySidenav" className="sidenav">
 						<ul>
 							<a className="closebtn" onClick={this.props.closeNav} style={{cursor: 'pointer'}}>&times;</a>
-							<li><Link onClick={this.props.closeNav} to="/mapa">{languages[this.props.language].menu.mapa}</Link></li>
-							<li><Link onClick={this.props.closeNav} to="/lista">{languages[this.props.language].menu.lista}</Link></li>
+							<li><Link onClick={this.props.closeNav} to="/mapa">{this.props.languages[this.props.language].menu.mapa}</Link></li>
+							<li><Link onClick={this.props.closeNav} to="/lista">{this.props.languages[this.props.language].menu.lista}</Link></li>
 							{this.props.user ? (
 								<div>
-									<li><Link onClick={this.props.closeNav} to="/chatsSuscritos">{languages[this.props.language].menu.chats_suscritos}</Link></li>
-									<li><Link onClick={this.props.closeNav} to="/chatsPersonales">{languages[this.props.language].menu.chats_personales}</Link></li>
-									<li><Link onClick={this.props.closeNav} to="/panelPersonal">{languages[this.props.language].menu.panel_personal}</Link></li>
-									<li><a style={{cursor: 'pointer'}} onClick={this.props.logout}>{languages[this.props.language].menu.desconectarse}</a></li>
+									<li><Link onClick={this.props.closeNav} to="/chatsSuscritos">{this.props.languages[this.props.language].menu.chats_suscritos}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/chatsPersonales">{this.props.languages[this.props.language].menu.chats_personales}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/panelPersonal">{this.props.languages[this.props.language].menu.panel_personal}</Link></li>
+									<li><a style={{cursor: 'pointer'}} onClick={this.props.logout}>{this.props.languages[this.props.language].menu.desconectarse}</a></li>
 								</div>
 							) : (
 								<div>
-									<li><Link onClick={this.props.closeNav} to="/conexion">{languages[this.props.language].menu.conexion}</Link></li>
-									<li><Link onClick={this.props.closeNav} to="/registro">{languages[this.props.language].menu.registro}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/conexion">{this.props.languages[this.props.language].menu.conexion}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/registro">{this.props.languages[this.props.language].menu.registro}</Link></li>
 								</div>
 							)}
-							<li><Link to="/acerca">{languages[this.props.language].menu.acerca}</Link></li>
+							<li><Link to="/acerca">{this.props.languages[this.props.language].menu.acerca}</Link></li>
 						</ul>
-						<select ref="language" onChange={this.props.setLanguage.bind(this)}>
-							{this.props.languages.map((language, i) => <option key={i} value={language} >{language.toUpperCase()}</option> )}
+						<select ref="language" onChange={this.props.setLanguage.bind(this)} defaultValue={this.props.language} >
+							{Object.keys(this.props.languages).map((language, i) => <option key={i} value={language} >{language.toUpperCase()}</option> )}
 						</select>
 					</div>
 					<div id="nav" className="bg-green">
@@ -76,10 +75,6 @@ class App extends Component {
 	}
 }
 
-App.defaultProps = {
-	languages: ['english', 'español']
-};
-
 App.propTypes = {
 	children: PropTypes.object,
 	user: PropTypes.object,
@@ -89,15 +84,15 @@ App.propTypes = {
 	userHandler: PropTypes.func,
 	openNav: PropTypes.func,
 	closeNav: PropTypes.func,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 	setLanguage: PropTypes.func,
-	languages: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
-		language: state.language
+		language: state.language,
+		languages: state.languages,
 	};
 };
 
@@ -131,10 +126,15 @@ const mapDispatchToProps = (dispatch) => {
 						.then(userRegister => {
 							console.log('THEN sign_in', {user: userRegister.data} );
 							dispatch(actions.setUser(userRegister.data));
-							self.props.initU().put('user',
-								actions.noAction, actions.setUser, actions.noAction, { user: {notify: localStorage.getItem('clanapp_user_token') }},
-									{Authorization: self.props.user.token});
-
+							if(localStorage.getItem('clanapp_user_token')) {
+								console.log('localStorage Token');
+								console.log(localStorage.getItem('clanapp_user_token'));
+								self.props.initU().put('user',
+									actions.noAction, actions.setUser, actions.noAction, { user: {notify: localStorage.getItem('clanapp_user_token') }},
+										{Authorization: self.props.user.token});
+							}else{
+								console.log('NOT localStorage Token');
+							}
 
 							self.props.history.push('/mapa');
 							//	self.props.history.push(null, '/mapa');

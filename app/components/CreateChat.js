@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import ChatForm from './elements/ChatForm';
 import { connect } from 'react-redux';
-import languages from '../translate.js';
+//	import languages from '../translate.js';
 import fU from '../Utils.js';
 import * as actions from '../actions';
 
@@ -12,8 +12,8 @@ class CreateChat extends Component {
 	render() {
 		return (
 			<div id="createChat">
-        <h2>{languages[this.props.language].crear_chat.crear_chat}</h2>
-        <ChatForm item={{}} buttonText={languages[this.props.language].crear_chat.enviar} buttonAction={this.createChat.bind(this)} />
+        <h2>{this.props.languages[this.props.language].crear_chat.crear_chat}</h2>
+        <ChatForm item={{}} buttonText={this.props.languages[this.props.language].crear_chat.enviar} buttonAction={this.createChat.bind(this)} />
 			</div>
 		);
 	}
@@ -22,14 +22,14 @@ class CreateChat extends Component {
 CreateChat.propTypes = {
 	register: PropTypes.func,
 	registerWithMail: PropTypes.func,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 	initU: PropTypes.func,
 	user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
-		language: state.language,
+		language: state.language, languages: state.languages,
 		user: state.user,
 	};
 };

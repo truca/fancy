@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 const GoogleMapsLoader = require('google-maps');
 import * as actions from '../actions';
 import fU from '../Utils.js';
-import languages from '../translate.js';
+//	import languages from '../translate.js';
 
 let map = null;
 //	let loader = GoogleMapsLoader;
@@ -17,8 +17,6 @@ class MapContainer extends Component {
 	componentDidMount() {
 		this.props.initU().get('chats.json', actions.noAction, actions.setEvents, actions.noAction);
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-
-
 		//	loader = GoogleMapsLoader;
 
 		window.events = this.props.events;
@@ -36,11 +34,10 @@ class MapContainer extends Component {
 					//	console.log('filtering', this.state.category, event.category.id, !this.state.category || this.state.category == event.category.id);
 					if((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == event.category.id) {
 						let marker = {lat: event.lat, lng: event.lng};
-						marker = new google.maps.Marker({ position: marker, map: map, title: 'Hello World!' });
+						marker = new google.maps.Marker({ position: marker, map: map, icon: 'app/img/icons/' + event.category.icon, title: 'Hello World!' });
 						marker.event = event;
 						marker.addListener('click', () => {
-							//	console.log('markerClick', marker.event);
-							this.props.history.push('/chats/' + marker.event.id);
+							if(this.props.user) this.props.history.push('/chats/' + marker.event.id);
 						});
 						markers.push(marker);
 					}
@@ -67,11 +64,11 @@ class MapContainer extends Component {
 			<div id="mapa" className="page">
 			  <div id="map">
 					<i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
-					<span className="sr-only">{languages[this.props.language].mapa.cargando}</span>
+					<span className="sr-only">{this.props.languages[this.props.language].mapa.cargando}</span>
 			  </div>
 				<div className="dropdown">
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
-						<option value={-1} >{languages[this.props.language].mapa.todas_las_categorias}</option>
+						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}
 					</select>
 				</div>
@@ -86,16 +83,18 @@ MapContainer.propTypes = {
 	events: PropTypes.array,
 	categories: PropTypes.array,
 	initU: PropTypes.func,
+	user: PropTypes.object,
 	history: PropTypes.object,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
+		user: state.user,
 		filter: state.filter,
 		events: state.events,
 		categories: state.categories,
-		language: state.language,
+		language: state.language, languages: state.languages,
 	};
 };
 

@@ -4,7 +4,7 @@ import FilterableList from '../../containers/FilterableList';
 import Evento from '../items/Favorites';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
-import languages from '../../translate.js';
+//	import languages from '../../translate.js';
 
 class SubscribedChatList extends Component {
 	componentDidMount() {
@@ -13,7 +13,7 @@ class SubscribedChatList extends Component {
 	render() {
 		return (
 			<div id="list">
-				<h2>{languages[this.props.language].lista.chats_suscritos}</h2>
+				<h2>{this.props.languages[this.props.language].lista.chats_suscritos}</h2>
 				<FilterableList items={this.props.favorites} item={Evento} path="chats" />
 			</div>
 		);
@@ -26,13 +26,13 @@ SubscribedChatList.propTypes = {
 	initU: PropTypes.func,
 	user: PropTypes.object,
 	favorites: PropTypes.array,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		favorites: state.favorites,
-		language: state.language,
+		language: state.language, languages: state.languages,
 		user: state.user
 	};
 };

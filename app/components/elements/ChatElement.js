@@ -4,7 +4,7 @@ import {Socket} from 'phoenix-socket';
 import R from 'ramda';
 import fU from '../../Utils.js';
 import * as actions from '../../actions';
-import languages from '../../translate.js';
+//	import languages from '../../translate.js';
 
 class ChatElement extends Component {
 	constructor(props) {
@@ -80,6 +80,9 @@ class ChatElement extends Component {
 					<h2>{this.state.chatData.name || 'Chat'}</h2>
 					<i className={this.state.favorite ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden="true" onClick={this.toggleFavorite.bind(this, this.state.chatData.id || -1 )} ></i>
 				</div>
+				<div>
+					<span>{this.state.chatData.description}</span>
+				</div>
 				<div id="messages-container" style={{height: '80%', overflowY: 'scroll'}}>
 					{this.state.messages.map((message, i) => {
 						return (<div key={i} className={this.props.user.id == message.user_id ? 'right' : 'left' }>
@@ -89,7 +92,7 @@ class ChatElement extends Component {
 					}
 				</div>
 				<div className="bg-green input-div">
-					<input ref="message" type="text" placeholder={languages[this.props.language].chat.escribe_un_mensaje} />
+					<input ref="message" type="text" placeholder={this.props.languages[this.props.language].chat.escribe_un_mensaje} />
 					<span onClick={this.sendMessage.bind(this)}>
 						<i className="fa fa-paper-plane fa-2x" aria-hidden="true"></i>
 					</span>
@@ -104,13 +107,13 @@ ChatElement.propTypes = {
 	user: PropTypes.object,
 	history: PropTypes.object,
 	initU: PropTypes.func,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
-		language: state.language,
+		language: state.language, languages: state.languages,
 	};
 };
 

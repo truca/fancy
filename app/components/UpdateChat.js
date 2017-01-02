@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import fU from '../Utils.js';
 import * as actions from '../actions';
 import ChatForm from './elements/ChatForm';
-import languages from '../translate.js';
+//	import languages from '../translate.js';
 
 class UpdateChat extends Component {
 	componentDidMount() {
@@ -15,8 +15,8 @@ class UpdateChat extends Component {
 	render() {
 		return (
 			<div id="updateChat">
-				<h2>{languages[this.props.language].actualizar_chat.actualizar_chat}</h2>
-				<ChatForm item={this.props.chat} buttonText={languages[this.props.language].actualizar_chat.enviar} buttonAction={this.updateChat.bind(this)} />
+				<h2>{this.props.languages[this.props.language].actualizar_chat.actualizar_chat}</h2>
+				<ChatForm item={this.props.chat} buttonText={this.props.languages[this.props.language].actualizar_chat.enviar} buttonAction={this.updateChat.bind(this)} />
 			</div>
 		);
 	}
@@ -29,7 +29,7 @@ UpdateChat.propTypes = {
 	params: PropTypes.object,
 	initU: PropTypes.func,
 	user: PropTypes.object,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
@@ -37,7 +37,7 @@ const mapStateToProps = (state) => {
 		chat: state.chat,
 		categories: state.categories,
 		user: state.user,
-		language: state.language,
+		language: state.language, languages: state.languages,
 	};
 };
 

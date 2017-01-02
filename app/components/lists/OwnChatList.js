@@ -6,7 +6,7 @@ import FilterableList from '../../containers/FilterableList';
 import Evento from '../items/Event';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
-import languages from '../../translate.js';
+//	import languages from '../../translate.js';
 
 class OwnChatList extends Component {
 	componentDidMount() {
@@ -20,8 +20,8 @@ class OwnChatList extends Component {
 	render() {
 		return (
 			<div id="list">
-				<h2>{languages[this.props.language].lista.chats_propios}</h2>
-				<button onClick={this.createChat.bind(this)}>{languages[this.props.language].lista.crear_chat}</button>
+				<h2>{this.props.languages[this.props.language].lista.chats_propios}</h2>
+				<button onClick={this.createChat.bind(this)}>{this.props.languages[this.props.language].lista.crear_chat}</button>
 				<FilterableList items={this.props.own} item={Evento} path="/update/chats" />
 			</div>
 		);
@@ -32,14 +32,14 @@ OwnChatList.propTypes = {
 	own: PropTypes.array,
 	initU: PropTypes.func,
 	history: PropTypes.object,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 	user: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		own: state.own,
-		language: state.language,
+		language: state.language, languages: state.languages,
 		user: state.user,
 	};
 };

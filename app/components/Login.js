@@ -3,21 +3,27 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 const firebase = require('firebase/app');
 require('firebase/auth');
-import languages from '../translate.js';
+//	import languages from '../translate.js';
 
 class Login extends Component {
 	render() {
 		return (
 			<div className="bg-img-green page">
 				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
-				<input ref="mail" type="text" placeholder={languages[this.props.language].ingreso.email} /><br />
-				<input ref="pass" type="password" placeholder={languages[this.props.language].ingreso.clave} /><br />
+				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].ingreso.email} /><br />
+				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].ingreso.clave} /><br />
+				<button className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
+					<i className="fa fa-google-plus" aria-hidden="true"></i>
+				</button>
+				<button className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
+					<i className="fa fa-facebook" aria-hidden="true"></i>
+				</button>
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.login.bind(this)}>
-					{languages[this.props.language].ingreso.ingresar} <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
+					{this.props.languages[this.props.language].ingreso.ingresar} <span><i className="fa fa-chevron-right" aria-hidden="true"></i></span>
 				</button>
 
 				<div><Link className="centered" to="/registro">
-					{languages[this.props.language].ingreso.registro}
+					{this.props.languages[this.props.language].ingreso.registro}
 				</Link></div>
 			</div>
 		);
@@ -27,12 +33,15 @@ class Login extends Component {
 Login.propTypes = {
 	loginWithMail: PropTypes.func,
 	login: PropTypes.func,
-	language: PropTypes.string,
+	loginWithGoogle: PropTypes.func,
+	loginWithFacebook: PropTypes.func,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
-		language: state.language
+		language: state.language,
+		languages: state.languages,
 	};
 };
 
@@ -51,6 +60,37 @@ const mapDispatchToProps = () => {
 				this.props.loginWithMail(this.refs.mail.value, this.refs.pass.value);
 			}
 		},
+		loginWithFacebook: () => {
+			const provider = new firebase.auth.FacebookAuthProvider();
+			provider.addScope('email');
+			firebase.auth().signInWithPopup(provider).then(function(result) {
+				const token = result.credential.accessToken;
+				const user = result.user;
+				console.log('Facebook Success', token, user);
+			}).catch(function(error) {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				const email = error.email;
+				const credential = error.credential;
+				console.log('Facebook Error', errorCode, errorMessage, email, credential);
+			});
+		},
+		loginWithGoogle: () => {
+			const provider = new firebase.auth.GoogleAuthProvider();
+			provider.addScope('https://www.googleapis.com/auth/plus.login');
+
+			firebase.auth().signInWithPopup(provider).then(function(result) {
+				const token = result.credential.accessToken;
+				const user = result.user;
+				console.log('Google Success', token, user);
+			}).catch(function(error) {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				const email = error.email;
+				const credential = error.credential;
+				console.log('Google Error', errorCode, errorMessage, email, credential);
+			});
+		},
 		loginWithMail: (mail, pass) => {
 			if (firebase.apps.length === 0) {
 				const config = {
@@ -66,18 +106,6 @@ const mapDispatchToProps = () => {
 			firebase.auth().signInWithEmailAndPassword(mail, pass)
 				.then(function(user) {
 					console.log('Login results: ', user);
-					//	dispatch(actions.setUser(user.providerData[0]));
-					//	push(null, '/mapa');
-					/*	firebase.auth().onAuthStateChanged(function(user) {
-						if(user && user.providerData.length === 1) {
-							console.log('changed', {user: user.providerData[0]});
-							dispatch(actions.setUser(user.providerData[0]));
-						}else{
-							console.log('changed', user);
-							dispatch(actions.logout());
-						}
-					});*/
-					//	console.log(firebase.auth().currentUser);
 				})
 				.catch(function(error) {
 					// Handle Errors here.

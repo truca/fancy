@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { PropTypes, Component } from 'react';
+import { connect } from 'react-redux';
 
-const About = () =>
-	<div className="bg-img-green page">
-		<img className="logo" src="app/img/iso-blanco2.svg" ></img>
-		Somos una StartUp que busca lograr llevar adelante sus proyectos
-	</div>;
+class About extends Component {
+	render() {
+		return (
+			<div className="bg-img-green page">
+				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
+				{this.props.languages[this.props.language].about.text}
+			</div>
+		);
+	}
+}
 
+About.propTypes = {
+	language: PropTypes.string, languages: PropTypes.object,
+};
 
-export default About;
+const mapStateToProps = (state) => {
+	return {
+		language: state.language, languages: state.languages,
+	};
+};
+
+const mapDispatchToProps = () => {
+	return { };
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(About);

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { filterTable, filterTableCategory } from '../actions';
 import ItemList from '../components/ItemList';
 import R from 'ramda';
-import languages from '../translate.js';
+//	import languages from '../translate.js';
 
 class FilterableList extends Component {
 	constructor(props) {
@@ -30,11 +30,11 @@ class FilterableList extends Component {
 						value={this.props.filter}
 						ref={node => {input = node;}}
 						onChange={() => this.props.onFilter(input.value)}
-						placeholder={languages[this.props.language].lista.filtrar} />
+						placeholder={this.props.languages[this.props.language].lista.filtrar} />
 					<ItemList filter={this.props.filter} items={filteredItems} item={this.props.item} path={this.props.path} />
 					<div className="dropdown">
 						<select ref="category" onChange={ this.changeCategory.bind(this) }>
-							<option value={-1} >{languages[this.props.language].lista.todas_las_categorias}</option>
+							<option value={-1} >{this.props.languages[this.props.language].lista.todas_las_categorias}</option>
 							{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}
 						</select>
 					</div>
@@ -57,14 +57,14 @@ FilterableList.propTypes = {
 	categories: PropTypes.array,
 	item: PropTypes.func,
 	onFilter: PropTypes.func,
-	language: PropTypes.string,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		filter: state.filter,
 		filterCategory: state.filterCategory,
-		language: state.language,
+		language: state.language, languages: state.languages,
 		categories: state.categories
 	};
 };

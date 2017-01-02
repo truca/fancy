@@ -2,7 +2,8 @@ import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers } from 'redux';
 import R from 'ramda';
 import * as types from '../actions/types';
-//  import _ from 'underscore';
+import lang from '../translate2.js';
+
 
 const filter = (state = '', action) => {
 	console.log(action.type, action);
@@ -114,9 +115,23 @@ const userInspected = (state = null, action) => {
 	}
 };
 
+const languages = (state = lang, action) => {
+	switch (action.type) {
+		case types.SET_LANGUAGES:
+			const langs = {};
+			action.languages.forEach(auxLang => {
+				langs[auxLang.name.toLowerCase()] = auxLang.data;
+			});
+			return langs;
+		default:
+			return state;
+	}
+};
+
 const rootReducer = combineReducers({
 	filter,
 	language,
+	languages,
 	routing,
 	events,
 	favorites,

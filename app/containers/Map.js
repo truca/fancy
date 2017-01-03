@@ -22,7 +22,7 @@ class MapContainer extends Component {
 
 		window.events = this.props.events;
 
-		$.get('http://ipinfo.io', function(response) {
+		$.get('http://ipinfo.io', response => {
 			const loc = response.loc.split(',');
 			const position = {lat: parseFloat(loc[0], 10), lon: parseFloat(loc[1], 10)};
 			//	console.log(position);

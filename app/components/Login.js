@@ -12,10 +12,10 @@ class Login extends Component {
 				<img className="logo" src="img/iso-blanco2.svg" ></img>
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].ingreso.email} /><br />
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].ingreso.clave} /><br />
-				<button className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
+				<button style={{display: 'none'}} className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
 					<i className="fa fa-google-plus" aria-hidden="true"></i>
 				</button>
-				<button className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
+				<button style={{display: 'none'}} className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
 					<i className="fa fa-facebook" aria-hidden="true"></i>
 				</button>
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.login.bind(this)}>

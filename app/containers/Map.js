@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 const GoogleMapsLoader = require('google-maps');
 import * as actions from '../actions';
 import fU from '../Utils.js';
+import $ from 'jquery';
 //	import languages from '../translate.js';
 
 let map = null;
@@ -20,12 +21,16 @@ class MapContainer extends Component {
 		//	loader = GoogleMapsLoader;
 
 		window.events = this.props.events;
-		navigator.geolocation.getCurrentPosition((location) => {
+
+		$.get('http://ipinfo.io', function(response) {
+			const loc = response.loc.split(',');
+			const position = {lat: parseFloat(loc[0], 10), lon: parseFloat(loc[1], 10)};
+			//	console.log(position);
 			GoogleMapsLoader.KEY = 'AIzaSyABifHRllp38ueVG59B9AeOgdIZpL6TaNs';
 			GoogleMapsLoader.load((google) => {
 				const markers = [];
 				//	Google = google;
-				const myLatLng = {lat: location.coords.latitude, lng: location.coords.longitude};
+				const myLatLng = {lat: position.lat, lng: position.lon};
 				map = new google.maps.Map(document.getElementById('map'), { zoom: 11, center: myLatLng, zoomControl: true, mapTypeControl: false });
 				//	myLatLng = new google.maps.Marker({ position: myLatLng, map: map, title: 'Hello World!' });
 
@@ -34,7 +39,7 @@ class MapContainer extends Component {
 					//	console.log('filtering', this.state.category, event.category.id, !this.state.category || this.state.category == event.category.id);
 					if((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == event.category.id) {
 						let marker = {lat: event.lat, lng: event.lng};
-						marker = new google.maps.Marker({ position: marker, map: map, icon: 'app/img/icons/' + event.category.icon, title: 'Hello World!' });
+						marker = new google.maps.Marker({ position: marker, map: map, icon: 'img/icons/' + event.category.icon, title: 'Hello World!' });
 						marker.event = event;
 						marker.addListener('click', () => {
 							if(this.props.user) this.props.history.push('/chats/' + marker.event.id);
@@ -44,7 +49,7 @@ class MapContainer extends Component {
 				});
 				this.setState({ markers, map });
 			});
-		});
+		}, 'jsonp');
 	}
 	componentDidUpdate() {
 		window.events = this.props.events;

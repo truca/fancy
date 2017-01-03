@@ -9,7 +9,7 @@ class Register extends Component {
 	render() {
 		return (
 			<div className="bg-img-green page">
-				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
+				<img className="logo" src="img/iso-blanco2.svg" ></img>
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].registro.email} /><br />
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].registro.clave} /><br />
 				<input ref="pass_conf" type="password" placeholder={this.props.languages[this.props.language].registro.confirmar_clave} /><br />
@@ -67,13 +67,13 @@ const mapDispatchToProps = () => {
 			firebase.auth().signInWithPopup(provider).then(function(result) {
 				const token = result.credential.accessToken;
 				const user = result.user;
-				console.log('Facebook Success', token, user);
+				console.log('Facebook Success, ' + token + ', ' + JSON.stringify(user));
 			}).catch(function(error) {
-				const errorCode = error.code;
+				/*	const errorCode = error.code;
 				const errorMessage = error.message;
 				const email = error.email;
-				const credential = error.credential;
-				console.log('Facebook Error', errorCode, errorMessage, email, credential);
+				const credential = error.credential;*/
+				console.log('Facebook Error ' + JSON.stringify(error));
 			});
 		},
 		loginWithGoogle: () => {
@@ -83,13 +83,13 @@ const mapDispatchToProps = () => {
 			firebase.auth().signInWithPopup(provider).then(function(result) {
 				const token = result.credential.accessToken;
 				const user = result.user;
-				console.log('Google Success', token, user);
+				console.log('Google Success, ' + token + ', ' + JSON.stringify(user));
 			}).catch(function(error) {
-				const errorCode = error.code;
+				/*	const errorCode = error.code;
 				const errorMessage = error.message;
 				const email = error.email;
-				const credential = error.credential;
-				console.log('Google Error', errorCode, errorMessage, email, credential);
+				const credential = error.credential;*/
+				console.log('Google Error ' + JSON.stringify(error));
 			});
 		},
 		registerWithMail: (mail, pass) => {

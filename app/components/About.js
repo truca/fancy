@@ -5,7 +5,7 @@ class About extends Component {
 	render() {
 		return (
 			<div className="bg-img-green page">
-				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
+				<img className="logo" src="img/iso-blanco2.svg" ></img>
 				{this.props.languages[this.props.language].about.text}
 			</div>
 		);

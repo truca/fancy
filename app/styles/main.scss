@@ -335,13 +335,13 @@ input:not([type="checkbox"]){
 	background: $verde;
 }
 .bg-img-green{
+	background: $verde;
 	background-image: url("../img/fondo.svg");
 	color: white;
 	height: 100%;
 	margin-left: -20px;
 	margin-right: -20px;
 	padding: 20px;
-	margin-top: -20px;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position: 0 0;

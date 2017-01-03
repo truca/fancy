@@ -6,7 +6,7 @@ import lang from '../translate2.js';
 
 
 const filter = (state = '', action) => {
-	console.log(action.type, action);
+	console.log(JSON.stringify(action));
 	switch (action.type) {
 		case types.FILTER:
 			return action.filter;

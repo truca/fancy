@@ -38,7 +38,7 @@ const español = {
 	'crear_chat': {
 		'crear_chat': 'Crear Chat',
 		'nombre': 'NOMBRE',
-		'direccion': 'DIRECCIÓN',
+		'direccion': 'DIRECCIÓN, CIUDAD, PAÍS',
 		'categoria': 'CATEGORÍA',
 		'descripcion': 'Descripción',
 		'enviar': 'Crear'
@@ -78,7 +78,14 @@ const español = {
 		'confirmar_clave': 'CONFIRMAR CONTRASEÑA',
 		'registrarse': 'REGISTRARSE',
 		'ingreso': 'Ingreso'
-	}
+	},
+	'about': {
+		'text': 'Somos una StartUp que quiere hacer crecer sus proyectos'
+	},
+	'actualizar_chat': {
+		'actualizar_chat': 'Actualizar Chat',
+		'enviar': 'Enviar Cambios'
+	},
 };
 
 const english = {
@@ -130,7 +137,7 @@ const english = {
 	'crear_chat': {
 		'crear_chat': 'Create Chat',
 		'nombre': 'NAME',
-		'direccion': 'ADDRESS',
+		'direccion': 'ADDRESS, CITY, COUNTRY',
 		'categoria': 'CATEGORY',
 		'descripcion': 'Description',
 		'enviar': 'Create'
@@ -159,7 +166,14 @@ const english = {
 		'confirmar_clave': 'PASSWORD CONFIRMATION',
 		'registrarse': 'REGISTER',
 		'ingreso': 'Login'
-	}
+	},
+	'about': {
+		'text': 'We\'re a Start Up that wants to make their projects grow'
+	},
+	'actualizar_chat': {
+		'actualizar_chat': 'Update Chat',
+		'enviar': 'Send Changes'
+	},
 };
 
 const languages = { español, english };

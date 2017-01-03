@@ -74,10 +74,17 @@ class ChatElement extends Component {
 		this.setState({ favorite: !this.state.favorite });
 	}
 	render() {
+		let name = 'Chat';
+		if( this.state.chatData.type == 'private' ) {
+			if( this.state.chatData.users[0].id == this.props.user.id ) {
+				name = this.state.chatData.users[1].name || 'Anónimo';
+			}else { name = this.state.chatData.users[0].name || 'Anónimo'; }
+		}else { name = this.state.chatData.name || 'Chat'; }
+
 		return (
 			<div id="chat" className="page">
 				<div className="title">
-					<h2>{this.state.chatData.name || 'Chat'}</h2>
+					<h2>{name}</h2>
 					<i className={this.state.favorite ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden="true" onClick={this.toggleFavorite.bind(this, this.state.chatData.id || -1 )} ></i>
 				</div>
 				<div>

@@ -127,14 +127,12 @@ const mapDispatchToProps = (dispatch) => {
 							console.log('THEN sign_in', {user: userRegister.data} );
 							dispatch(actions.setUser(userRegister.data));
 							if(localStorage.getItem('clanapp_user_token')) {
-								console.log('localStorage Token');
+								console.log('localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 								console.log(localStorage.getItem('clanapp_user_token'));
 								self.props.initU().put('user',
 									actions.noAction, actions.setUser, actions.noAction, { user: {notify: localStorage.getItem('clanapp_user_token') }},
 										{Authorization: self.props.user.token});
-							}else{
-								console.log('NOT localStorage Token');
-							}
+							}else{ console.log('NOT localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'); }
 
 							self.props.history.push('/mapa');
 							//	self.props.history.push(null, '/mapa');
@@ -146,9 +144,14 @@ const mapDispatchToProps = (dispatch) => {
 								.then(userLogin => {
 									console.log('THEN sign_up', {user: userLogin.data});
 									dispatch(actions.setUser(userLogin.data));
-									self.props.initU().put('user',
-										actions.noAction, actions.setUser, actions.noAction, { user: {notify: localStorage.getItem('clanapp_user_token') }},
-											{Authorization: self.props.user.token});
+									if(localStorage.getItem('clanapp_user_token')) {
+										console.log('localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+										console.log(localStorage.getItem('clanapp_user_token'));
+										self.props.initU().put('user',
+											actions.noAction, actions.setUser, actions.noAction, { user: {notify: localStorage.getItem('clanapp_user_token') }},
+												{Authorization: self.props.user.token});
+									}else{ console.log('NOT localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'); }
+
 
 									self.props.history.push('/mapa');
 									//	self.props.history.push(null, '/mapa');

@@ -52,7 +52,7 @@ const lang = [{
 		crear_chat: {
 			crear_chat: 'Create Chat',
 			nombre: 'NAME',
-			direccion: 'ADDRESS',
+			direccion: 'ADDRESS, CITY, COUNTRY',
 			categoria: 'CATEGORY',
 			descripcion: 'Description',
 			enviar: 'Create'

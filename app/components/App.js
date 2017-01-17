@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { Link, browserHistory } from 'react-router';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import fU from '../Utils.js';
@@ -26,8 +26,8 @@ class App extends Component {
 		}
 		this.props.userHandler(this);
 	}
-	goBack() {
-		browserHistory.goBack();
+	goMap() {
+		this.props.history.push('/mapa');
 	}
 	render() {
 		return (
@@ -58,10 +58,10 @@ class App extends Component {
 						</select>
 					</div>
 					<div id="nav" className="bg-green">
-						<span className="back" onClick={this.goBack}>
+						<span className="back" onClick={this.goMap}>
 							<i className="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
 						</span>
-						<Link to="/"><img className="logo" src="img/logo-blanco2.svg" ></img></Link>
+						<Link to="/"><img className="logo" src="app/img/logo-blanco2.svg" ></img></Link>
 						<span className="menu" onClick={this.props.openNav}>
 							<i className="fa fa-bars fa-2x" aria-hidden="true"></i>
 						</span>

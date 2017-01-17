@@ -58,7 +58,7 @@ class App extends Component {
 						</select>
 					</div>
 					<div id="nav" className="bg-green">
-						<span className="back" onClick={this.goMap}>
+						<span className="back" onClick={this.goMap.bind(this)}>
 							<i className="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
 						</span>
 						<Link to="/"><img className="logo" src="app/img/logo-blanco2.svg" ></img></Link>

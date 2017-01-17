@@ -19,55 +19,65 @@ class MapContainer extends Component {
 		this.props.initU().get('chats.json', actions.noAction, actions.setEvents, actions.noAction);
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
 		//	loader = GoogleMapsLoader;
-
 		window.events = this.props.events;
 
-		const chicago = {lat: 41.85, lng: -87.65};
+		function addYourLocationButton(mapa, marker) {
+			const controlDiv = document.createElement('div');
+			const firstChild = document.createElement('button');
+			const secondChild = document.createElement('div');
 
-		function CenterControl(controlDiv, mapa) {
-			const controlUI = document.createElement('div');
-			const controlText = document.createElement('div');
-		  // Set CSS for the control border.
-			controlUI.style.backgroundColor = '#fff';
-			controlUI.style.border = '2px solid #fff';
-			controlUI.style.borderRadius = '3px';
-			controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-			controlUI.style.cursor = 'pointer';
-			controlUI.style.marginBottom = '22px';
-			controlUI.style.textAlign = 'center';
-			controlUI.title = 'Click to recenter the mapa';
-			controlDiv.appendChild(controlUI);
+			firstChild.style.backgroundColor = '#fff';
+			firstChild.style.border = 'none';
+			firstChild.style.outline = 'none';
+			firstChild.style.width = '28px';
+			firstChild.style.height = '28px';
+			firstChild.style.borderRadius = '2px';
+			firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+			firstChild.style.cursor = 'pointer';
+			firstChild.style.marginRight = '10px';
+			firstChild.style.padding = '0px';
+			firstChild.title = 'Your Location';
+			controlDiv.appendChild(firstChild);
 
-			// Set CSS for the control interior.
-			controlText.style.color = 'rgb(25,25,25)';
-			controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-			controlText.style.fontSize = '16px';
-			controlText.style.lineHeight = '38px';
-			controlText.style.paddingLeft = '5px';
-			controlText.style.paddingRight = '5px';
-			controlText.innerHTML = 'Center Map';
-			controlUI.appendChild(controlText);
+			secondChild.style.margin = '5px';
+			secondChild.style.width = '18px';
+			secondChild.style.height = '18px';
+			secondChild.style.backgroundImage = 'url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-1x.png)';
+			secondChild.style.backgroundSize = '180px 18px';
+			secondChild.style.backgroundPosition = '0px 0px';
+			secondChild.style.backgroundRepeat = 'no-repeat';
+			secondChild.id = 'you_location_img';
+			firstChild.appendChild(secondChild);
 
-		  // Setup the click event listeners: simply set the mapa to Chicago.
-			controlUI.addEventListener('click', function() {
-				mapa.setCenter(chicago);
+			google.maps.event.addListener(mapa, 'dragend', function() {
+				$('#you_location_img').css('background-position', '0px 0px');
 			});
+
+			firstChild.addEventListener('click', function() {
+				let imgX = '0';
+				const animationInterval = setInterval(function() {
+					if(imgX == '-18') imgX = '0';
+					else imgX = '-18';
+					$('#you_location_img').css('background-position', imgX + 'px 0px');
+				}, 500);
+				if(navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(function(position) {
+						const latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+						marker.setPosition(latlng);
+						map.setCenter(latlng);
+						clearInterval(animationInterval);
+						$('#you_location_img').css('background-position', '-144px 0px');
+					});
+				}else{
+					clearInterval(animationInterval);
+					$('#you_location_img').css('background-position', '0px 0px');
+				}
+			});
+
+			controlDiv.index = 1;
+			map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
 		}
 
-		/*	function initMap() {
-		  map = new google.maps.Map(document.getElementById('map'), {
-		    zoom: 12,
-		    center: chicago
-		  });
-
-		  // Create the DIV to hold the control and call the CenterControl() constructor
-		  // passing in this DIV.
-		  var centerControlDiv = document.createElement('div');
-		  var centerControl = new CenterControl(centerControlDiv, map);
-
-		  centerControlDiv.index = 1;
-		  map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
-		}*/
 
 		$.get('http://ipinfo.io', response => {
 			const loc = response.loc.split(',');
@@ -76,16 +86,22 @@ class MapContainer extends Component {
 			GoogleMapsLoader.KEY = 'AIzaSyABifHRllp38ueVG59B9AeOgdIZpL6TaNs';
 			GoogleMapsLoader.load((google) => {
 				const markers = [];
-				const centerControlDiv = document.createElement('div');
 				//	Google = google;
 				const myLatLng = {lat: position.lat, lng: position.lon};
 				map = new google.maps.Map(document.getElementById('map'), { zoom: 11, center: myLatLng, zoomControl: true, mapTypeControl: false });
 
-				const centerControl = new CenterControl(centerControlDiv, map);
+				const myMarker = new google.maps.Marker({
+					map: map,
+					animation: google.maps.Animation.DROP,
+					position: myLatLng
+				});
+				addYourLocationButton(map, myMarker);
+
+				/*	const centerControl = new CenterControl(centerControlDiv, map);
 				console.log(centerControl);
 
 				centerControlDiv.index = 1;
-				map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+				map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);*/
 				//	myLatLng = new google.maps.Marker({ position: myLatLng, map: map, title: 'Hello World!' });
 
 
@@ -121,10 +137,10 @@ class MapContainer extends Component {
 	render() {
 		return (
 			<div id="mapa" className="page">
-			  <div id="map">
+				<div id="map">
 					<i className="fa fa-cog fa-spin fa-3x fa-fw"></i>
 					<span className="sr-only">{this.props.languages[this.props.language].mapa.cargando}</span>
-			  </div>
+				</div>
 				<div className="dropdown">
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
 						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>

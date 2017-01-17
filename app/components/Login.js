@@ -9,7 +9,7 @@ class Login extends Component {
 	render() {
 		return (
 			<div className="bg-img-green page">
-				<img className="logo" src="img/iso-blanco2.svg" ></img>
+				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].ingreso.email} /><br />
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].ingreso.clave} /><br />
 				<button style={{display: 'none'}} className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >

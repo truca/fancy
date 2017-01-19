@@ -45,17 +45,17 @@ select{
 	border-bottom: 2px solid grey;
 	outline: none;
 	color: grey;
-  border-radius: 0;
-  background: white;
-  background-position:
-    calc(100% - 20px) calc(1em - 6px),
-    calc(100% - 15px) calc(1em - 6px),
-    calc(100% - 2.5em) 0.5em;
-  background-size:
-    5px 5px,
-    5px 5px,
-    0px 1.5em;
-  background-repeat: no-repeat;
+	border-radius: 0;
+	background: white;
+	background-position:
+		calc(100% - 20px) calc(1em - 6px),
+		calc(100% - 15px) calc(1em - 6px),
+		calc(100% - 2.5em) 0.5em;
+	background-size:
+		5px 5px,
+		5px 5px,
+		0px 1.5em;
+	background-repeat: no-repeat;
 }
 
 input{
@@ -96,13 +96,14 @@ button{
 
 /*MAPA--------------------------------------------------------------------------------------------------------------*/
 #map{
-	height: 90%;
+	height: 85%;
 	margin: 0px -15px;
 	margin-bottom: 0px;
 	color: white;
 	text-align: center;
 	line-height: 90%;
 	font-size: 3em;
+
 }
 /*LISTS-------------------------------------------------------------------------------------------------------------*/
 #list{
@@ -139,9 +140,9 @@ button{
 			h2{ margin-top: 0; display: inline;}
 			i{
 				display: inline;
-		    float: right;
-		    font-size: 1.5em;
-		    margin-top: 5px;
+				float: right;
+				font-size: 1.5em;
+				margin-top: 5px;
 			}
 	}
 
@@ -154,25 +155,25 @@ button{
 		color: white;
 	}
 	input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: white;
+		color: white;
 	}
 	input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-	   color: white;
-	   opacity:  1;
+		 color: white;
+		 opacity:  1;
 	}
 	input::-moz-placeholder { /* Mozilla Firefox 19+ */
-	   color: white;
-	   opacity:  1;
+		 color: white;
+		 opacity:  1;
 	}
 	input:-ms-input-placeholder { /* Internet Explorer 10-11 */
-	   color: white;
+		 color: white;
 	}
 
 	.input-div{
 		margin-left: -10px;
-    margin-right: -10px;
-    height: 71px;
-    padding: 0 10px;
+		margin-right: -10px;
+		height: 71px;
+		padding: 0 10px;
 		border-top: 3px solid white;
 		position: fixed;
 		bottom: 0;
@@ -192,16 +193,16 @@ button{
 			border-color: grey;
 		}
 		input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-		  color: lightgrey;
+			color: lightgrey;
 		}
 		input::-moz-placeholder { /* Firefox 19+ */
-		  color: lightgrey;
+			color: lightgrey;
 		}
 		input:-ms-input-placeholder { /* IE 10+ */
-		  color: lightgrey;
+			color: lightgrey;
 		}
 		input:-moz-placeholder { /* Firefox 18- */
-		  color: lightgrey;
+			color: lightgrey;
 		}
 	}
 
@@ -269,6 +270,24 @@ button{
 	}
 }
 /*LOGIN/REGISTER----------------------------------------------------------------------------------------------------*/
+
+#login{
+	.reset{
+		text-align: center;
+		width: 100%;
+		display: block;
+		margin-top: -12px;
+	}
+}
+#register{
+	.reset{
+		text-align: center;
+		width: 100%;
+		display: block;
+		margin-top: -12px;
+	}
+}
+
 /*------------------------------------------------------------------------------------------------------------------*/
 
 #root > div > .container{
@@ -356,18 +375,18 @@ input:not([type="checkbox"]){
 		outline: none;
 	}
 	input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color: white;
+		color: white;
 	}
 	input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-	   color: white;
-	   opacity:  1;
+		 color: white;
+		 opacity:  1;
 	}
 	input::-moz-placeholder { /* Mozilla Firefox 19+ */
-	   color: white;
-	   opacity:  1;
+		 color: white;
+		 opacity:  1;
 	}
 	input:-ms-input-placeholder { /* Internet Explorer 10-11 */
-	   color: white;
+		 color: white;
 	}
 	a, a:visited, a:hover, a:focus{
 		color: white;
@@ -389,15 +408,21 @@ input:not([type="checkbox"]){
 	background: $verde;
 
 	select{
-		width: 50%;
-    padding: 5px;
-    border: none;
-    border-radius: 0;
-    color: $verde;
-    display: block;
-    margin: 0 auto;
-    margin-top: 20px;
+		width: 100%;
+		padding: 5px;
+		border: none;
+		border-radius: 0;
+		color: $verde;
+		display: block;
+		margin: 0 auto;
+		margin-top: 0px;
 		background-position: calc(100% - 20px) calc(1em - 2px), calc(100% - 15px) calc(1em - 2px), calc(100% - 2.5em) 0.5em;
+	}
+	input{
+		margin-top: 10px;
+		margin-bottom: 10px;
+		border: none;
+		color: $verde;
 	}
 }
 
@@ -405,34 +430,34 @@ input:not([type="checkbox"]){
 
 /* The side navigation menu */
 .sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0;
-    right: 0;
-    background-color: white; /* Black*/
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+		height: 100%; /* 100% Full-height */
+		width: 0; /* 0 width - change this with JavaScript */
+		position: fixed; /* Stay in place */
+		z-index: 1; /* Stay on top */
+		top: 0;
+		right: 0;
+		background-color: white; /* Black*/
+		overflow-x: hidden; /* Disable horizontal scroll */
+		padding-top: 60px; /* Place content 60px from the top */
+		transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 		color: $verde;
 
 		/* The navigation menu links */
 		a{
 			color: $verde;
 			padding: 8px 8px 8px 32px;
-	    text-decoration: none;
-	    font-size: 20px;
-	    display: block;
-	    transition: 0.3s
+			text-decoration: none;
+			font-size: 20px;
+			display: block;
+			transition: 0.3s
 		}
 		select{
 			width: 80%;
-	    margin: 0 auto;
-	    display: block;
-	    margin-top: 50px;
-	    color: $verde;
-	    border-color: $verde;
+			margin: 0 auto;
+			display: block;
+			margin-top: 50px;
+			color: $verde;
+			border-color: $verde;
 		}
 }
 
@@ -440,21 +465,21 @@ input:not([type="checkbox"]){
 
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
+		color: #f1f1f1;
 }
 
 /* Position and style the close button (top right corner) */
 .sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    left: 0px;
-    font-size: 36px;
+		position: absolute;
+		top: 0;
+		left: 0px;
+		font-size: 36px;
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
+		.sidenav {padding-top: 15px;}
+		.sidenav a {font-size: 18px;}
 }

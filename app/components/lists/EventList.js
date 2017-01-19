@@ -44,7 +44,9 @@ const mapDispatchToProps = (dispatch) => {
 		getEvents() {
 			const props = this;
 			const key = 'Authorization';
-			axios.defaults.headers.common[key] = props.user.token;
+			if(props.user && props.user.token) {
+				axios.defaults.headers.common[key] = props.user.token;
+			}
 			axios.get('http://138.197.8.69/chats.json').then( r => {
 				const gets = [];
 				r.data.forEach(chat => {

@@ -8,10 +8,11 @@ require('firebase/auth');
 class Login extends Component {
 	render() {
 		return (
-			<div className="bg-img-green page">
+			<div id="login" className="bg-img-green page">
 				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].ingreso.email} /><br />
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].ingreso.clave} /><br />
+				<Link className="reset" to="/reset">Reset Password</Link>
 				<button style={{display: 'none'}} className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
 					<i className="fa fa-google-plus" aria-hidden="true"></i>
 				</button>
@@ -29,7 +30,7 @@ class Login extends Component {
 		);
 	}
 }
-
+//	{this.props.languages[this.props.language].ingreso.reset_password}
 Login.propTypes = {
 	loginWithMail: PropTypes.func,
 	login: PropTypes.func,

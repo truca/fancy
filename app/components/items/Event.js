@@ -27,7 +27,7 @@ class Evento extends Component {
 	render() {
 		return (
 			<div className="item">
-				<Link to={this.props.path}>{this.props.item.name}</Link>
+				<Link style={{cursor: 'pointer'}} to={this.props.user ? this.props.path : null}>{this.props.item.name}</Link>
 				<i onClick={this.toggleFavorite.bind(this)}
 					className={ this.props.item.favorite ? 'fa fa-star right' : 'fa fa-star-o right'} aria-hidden="true"></i>
 			</div>

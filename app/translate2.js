@@ -78,6 +78,9 @@ const lang = [{
 			registrarse: 'REGISTER',
 			ingreso: 'Login'
 		},
+		reset: {
+			reset_password: 'RESET PASSWORD'
+		},
 		about: {
 			text: 'We\'re a Start Up that wants to make their projects grow'
 		},

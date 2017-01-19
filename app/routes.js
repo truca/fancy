@@ -15,6 +15,8 @@ import OwnChatList from './components/lists/OwnChatList';
 import PersonalChatList from './components/lists/PersonalChatList';
 import SubscribedChatList from './components/lists/SubscribedChatList';
 import ChatElement from './components/elements/ChatElement';
+import ResetPassword from './components/ResetPassword';
+
 
 export default (
 	<Route>
@@ -35,6 +37,7 @@ export default (
 			<Route path="/create/chats" component={CreateChat} />
 			<Route path="/update/chats/:id" component={UpdateChat} />
 			<Route path="/acerca" component={About} />
+			<Route path="/reset" component={ResetPassword} />
 		</Route>
 	</Route>
 );

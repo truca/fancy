@@ -58,6 +58,17 @@ const favorites = (state = [], action) => {
 	}
 };
 
+const favoritesCategories = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_FAVORITES_CATEGORIES:
+			return action.favorites;
+		case types.DELETE_FAVORITE_CATEGORIES:
+			return R.filter(event => event.id != action.favorite.chat_id, state);
+		default:
+			return state;
+	}
+};
+
 const personal = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_PERSONAL:
@@ -135,6 +146,7 @@ const rootReducer = combineReducers({
 	routing,
 	events,
 	favorites,
+	favoritesCategories,
 	personal,
 	own,
 	categories,

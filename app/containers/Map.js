@@ -7,6 +7,8 @@ import $ from 'jquery';
 //	import languages from '../translate.js';
 
 let map = null;
+let markers = [];
+let markerCluster = {};
 //	let loader = GoogleMapsLoader;
 //	let Google = null;
 
@@ -16,11 +18,23 @@ class MapContainer extends Component {
 		this.state = { category: null, markers: [], map: null };
 	}
 	componentDidMount() {
-		this.props.initU().get('chats.json', actions.noAction, actions.setEvents, actions.noAction);
-		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
+		$.get('http://ipinfo.io', response => {
+			const loc = response.loc.split(',');
+			const position = {lat: parseFloat(loc[0], 10), lon: parseFloat(loc[1], 10)};
+			this.props.initU().get('chats.json?lat=' + position.lat + '&lng=' + position.lon, actions.noAction, actions.setEvents, actions.noAction);
+			this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
+		}, 'jsonp');
+
 		//	loader = GoogleMapsLoader;
 		window.events = this.props.events;
-
+		this.drawMap();
+		this.drawMarkers();
+	}
+	componentDidUpdate() {
+		window.events = this.props.events;
+		this.drawMarkers();
+	}
+	drawMap() {
 		function addYourLocationButton(mapa, marker) {
 			const controlDiv = document.createElement('div');
 			const firstChild = document.createElement('button');
@@ -78,14 +92,12 @@ class MapContainer extends Component {
 			map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
 		}
 
-
 		$.get('http://ipinfo.io', response => {
 			const loc = response.loc.split(',');
 			const position = {lat: parseFloat(loc[0], 10), lon: parseFloat(loc[1], 10)};
 			//	console.log(position);
 			GoogleMapsLoader.KEY = 'AIzaSyABifHRllp38ueVG59B9AeOgdIZpL6TaNs';
 			GoogleMapsLoader.load((google) => {
-				const markers = [];
 				//	Google = google;
 				const myLatLng = {lat: position.lat, lng: position.lon};
 				map = new google.maps.Map(document.getElementById('map'), { zoom: 11, center: myLatLng, zoomControl: true, mapTypeControl: false });
@@ -104,32 +116,50 @@ class MapContainer extends Component {
 				map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);*/
 				//	myLatLng = new google.maps.Marker({ position: myLatLng, map: map, title: 'Hello World!' });
 
-
-				window.events.forEach((event) => {
-					//	console.log('filtering', this.state.category, event.category.id, !this.state.category || this.state.category == event.category.id);
-					if((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == event.category.id) {
-						let marker = {lat: event.lat, lng: event.lng};
-						marker = new google.maps.Marker({ position: marker, map: map, title: 'Hello World!' }); // icon: 'app/img/icons/' + event.category.icon,
-						marker.event = event;
-						marker.addListener('click', () => {
-							if(this.props.user) this.props.history.push('/chats/' + marker.event.id);
-						});
-						markers.push(marker);
-					}
-				});
-				this.setState({ markers, map });
+				this.setState({ map });
 			});
 		}, 'jsonp');
 	}
-	componentDidUpdate() {
-		window.events = this.props.events;
-		this.state.markers.forEach((marker) => {
-			if(!((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == marker.event.category.id)) {
-				marker.setMap(null);
+	drawMarkers() {
+		GoogleMapsLoader.load(function(google) {
+			console.log(google);
+			markers.forEach(marker => marker.setMap(null));
+
+			const newMarkers = [];
+			window.events.forEach((event) => {
+				//	console.log('filtering', this.state.category, event.category.id, !this.state.category || this.state.category == event.category.id);
+				if((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == event.category.id) {
+					let marker = {lat: event.lat, lng: event.lng};
+					marker = new google.maps.Marker({ position: marker, map: this.state.map, title: 'Hello World!' }); // icon: 'app/img/icons/' + event.category.icon,
+					marker.event = event;
+					marker.addListener('click', () => {
+						if(this.props.user) this.props.history.push('/chats/' + marker.event.id);
+					});
+					newMarkers.push(marker);
+				}
+			});
+			const options = {gridSize: 50, maxZoom: 15, styles: [
+				{ height: 37, url: 'app/img/icons/blank.png', width: 32 }
+			]};
+
+			if(Object.keys(markerCluster).length == 0) {
+				markerCluster = new MarkerClusterer(this.state.map, newMarkers, options);
 			}else{
-				marker.setMap(this.state.map);
-			}
-		});
+				markerCluster.clearMarkers();
+				markerCluster.addMarkers(newMarkers);
+			} //	markerCluster.setMap(null);
+			//	console.log(markerCluster);
+			//	markerCluster.map = null;
+
+			markers = newMarkers;
+			/*	markers.forEach(function(marker) {
+				if((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == marker.event.category.id) {
+					marker.setMap(this.state.map);
+				}else{
+					marker.setMap(null);
+				}
+			}.bind(this));*/
+		}.bind(this));
 	}
 	changeCategory() {
 		this.setState({ category: this.refs.category.value });
@@ -142,6 +172,7 @@ class MapContainer extends Component {
 					<span className="sr-only">{this.props.languages[this.props.language].mapa.cargando}</span>
 				</div>
 				<div className="dropdown">
+					<input type="text" placeholder={this.props.languages[this.props.language].lista.filtrar}></input>
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
 						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}

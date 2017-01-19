@@ -7,6 +7,7 @@ export function filterTable(filter) { return { type: types.FILTER, filter }; }
 export function setChat(chat) { return { type: types.SET_CHAT, chat }; }
 export function setEvents(events) { return { type: types.SET_EVENTS, events }; }
 export function setFavorites(favorites) { return { type: types.SET_FAVORITES, favorites }; }
+export function setFavoritesCategories(favorites) { return { type: types.SET_FAVORITES_CATEGORIES, favorites }; }
 export function setPersonal(personal) { return { type: types.SET_PERSONAL, personal }; }
 export function setOwn(own) { return { type: types.SET_OWN, own }; }
 

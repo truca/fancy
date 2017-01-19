@@ -8,11 +8,12 @@ require('firebase/auth');
 class Register extends Component {
 	render() {
 		return (
-			<div className="bg-img-green page">
+			<div id="register" className="bg-img-green page">
 				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].registro.email} /><br />
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].registro.clave} /><br />
 				<input ref="pass_conf" type="password" placeholder={this.props.languages[this.props.language].registro.confirmar_clave} /><br />
+				<Link className="reset" to="/reset">Reset Password</Link>
 				<button style={{display: 'none'}} className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
 					<i className="fa fa-google-plus" aria-hidden="true"></i>
 				</button>
@@ -28,7 +29,7 @@ class Register extends Component {
 		);
 	}
 }
-
+//	{this.props.languages[this.props.language].ingreso.reset_password}
 Register.propTypes = {
 	register: PropTypes.func,
 	registerWithMail: PropTypes.func,

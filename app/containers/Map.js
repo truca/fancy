@@ -120,6 +120,9 @@ class MapContainer extends Component {
 			});
 		}, 'jsonp');
 	}
+	changeFilter() {
+		this.drawMarkers();
+	}
 	drawMarkers() {
 		GoogleMapsLoader.load(function(google) {
 			console.log(google);
@@ -128,9 +131,9 @@ class MapContainer extends Component {
 			const newMarkers = [];
 			window.events.forEach((event) => {
 				//	console.log('filtering', this.state.category, event.category.id, !this.state.category || this.state.category == event.category.id);
-				if((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == event.category.id) {
+				if(((!this.state.category && this.state.category != 0) || this.state.category == -1 || this.state.category == event.category.id) && event.name.indexOf(this.refs.filter.value) != -1 ) {
 					let marker = {lat: event.lat, lng: event.lng};
-					marker = new google.maps.Marker({ position: marker, map: this.state.map, title: 'Hello World!' }); // icon: 'app/img/icons/' + event.category.icon,
+					marker = new google.maps.Marker({ position: marker, map: this.state.map, title: 'Hello World!' }); // icon: 'img/icons/' + event.category.icon,
 					marker.event = event;
 					marker.addListener('click', () => {
 						if(this.props.user) this.props.history.push('/chats/' + marker.event.id);
@@ -139,7 +142,7 @@ class MapContainer extends Component {
 				}
 			});
 			const options = {gridSize: 50, maxZoom: 15, styles: [
-				{ height: 37, url: 'app/img/icons/blank.png', width: 32 }
+				{ height: 37, url: 'img/icons/blank.png', width: 32 }
 			]};
 
 			if(Object.keys(markerCluster).length == 0) {
@@ -172,7 +175,7 @@ class MapContainer extends Component {
 					<span className="sr-only">{this.props.languages[this.props.language].mapa.cargando}</span>
 				</div>
 				<div className="dropdown">
-					<input type="text" placeholder={this.props.languages[this.props.language].lista.filtrar}></input>
+					<input ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
 						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}

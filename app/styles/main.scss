@@ -87,6 +87,32 @@ button{
 .item{
 	padding: 5px 0;
 	border-bottom: 1px solid darkgrey;
+	img.profilePic{
+		width: 50px;
+    border-radius: 50%;
+    height: 50px;
+    display: inline-block;
+    margin-right: 10px;
+	}
+	i.fav{
+		font-size: 1.3em;
+		line-height: 50px;
+	}
+	div.text{
+		width: 50%;
+		display: inline-block;
+		position: relative;
+    top: 7px;
+		span{
+			display: flex;
+		}
+		span.liked{
+			background: $verde;
+			border-radius: 10px;
+			padding: 0 10px;
+			color: white;
+		}
+	}
 }
 .centered{
 	display: block;
@@ -118,7 +144,7 @@ button{
 	height: 100%;
 	.dropdown{
 		background: $verde;
-		height: 50px;
+		height: 84px;
 		margin-left: -25px;
 		margin-right: -25px;
 		padding: 0 20px;
@@ -227,6 +253,22 @@ button{
 #profile{
 	padding-top: 15px;
 
+	div.profilePic{
+		img{
+			width: 150px;
+	    height: 150px;
+	    display: block;
+	    margin: 0 auto;
+	    border-radius: 50%;
+	    border: 2px solid $verde;
+		}
+		button{
+			width: 30%;
+			font-size: 0.8em;
+			margin-top: 5px;
+		}
+	}
+
 	input[type="checkbox"]{
 		width: inherit;
 	}
@@ -261,8 +303,9 @@ button{
 		margin-top: 30px;
 	}
 	.avatar{
-		width: 50%;
-		height: auto;
+		width: 150px;
+		height: 150px;
+		border: 2px solid $verde;
 		margin: 0 auto;
 		display: block;
 		margin-bottom: 30px;

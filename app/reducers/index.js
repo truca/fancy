@@ -106,6 +106,15 @@ const categories = (state = [], action) => {
 	}
 };
 
+const orderBy = (state = 'no', action) => {
+	switch (action.type) {
+		case types.ORDER_CHATS:
+			return action.orderBy;
+		default:
+			return state;
+	}
+};
+
 const user = (state = null, action) => {
 	switch (action.type) {
 		case types.SET_USER:
@@ -141,6 +150,7 @@ const languages = (state = lang, action) => {
 
 const rootReducer = combineReducers({
 	filter,
+	orderBy,
 	language,
 	languages,
 	routing,

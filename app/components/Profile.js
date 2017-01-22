@@ -54,6 +54,10 @@ class Profile extends Component {
 		return (
 			<div id="profile">
 				<h2>{this.props.languages[this.props.language].perfil.perfil}</h2>
+				<div className="profilePic">
+					<img src={ 'http://138.197.8.69' + this.props.user.image } ></img>
+					<button>Cambiar Imagen</button>
+				</div>
 				<div>
 					<input ref="name" type="text" placeholder={this.props.languages[this.props.language].perfil.nombre} defaultValue={this.props.user && this.props.user.name} />
 				</div>
@@ -85,9 +89,6 @@ class Profile extends Component {
 					</select>
 				</div>
 				<div>
-					<input type="text" placeholder={this.props.languages[this.props.language].perfil.avatar} defaultValue={this.props.user && this.props.user.image} />
-				</div>
-				<div>
 					<h4>Favorite Categories</h4>
 				</div>
 				<div className="notifications">
@@ -105,6 +106,12 @@ class Profile extends Component {
 		);
 	}
 }
+
+/*
+<div>
+	<input type="text" placeholder={this.props.languages[this.props.language].perfil.avatar} defaultValue={this.props.user && this.props.user.image} />
+</div>
+*/
 
 Profile.propTypes = {
 	initU: PropTypes.func,

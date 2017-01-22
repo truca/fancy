@@ -16,7 +16,7 @@ class Login extends Component {
 				<button style={{display: 'none'}} className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
 					<i className="fa fa-google-plus" aria-hidden="true"></i>
 				</button>
-				<button style={{}} className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
+				<button style={{display: 'none'}} className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
 					<i className="fa fa-facebook" aria-hidden="true"></i>
 				</button>
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.login.bind(this)}>

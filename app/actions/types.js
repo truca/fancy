@@ -11,6 +11,7 @@ export const SET_PERSONAL = 'SET_PERSONAL';
 export const SET_OWN = 'SET_OWN';
 
 export const SET_CHAT = 'SET_CHAT';
+export const ORDER_CHATS = 'ORDER_CHATS';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_MESSAGES = 'SET_MESSAGES';
 export const SET_USER = 'SET_USER';

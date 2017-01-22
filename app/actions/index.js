@@ -4,6 +4,7 @@ import * as types from './types';
 export function noAction() { return { type: types.NO_ACTION, ...arguments }; }
 export function filterTable(filter) { return { type: types.FILTER, filter }; }
 
+export function orderChats(orderBy) { return { type: types.ORDER_CHATS, orderBy }; }
 export function setChat(chat) { return { type: types.SET_CHAT, chat }; }
 export function setEvents(events) { return { type: types.SET_EVENTS, events }; }
 export function setFavorites(favorites) { return { type: types.SET_FAVORITES, favorites }; }

@@ -6,6 +6,7 @@ import fU from '../Utils.js';
 const axios = require('axios');
 const firebase = require('firebase/app');
 require('firebase/auth');
+import R from 'ramda';
 
 class App extends Component {
 	componentDidMount() {
@@ -121,8 +122,8 @@ const mapDispatchToProps = (dispatch) => {
 		userHandler: (self) => {
 			firebase.auth().onAuthStateChanged(function(user) {
 				if(user && user.providerData.length === 1) {
-					console.log('changed', {user: user.providerData[0]});
-					axios.post(self.props.initU().apiUrl + 'users/sign_in.json', {user: user.providerData[0]})
+					console.log('changed', { user: R.merge(user.providerData[0], { uid: user.uid }) });
+					axios.post(self.props.initU().apiUrl + 'users/sign_in.json', { user: R.merge(user.providerData[0], { uid: user.uid }) })
 						.then(userRegister => {
 							console.log('THEN sign_in', {user: userRegister.data} );
 							dispatch(actions.setUser(userRegister.data));
@@ -140,7 +141,7 @@ const mapDispatchToProps = (dispatch) => {
 						})
 						.catch(errorRegister => {
 							console.log('CATCH sign_in', errorRegister);
-							axios.post(self.props.initU().apiUrl + 'users/sign_up.json', {user: user.providerData[0]})
+							axios.post(self.props.initU().apiUrl + 'users/sign_up.json', { user: R.merge(user.providerData[0], { uid: user.uid }) })
 								.then(userLogin => {
 									console.log('THEN sign_up', {user: userLogin.data});
 									dispatch(actions.setUser(userLogin.data));

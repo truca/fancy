@@ -16,7 +16,7 @@ class Login extends Component {
 				<button style={{display: 'none'}} className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
 					<i className="fa fa-google-plus" aria-hidden="true"></i>
 				</button>
-				<button style={{display: 'none'}} className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
+				<button className="btn btn-primary w100 r" onClick={this.props.loginWithFacebook.bind(this)} >
 					<i className="fa fa-facebook" aria-hidden="true"></i>
 				</button>
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.login.bind(this)}>
@@ -62,6 +62,36 @@ const mapDispatchToProps = () => {
 			}
 		},
 		loginWithFacebook: () => {
+			if(typeof facebookConnectPlugin !== 'undefined') {
+				facebookConnectPlugin.login(['public_profile'], (result) => {
+					const provider = firebase.auth.FacebookAuthProvider.credential(result.authResponse.accessToken);
+					console.log('Facebook success: ' + JSON.stringify(result));
+
+					firebase.auth().signInWithCredential(provider)
+						.then(res => {
+							console.log('Firebase success: ' + JSON.stringify(res));
+						})
+						.catch(function(error) {
+							//	const errorCode = error.code;
+							const errorMessage = error.message;
+							console.log('Firebase failure: ' + JSON.stringify(error));
+							if(errorMessage == 'The email address is already in use by another account.') {
+								alert('Esta dirección de email ya esta en uso');
+							}else if(errorMessage == 'The password is invalid or the user does not have a password.') {
+								alert('La contraseña es incorrecta o el usuario no tiene una');
+							}else if(errorMessage == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
+								alert('No hay un usuario con estas credenciales. Por favor regístrate');
+							}
+
+							//	var email = error.email;
+							//	var credential = error.authResponse;
+							reject(error);
+						});
+				}, (err) => {
+					console.log(JSON.stringify(err));
+				});
+			}
+
 			const provider = new firebase.auth.FacebookAuthProvider();
 			provider.addScope('email');
 			firebase.auth().signInWithPopup(provider).then(function(result) {

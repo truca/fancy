@@ -101,7 +101,7 @@ class MapContainer extends Component {
 					navigator.geolocation.getCurrentPosition(function(pos) {
 						const latlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
 						marker.setPosition(latlng);
-						map.setCenter(latlng);
+						mapa.setCenter(latlng);
 						clearInterval(animationInterval);
 						$('#you_location_img').css('background-position', '-144px 0px');
 					});
@@ -144,13 +144,13 @@ class MapContainer extends Component {
 
 			const newMarkers = [];
 			events.forEach(function(event) {
-				console.log('drawMarkers event', event);
+				//	console.log('drawMarkers event', event);
 				//	console.log('filtering', this.state.category, event.category.id, !this.state.category || this.state.category == event.category.id);
 				const filteredByName = event.name.toLowerCase().indexOf(self.refs.filter.value.toLowerCase()) != -1;
 				const filteredByCategory = (!self.state.category && self.state.category != 0) || self.state.category == -1 || self.state.category == event.category.id;
 				if( filteredByCategory && filteredByName ) {
 					let marker = {lat: event.lat, lng: event.lng};
-					const icon = event.category.icon != '/icons/thumb/missing.png' ? 'app/img/icons/' + event.category.icon : 'app/img/icons/blank.png';
+					const icon = event.category.icon != '/icons/thumb/missing.png' ? 'img/icons/' + event.category.icon : 'img/icons/blank.png';
 					marker = new google.maps.Marker({ position: marker, icon, map: self.state.map, title: 'Hello World!' }); // icon: 'img/icons/' + event.category.icon,
 					marker.event = event;
 					marker.addListener('click', () => {
@@ -178,7 +178,7 @@ class MapContainer extends Component {
 		});
 	}
 	changeCategory() {
-		this.setState({ category: this.refs.category.value });
+		this.setState({ category: parseInt(this.refs.category.value, 10) }, () => { this.drawMarkers(this, this.props.events); });
 	}
 	render() {
 		return (

@@ -62,7 +62,7 @@ class App extends Component {
 						<span className="back" onClick={this.goMap.bind(this)}>
 							<i className="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
 						</span>
-						<Link to="/"><img className="logo" src="app/img/logo-blanco2.svg" ></img></Link>
+						<Link to="/"><img className="logo" src="img/logo-blanco2.svg" ></img></Link>
 						<span className="menu" onClick={this.props.openNav}>
 							<i className="fa fa-bars fa-2x" aria-hidden="true"></i>
 						</span>
@@ -122,7 +122,7 @@ const mapDispatchToProps = (dispatch) => {
 		userHandler: (self) => {
 			firebase.auth().onAuthStateChanged(function(user) {
 				if(user && user.providerData.length === 1) {
-					console.log('changed', { user: R.merge(user.providerData[0], { uid: user.uid }) });
+					console.log('changed', { user });
 					axios.post(self.props.initU().apiUrl + 'users/sign_in.json', { user: R.merge(user.providerData[0], { uid: user.uid }) })
 						.then(userRegister => {
 							console.log('THEN sign_in', {user: userRegister.data} );
@@ -141,7 +141,7 @@ const mapDispatchToProps = (dispatch) => {
 						})
 						.catch(errorRegister => {
 							console.log('CATCH sign_in', errorRegister);
-							axios.post(self.props.initU().apiUrl + 'users/sign_up.json', { user: R.merge(user.providerData[0], { uid: user.uid }) })
+							axios.post(self.props.initU().apiUrl + 'users/sign_up.json', {user: R.merge(user.providerData[0], { uid: user.uid }) })
 								.then(userLogin => {
 									console.log('THEN sign_up', {user: userLogin.data});
 									dispatch(actions.setUser(userLogin.data));

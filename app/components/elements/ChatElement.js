@@ -59,6 +59,14 @@ class ChatElement extends Component {
 			this.props.history.push('/profile/' + userID);
 		}
 	}
+	block() {
+		const r = confirm('¿Deseas bloquear a este usuario? No podrás volver a hablar con él ni él contigo');
+		if (r == true) {
+			//	userID es actualmente la id del evento, hay que cambiar eso.
+			this.props.initU().post('users/' + this.props.userInspected.id + '/blocks',
+				actions.noAction, actions.noAction, actions.noAction, {}, {Authorization: this.props.user.token});
+		}
+	}
 	toggleFavorite(eventID) {
 		// hacer el cambio remoto
 		console.log(eventID);
@@ -69,8 +77,6 @@ class ChatElement extends Component {
 			this.props.initU().post('chats/' + this.state.chatData.id + '/subscribe.json',
 				actions.noAction, actions.noAction, actions.noAction, {}, {Authorization: this.props.user.token});
 		}
-
-
 		this.setState({ favorite: !this.state.favorite });
 	}
 	render() {
@@ -85,6 +91,10 @@ class ChatElement extends Component {
 			<div id="chat" className="page">
 				<div className="title">
 					<h2>{name}</h2>
+					{this.state.chatData.type == 'private' ?
+						<i className="fa fa-ban" style={{marginLeft: '3px'}} aria-hidden="true" onClick={this.block.bind(this)} ></i>
+						: null
+					}
 					<i className={this.state.favorite ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden="true" onClick={this.toggleFavorite.bind(this, this.state.chatData.id || -1 )} ></i>
 				</div>
 				<div>
@@ -114,12 +124,14 @@ ChatElement.propTypes = {
 	user: PropTypes.object,
 	history: PropTypes.object,
 	initU: PropTypes.func,
+	userInspected: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		userInspected: state.userInspected,
 		language: state.language, languages: state.languages,
 	};
 };

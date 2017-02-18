@@ -7,7 +7,7 @@ import axios from 'axios';
 
 class UserProfile extends Component {
 	componentDidMount() {
-		this.props.initU().get('users/' + this.props.params.id, actions.noAction, actions.setUserInspected, actions.noAction);
+		this.props.initU().get('users/' + this.props.params.id, actions.noAction, actions.setUserInspected, actions.noAction, {Authorization: this.props.user.token});
 	}
 	createChat() {
 		console.log('creando chat');

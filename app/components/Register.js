@@ -1,15 +1,19 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { setLoginType } from '../actions';
 const firebase = require('firebase/app');
 require('firebase/auth');
 //	import languages from '../translate.js';
 
 class Register extends Component {
+	componentDidMount() {
+		this.props.loginType('register');
+	}
 	render() {
 		return (
 			<div id="register" className="bg-img-green page">
-				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
+				<img className="logo" src="img/iso-blanco2.svg" ></img>
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].registro.email} /><br />
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].registro.clave} /><br />
 				<input ref="pass_conf" type="password" placeholder={this.props.languages[this.props.language].registro.confirmar_clave} /><br />
@@ -32,6 +36,7 @@ class Register extends Component {
 //	{this.props.languages[this.props.language].ingreso.reset_password}
 Register.propTypes = {
 	register: PropTypes.func,
+	loginType: PropTypes.func,
 	registerWithMail: PropTypes.func,
 	loginWithGoogle: PropTypes.func,
 	loginWithFacebook: PropTypes.func,
@@ -45,8 +50,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
 	return {
+		loginType: (type) => { dispatch(setLoginType(type)); },
 		register() {
 			if(this.refs.mail.value === '') {
 				alert('Debe ingresar el email antes de proseguir');

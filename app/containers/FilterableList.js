@@ -5,6 +5,7 @@ import * as actions from '../actions';
 import ItemList from '../components/ItemList';
 import R from 'ramda';
 import fU from '../Utils.js';
+import moment from 'moment';
 //	import languages from '../translate.js';
 
 class FilterableList extends Component {
@@ -29,6 +30,20 @@ class FilterableList extends Component {
 		if(this.props.orderBy == 'no') return R.sortBy(R.prop('name'), items);
 		else if(this.props.orderBy == 'distance') {
 			return R.sortBy(R.prop('distance'), items);
+		}else if(this.props.orderBy == 'date') {
+			return R.sort((a, b) => {
+				let res = null;
+				if(!a.occurrence && !b.occurrence) {
+					res = 0;
+				}else if(!a.occurrence) {
+					res = 1;
+				}else if(!b.occurrence) {
+					res = -1;
+				}else {
+					res = (moment(a.occurrence) - moment(b.occurrence));
+				}
+				return res;
+			}, items);
 		}else if(this.props.orderBy == 'liked') {
 			if( typeof this.props.favoritesCategories === 'undefined' || this.props.favoritesCategories.length == 0 ) return items;
 			return R.sort(function(a, b) {
@@ -59,6 +74,7 @@ class FilterableList extends Component {
 						<select ref="order" onChange={ this.props.changeOrder.bind(this) } defaultValue={this.props.order_by}>
 							<option value="no" selected={this.props.orderBy == 'no'}>Don't Sort</option>
 							<option value="distance" selected={this.props.orderBy == 'distance'} >Distance</option>
+							<option value="date" selected={this.props.orderBy == 'date'} >Fecha</option>
 							{this.props.user ?
 								(<option value="liked" selected={this.props.orderBy == 'liked'}>Liked Categories</option>) : null
 							}

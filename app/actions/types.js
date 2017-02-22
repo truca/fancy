@@ -9,6 +9,11 @@ export const SET_FAVORITES = 'SET_FAVORITES';
 export const SET_FAVORITES_CATEGORIES = 'SET_FAVORITES_CATEGORIES';
 export const SET_PERSONAL = 'SET_PERSONAL';
 export const SET_OWN = 'SET_OWN';
+export const SET_BLOCK = 'SET_BLOCK';
+export const ADD_BLOCK = 'ADD_BLOCK';
+export const REMOVE_BLOCK = 'REMOVE_BLOCK';
+export const SET_BLOCKED = 'SET_BLOCKED';
+export const SET_LOGIN_TYPE = 'SET_LOGIN_TYPE';
 
 export const SET_CHAT = 'SET_CHAT';
 export const ORDER_CHATS = 'ORDER_CHATS';

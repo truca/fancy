@@ -63,7 +63,7 @@ class ChatElement extends Component {
 		const r = confirm('¿Deseas bloquear a este usuario? No podrás volver a hablar con él ni él contigo');
 		if (r == true) {
 			//	userID es actualmente la id del evento, hay que cambiar eso.
-			this.props.initU().post('users/' + this.props.userInspected.id + '/blocks',
+			this.props.initU().post('users/' + this.props.userInspected.id + '/block',
 				actions.noAction, actions.noAction, actions.noAction, {}, {Authorization: this.props.user.token});
 		}
 	}

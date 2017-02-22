@@ -150,7 +150,8 @@ class MapContainer extends Component {
 				const filteredByCategory = (!self.state.category && self.state.category != 0) || self.state.category == -1 || self.state.category == event.category.id;
 				if( filteredByCategory && filteredByName ) {
 					let marker = {lat: event.lat, lng: event.lng};
-					const icon = event.category.icon != '/icons/thumb/missing.png' ? 'img/icons/' + event.category.icon : 'img/icons/blank.png';
+					let icon = event.hot ? 'app/img/icons/hot/' : 'app/img/icons/';
+					icon += event.category.icon != '/icons/thumb/missing.png' ? event.category.icon : 'blank.png';
 					marker = new google.maps.Marker({ position: marker, icon, map: self.state.map, title: 'Hello World!' }); // icon: 'img/icons/' + event.category.icon,
 					marker.event = event;
 					marker.addListener('click', () => {

@@ -2,25 +2,37 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
+import Datetime from 'react-datetime';
+import moment from 'moment';
 //	import languages from '../../translate.js';
 
 class ChatForm extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { date: moment(), changed: false };
+	}
 	componentDidMount() {
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
 	}
 	buttonAction() {
-		const data = {
-			chat: {
-				category_id: this.refs.category.value,
-				name: this.refs.name.value,
-				address: this.refs.address.value,
-				description: this.refs.description.value
-			}
-		};
+		if(this.state.changed && this.refs.category.value && this.refs.name.value && this.refs.address.value && this.refs.description.value) {
+			const data = {
+				chat: {
+					category_id: this.refs.category.value,
+					name: this.refs.name.value,
+					occurrence: this.state.date.format(),
+					address: this.refs.address.value,
+					description: this.refs.description.value
+				}
+			};
 
-		this.props.buttonAction(data);
-		//	this.props.initU().post('chats', actions.noAction, actions.noAction, actions.noAction, data, {Authorization: this.props.user.token} );
-		//	POST a /chat con attribs { category_id, name, address, image, description }
+			this.props.buttonAction(data);
+		}else{
+			this.props.initU().alert('Error', 'Debes llenar todos los datos para crear un evento');
+		}
+	}
+	changeDate(date) {
+		this.setState({ date, changed: true });
 	}
 	render() {
 		return (
@@ -32,6 +44,10 @@ class ChatForm extends Component {
 				<div>
 					<input ref="address" type="text" placeholder={this.props.languages[this.props.language].crear_chat.direccion}
 						defaultValue={ this.props.item.address } />
+				</div>
+				<div>
+					<h5 style={{display: 'block'}}>Fecha y hora del evento</h5>
+					<Datetime onChange={this.changeDate.bind(this)} ref="date" />
 				</div>
 				<div>
 					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.categoria}</h5>

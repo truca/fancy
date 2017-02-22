@@ -62,7 +62,7 @@ class App extends Component {
 						<span className="back" onClick={this.goMap.bind(this)}>
 							<i className="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
 						</span>
-						<Link to="/"><img className="logo" src="img/logo-blanco2.svg" ></img></Link>
+						<Link to="/"><img className="logo" src="app/img/logo-blanco2.svg" ></img></Link>
 						<span className="menu" onClick={this.props.openNav}>
 							<i className="fa fa-bars fa-2x" aria-hidden="true"></i>
 						</span>
@@ -78,6 +78,7 @@ class App extends Component {
 
 App.propTypes = {
 	children: PropTypes.object,
+	loginType: PropTypes.string,
 	user: PropTypes.object,
 	logout: PropTypes.func,
 	initU: PropTypes.func,
@@ -92,6 +93,7 @@ App.propTypes = {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		loginType: state.loginType,
 		language: state.language,
 		languages: state.languages,
 	};
@@ -135,9 +137,11 @@ const mapDispatchToProps = (dispatch) => {
 										{Authorization: self.props.user.token});
 							}else{ console.log('NOT localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'); }
 
-							self.props.history.push('/mapa');
-							//	self.props.history.push(null, '/mapa');
-							//	self.context.router.push(null, '/mapa');
+							if(self.props.loginType == 'register') {
+								self.props.history.push('/perfil');
+							}else{
+								self.props.history.push('/mapa');
+							}
 						})
 						.catch(errorRegister => {
 							console.log('CATCH sign_in', errorRegister);

@@ -97,6 +97,37 @@ const own = (state = [], action) => {
 	}
 };
 
+const block = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_BLOCK:
+			return action.block;
+		case types.ADD_BLOCK:
+			return R.concat(state, [action.block]);
+		case types.REMOVE_BLOCK:
+			return R.filter(blockAux => blockAux.to_id !== action.toID, state);
+		default:
+			return state;
+	}
+};
+
+const blocked = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_BLOCKED:
+			return action.blocked;
+		default:
+			return state;
+	}
+};
+
+const loginType = (state = null, action) => {
+	switch (action.type) {
+		case types.SET_LOGIN_TYPE:
+			return action.loginType;
+		default:
+			return state;
+	}
+};
+
 const categories = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_CATEGORIES:
@@ -159,6 +190,9 @@ const rootReducer = combineReducers({
 	favoritesCategories,
 	personal,
 	own,
+	block,
+	blocked,
+	loginType,
 	categories,
 	user,
 	userInspected,

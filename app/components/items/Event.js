@@ -5,6 +5,8 @@ import { toggleFavorite } from '../../actions';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
 import R from 'ramda';
+//	import moment from 'moment';
+import momentTimezone from 'moment-timezone';
 
 class Evento extends Component {
 	constructor(props) {
@@ -37,7 +39,7 @@ class Evento extends Component {
 					result = (<span>{this.props.item.category.name}</span>);
 				}
 				return result;
-			case 'date': return '12/02/2017 17:30';
+			case 'date': return this.props.item.occurrence ? momentTimezone(this.props.item.occurrence).tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm') : null;
 			default: return '';
 		}
 	}

@@ -45,6 +45,11 @@ export default function(dispatch) {
 				window.plugins.toast.show(msg, 'long', 'bottom');
 			}else{ console.log(msg); }
 		},
+		alert: function( title, message ) {
+			if(!navigator || !navigator.notification || !navigator.notification.alert) { alert(message); }
+			//                           message, callback, title, buttonName
+			navigator.notification.alert(message, null,     title, 'Aceptar' );
+		},
 		merge: function() {
 			return _.extend({}, ...arguments);
 		}

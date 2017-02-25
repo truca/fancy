@@ -6,7 +6,8 @@ import lang from '../translate2.js';
 
 
 const filter = (state = '', action) => {
-	console.log(action.type, action);
+	console.log(action.type);
+	console.log(JSON.stringify(action));
 	switch (action.type) {
 		case types.FILTER:
 			return action.filter;
@@ -28,6 +29,9 @@ const chat = (state = {}, action) => {
 	switch (action.type) {
 		case types.SET_CHAT:
 			return action.chat;
+		case types.UPDATE_CHAT:
+			if(state.id == action.chat.id) return action.chat;
+			return state;
 		default:
 			return state;
 	}
@@ -37,6 +41,11 @@ const events = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_EVENTS:
 			return action.events;
+		case types.UPDATE_CHAT:
+			return R.map(chatAux => {
+				if(chatAux.id == action.chat.id) return action.chat;
+				return chatAux;
+			}, state);
 		case types.TOGGLE_FAVORITE:
 			return R.map(event => {
 				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;
@@ -51,6 +60,11 @@ const favorites = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_FAVORITES:
 			return action.favorites;
+		case types.UPDATE_CHAT:
+			return R.map(chatAux => {
+				if(chatAux.id == action.chat.id) return action.chat;
+				return chatAux;
+			}, state);
 		case types.DELETE_FAVORITE:
 			return R.filter(event => event.id != action.favorite.chat_id, state);
 		default:
@@ -73,6 +87,11 @@ const personal = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_PERSONAL:
 			return action.personal;
+		case types.UPDATE_CHAT:
+			return R.map(chatAux => {
+				if(chatAux.id == action.chat.id) return action.chat;
+				return chatAux;
+			}, state);
 		case types.TOGGLE_FAVORITE:
 			return R.map(event => {
 				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;
@@ -87,6 +106,11 @@ const own = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_OWN:
 			return action.own;
+		case types.UPDATE_CHAT:
+			return R.map(chatAux => {
+				if(chatAux.id == action.chat.id) return action.chat;
+				return chatAux;
+			}, state);
 		case types.TOGGLE_FAVORITE:
 			return R.map(event => {
 				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;

@@ -10,6 +10,7 @@ import R from 'ramda';
 
 class App extends Component {
 	componentDidMount() {
+		this.props.initU().setPush(this.props.history.push);
 		this.props.initU().get('languages.json', actions.noAction, actions.setLanguages, actions.noAction);
 
 		const anchor = document.getElementById('main');

@@ -16,6 +16,7 @@ export const SET_BLOCKED = 'SET_BLOCKED';
 export const SET_LOGIN_TYPE = 'SET_LOGIN_TYPE';
 
 export const SET_CHAT = 'SET_CHAT';
+export const UPDATE_CHAT = 'UPDATE_CHAT';
 export const ORDER_CHATS = 'ORDER_CHATS';
 export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_MESSAGES = 'SET_MESSAGES';

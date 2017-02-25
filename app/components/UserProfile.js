@@ -29,7 +29,7 @@ class UserProfile extends Component {
 		});
 	}
 	block() {
-		const r = confirm('¿Deseas bloquear a este usuario? No podrás volver a hablar con él ni él contigo');
+		const r = confirm(this.props.languages[this.props.language].perfil_usuario.alert_confirmar_bloqueo);
 		if (r == true) {
 			//	userID es actualmente la id del evento, hay que cambiar eso.
 			this.props.initU().post('users/' + this.props.userInspected.id + '/block',
@@ -40,7 +40,7 @@ class UserProfile extends Component {
 		}
 	}
 	unblock() {
-		const r = confirm('¿Deseas desbloquear a este usuario? ambos podrán volver a hablar con el otro');
+		const r = confirm(this.props.languages[this.props.language].perfil_usuario.alert_confirmar_desbloqueo);
 		if (r == true) {
 			//	userID es actualmente la id del evento, hay que cambiar eso.
 			this.props.initU().delete('users/' + this.props.userInspected.id + '/block',
@@ -61,7 +61,8 @@ class UserProfile extends Component {
 		}else if(block) {
 			buttons = (
 				<button onClick={block ? this.unblock.bind(this) : this.block.bind(this) } >
-					{block ? 'Desbloquear Usuario' : 'Bloquear usuario'}
+					{block ? this.props.languages[this.props.language].perfil_usuario.bloquear_usuario
+						: this.props.languages[this.props.language].perfil_usuario.desbloquear_usuario}
 				</button>
 			);
 		}else{
@@ -71,7 +72,8 @@ class UserProfile extends Component {
 						{this.props.languages[this.props.language].perfil_de_usuario.chatear}
 					</button>
 					<button onClick={block ? this.unblock.bind(this) : this.block.bind(this) } >
-						{block ? 'Desbloquear Usuario' : 'Bloquear usuario'}
+						{block ? this.props.languages[this.props.language].perfil_usuario.bloquear_usuario
+							: this.props.languages[this.props.language].perfil_usuario.desbloquear_usuario}
 					</button>
 				</div>
 			);
@@ -84,19 +86,19 @@ class UserProfile extends Component {
 				<div className="userData">
 					<div>
 						<span>{this.props.languages[this.props.language].perfil_de_usuario.nombre}:</span>
-						<span className="right">{(this.props.userInspected && this.props.userInspected.name) || 'No disponible'}</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.name) || this.props.languages[this.props.language].perfil_usuario.no_disponible }</span>
 					</div>
 					<div>
 						<span>{this.props.languages[this.props.language].perfil_de_usuario.edad}:</span>
-						<span className="right">{(this.props.userInspected && this.props.userInspected.age) || 'No disponible'}</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.age) || this.props.languages[this.props.language].perfil_usuario.no_disponible }</span>
 					</div>
 					<div>
 						<span>{this.props.languages[this.props.language].perfil_de_usuario.pais}:</span>
-						<span className="right">{(this.props.userInspected && this.props.userInspected.country) || 'No disponible'}</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.country) || this.props.languages[this.props.language].perfil_usuario.no_disponible }</span>
 					</div>
 					<div>
 						<span>{this.props.languages[this.props.language].perfil_de_usuario.genero}:</span>
-						<span className="right">{(this.props.userInspected && this.props.userInspected.gender) || 'No disponible'}</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.gender) || this.props.languages[this.props.language].perfil_usuario.no_disponible }</span>
 					</div>
 				</div>
 				{buttons}

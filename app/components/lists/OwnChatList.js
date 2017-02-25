@@ -11,7 +11,7 @@ import fU from '../../Utils.js';
 class OwnChatList extends Component {
 	componentDidMount() {
 		if(this.props.own.length == 0 ) {
-			this.props.initU().get('/user/chats/mine', actions.noAction, actions.setOwn, actions.noAction, {Authorization: this.props.user.token});
+			this.props.initU().get('/user/chats/owned', actions.noAction, actions.setOwn, actions.noAction, {Authorization: this.props.user.token});
 		}
 	}
 	createChat() {

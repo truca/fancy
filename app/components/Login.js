@@ -13,7 +13,7 @@ class Login extends Component {
 	render() {
 		return (
 			<div id="login" className="bg-img-green page">
-				<img className="logo" src="img/iso-blanco2.svg" ></img>
+				<img className="logo" src="app/img/iso-blanco2.svg" ></img>
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].ingreso.email} /><br />
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].ingreso.clave} /><br />
 				<Link className="reset" to="/reset">Reset Password</Link>
@@ -56,13 +56,13 @@ const mapDispatchToProps = (dispatch) => {
 		loginType: (type) => { dispatch(setLoginType(type)); },
 		login() {
 			if(this.refs.mail.value === '') {
-				alert('Debe ingresar el email antes de proseguir');
+				alert(this.props.languages[this.props.language].alert.login_mail_no_ingresado);
 			}else if(this.refs.mail.value.indexOf('@') === -1 || this.refs.mail.value.indexOf('.') === -1) {
-				alert('Debe ingresar un email válido');
+				alert(this.props.languages[this.props.language].alert.login_mail_invalido);
 			}else if(this.refs.pass.value === '') {
-				alert('La contraseña no puede ser vacía');
+				alert(this.props.languages[this.props.language].alert.login_clave_vacia);
 			}else if(this.refs.pass.value.length < 8) {
-				alert('La contraseña debe tener al menos 8 caracteres');
+				alert(this.props.languages[this.props.language].alert.login_clave_muy_corta);
 			}else {
 				this.props.loginWithMail(this.refs.mail.value, this.refs.pass.value);
 			}
@@ -82,11 +82,11 @@ const mapDispatchToProps = (dispatch) => {
 							const errorMessage = error.message;
 							console.log('Firebase failure: ' + JSON.stringify(error));
 							if(errorMessage == 'The email address is already in use by another account.') {
-								alert('Esta dirección de email ya esta en uso');
+								alert(this.props.languages[this.props.language].alert.login_email_en_uso);
 							}else if(errorMessage == 'The password is invalid or the user does not have a password.') {
-								alert('La contraseña es incorrecta o el usuario no tiene una');
+								alert(this.props.languages[this.props.language].alert.login_clave_incorrecta);
 							}else if(errorMessage == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
-								alert('No hay un usuario con estas credenciales. Por favor regístrate');
+								alert(this.props.languages[this.props.language].alert.login_clave_muy_corta);
 							}
 
 							//	var email = error.email;
@@ -149,7 +149,7 @@ const mapDispatchToProps = (dispatch) => {
 					const errorCode = error.code;
 					const errorMessage = error.message;
 					if (errorCode === 'auth/wrong-password') {
-						alert('Wrong password.');
+						alert(this.props.languages[this.props.language].alert.registro_clave_incorrecta);
 					} else {
 						alert(errorMessage);
 					}

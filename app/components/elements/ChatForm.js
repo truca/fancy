@@ -28,8 +28,12 @@ class ChatForm extends Component {
 
 			this.props.buttonAction(data);
 		}else{
-			this.props.initU().alert('Error', 'Debes llenar todos los datos para crear un evento');
+			this.props.initU().alert(this.props.languages[this.props.language].alert.titulo_error_crear_evento,
+				this.props.languages[this.props.language].alert.mensaje_error_crear_evento);
 		}
+	}
+	setChat() {
+		this.props.initU().get('chats/' + this.props.item.id, actions.noAction, actions.updateChat, actions.noAction, {Authorization: this.props.user.token});
 	}
 	changeDate(date) {
 		this.setState({ date, changed: true });
@@ -37,26 +41,30 @@ class ChatForm extends Component {
 	render() {
 		return (
 			<div>
-				<div>
+				<div className="profilePic" key={this.props.item ? 'img' + this.props.item.id : 'img'}>
+					<img src={ this.props.item.image ? 'http://138.197.8.69' + this.props.item.image : 'http://138.197.8.69/assets/default-chat.jpg' } ></img>
+					<button onClick={ typeof capturePhotoEvent !== 'undefined' ? capturePhotoEvent.bind(this, this.props.item, this.props.user, this.setChat.bind(this)) : () => {}}>{this.props.languages[this.props.language].perfil.cambiar_imagen}</button>
+				</div>
+				<div key={this.props.item ? 'name' + this.props.item.id : 'name'}>
 					<input ref="name" type="text" placeholder={this.props.languages[this.props.language].crear_chat.nombre}
 						defaultValue={ this.props.item.name } />
 				</div>
-				<div>
+				<div key={this.props.item ? 'address' + this.props.item.id : 'address'}>
 					<input ref="address" type="text" placeholder={this.props.languages[this.props.language].crear_chat.direccion}
 						defaultValue={ this.props.item.address } />
 				</div>
-				<div>
-					<h5 style={{display: 'block'}}>Fecha y hora del evento</h5>
+				<div key={this.props.item ? 'date' + this.props.item.id : 'date'}>
+					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.fecha_hora_del_evento}</h5>
 					<Datetime onChange={this.changeDate.bind(this)} ref="date" />
 				</div>
-				<div>
+				<div key={this.props.item ? 'category' + this.props.item.id : 'category'}>
 					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.categoria}</h5>
 					<select ref="category" defaultValue={ this.props.item.category && this.props.item.category.id } >
 						<option>{this.props.languages[this.props.language].crear_chat.categoria}</option>
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id}>{category.name}</option>); })}
 					</select>
 				</div>
-				<div>
+				<div key={this.props.item ? 'description' + this.props.item.id : 'description'}>
 					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.descripcion}</h5>
 					<textarea ref="description" rows="4" cols="50" defaultValue={ this.props.item.description }></textarea>
 				</div>

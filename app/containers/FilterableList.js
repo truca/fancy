@@ -72,11 +72,11 @@ class FilterableList extends Component {
 					<ItemList filter={this.props.filter} items={orderedItems} item={this.props.item} path={this.props.path} />
 					<div className="dropdown">
 						<select ref="order" onChange={ this.props.changeOrder.bind(this) } defaultValue={this.props.order_by}>
-							<option value="no" selected={this.props.orderBy == 'no'}>Don't Sort</option>
-							<option value="distance" selected={this.props.orderBy == 'distance'} >Distance</option>
-							<option value="date" selected={this.props.orderBy == 'date'} >Fecha</option>
+							<option value="no" selected={this.props.orderBy == 'no'}>{this.props.languages[this.props.language].filtrar_lista.no_filtrar}</option>
+							<option value="distance" selected={this.props.orderBy == 'distance'} >{this.props.languages[this.props.language].filtrar_lista.distancia}</option>
+							<option value="date" selected={this.props.orderBy == 'date'} >{this.props.languages[this.props.language].filtrar_lista.fecha}</option>
 							{this.props.user ?
-								(<option value="liked" selected={this.props.orderBy == 'liked'}>Liked Categories</option>) : null
+								(<option value="liked" selected={this.props.orderBy == 'liked'}>{this.props.languages[this.props.language].filtrar_lista.categorias_favoritas}</option>) : null
 							}
 						</select>
 						<select ref="category" onChange={ this.changeCategory.bind(this) }>
@@ -89,10 +89,6 @@ class FilterableList extends Component {
 		);
 	}
 }
-
-//	Ordenar por fecha de evento
-//	<option value="date" selected={this.props.orderBy == 'date'}>Event date</option>
-//	<ItemList filter={this.props.filter} items={this.props.items} item={this.props.item} path={this.props.path} />
 
 FilterableList.defaultProps = {
 	categories: []

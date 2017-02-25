@@ -55,15 +55,15 @@ const mapDispatchToProps = (dispatch) => {
 		loginType: (type) => { dispatch(setLoginType(type)); },
 		register() {
 			if(this.refs.mail.value === '') {
-				alert('Debe ingresar el email antes de proseguir');
+				alert(this.props.languages[this.props.language].alert.login_mail_no_ingresado);
 			}else if(this.refs.mail.value.indexOf('@') === -1 || this.refs.mail.value.indexOf('.') === -1) {
-				alert('Debe ingresar un email válido');
+				alert(this.props.languages[this.props.language].alert.login_mail_invalido);
 			}else if(this.refs.pass.value === '') {
-				alert('La contraseña no puede ser vacía');
+				alert(this.props.languages[this.props.language].alert.login_clave_vacia);
 			}else if(this.refs.pass.value.length < 8) {
-				alert('La contraseña debe tener al menos 8 caracteres');
+				alert(this.props.languages[this.props.language].alert.login_clave_muy_corta);
 			}else if(this.refs.pass.value !== this.refs.pass_conf.value) {
-				alert('La contraseña y su confirmación deben ser iguales');
+				alert(this.props.languages[this.props.language].alert.registro_error_claves_iguales);
 			}else {
 				this.props.registerWithMail(this.refs.mail.value, this.refs.pass.value);
 			}
@@ -126,7 +126,7 @@ const mapDispatchToProps = (dispatch) => {
 							const errorCode = error.code;
 							const errorMessage = error.message;
 							if (errorCode === 'auth/wrong-password') {
-								alert('Wrong password.');
+								alert(this.props.languages[this.props.language].alert.registro_clave_incorrecta);
 							} else {
 								alert(errorMessage);
 							}
@@ -142,7 +142,7 @@ const mapDispatchToProps = (dispatch) => {
 					const errorMessage = error.message;
 
 					if (errorCode === 'auth/wrong-password') {
-						alert('Wrong password.');
+						alert(this.props.languages[this.props.language].alert.registro_clave_incorrecta);
 					} else {
 						alert(errorMessage);
 					}

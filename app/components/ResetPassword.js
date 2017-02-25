@@ -8,8 +8,8 @@ require('firebase/auth');
 class Login extends Component {
 	sendReset() {
 		firebase.auth().sendPasswordResetEmail(this.refs.mail.value)
-			.then(res => {alert('La clave ha sido reseteada exitosamente, revise su email.'); console.log(res); })
-			.catch(err => {alert('Hubo un error reseteando su clave'); console.log(err); });
+			.then(res => {alert(this.props.languages[this.props.language].reset_password.alerta_exito); console.log(res); })
+			.catch(err => {alert(this.props.languages[this.props.language].reset_password.alerta_error); console.log(err); });
 	}
 	render() {
 		return (

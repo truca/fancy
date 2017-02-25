@@ -54,17 +54,21 @@ class ChatElement extends Component {
 	}
 	viewUser(userID) {
 		console.log(userID);
-		const r = confirm('¿Deseas ver el perfil de este usuario?');
+		const r = confirm(this.props.languages[this.props.language].alert.corfirmar_ver_perfil_usuario);
 		if (r == true) {
 			this.props.history.push('/profile/' + userID);
 		}
 	}
 	block() {
-		const r = confirm('¿Deseas bloquear a este usuario? No podrás volver a hablar con él ni él contigo');
+		const r = confirm(this.props.languages[this.props.language].alert.corfirmar_bloquear_usuario);
 		if (r == true) {
 			//	userID es actualmente la id del evento, hay que cambiar eso.
 			this.props.initU().post('users/' + this.props.userInspected.id + '/block',
-				actions.noAction, actions.noAction, actions.noAction, {}, {Authorization: this.props.user.token});
+				actions.noAction, function(res) {
+					console.log(res);
+					this.props.history.push('/');
+					return actions.noAction();
+				}.bind(this), actions.noAction, {}, {Authorization: this.props.user.token});
 		}
 	}
 	toggleFavorite(eventID) {

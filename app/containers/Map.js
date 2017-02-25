@@ -49,11 +49,11 @@ class MapContainer extends Component {
 				timeout: 10000
 			});
 		} else {
-			alert('Geolocation is not supported by this browser.');
 			$.get('http://ipinfo.io', response => {
 				const loc = response.loc.split(',');
 				callback({lat: parseFloat(loc[0], 10), lon: parseFloat(loc[1], 10)});
 			}, 'jsonp');
+			alert(this.props.languages[this.props.language].mapa.geolocalizacion_no_soportada);
 		}
 	}
 	drawMap(position, drawMarkers, self) {
@@ -158,7 +158,7 @@ class MapContainer extends Component {
 						if(self.props.user) {
 							self.props.history.push('/chats/' + marker.event.id);
 						}else{
-							alert('Necesitas estar conectado para ver los eventos');
+							alert(self.props.languages[self.props.language].mapa.alerta_necesitas_estar_conectado);
 						}
 					});
 					newMarkers.push(marker);

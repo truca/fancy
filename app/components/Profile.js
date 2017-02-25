@@ -24,8 +24,8 @@ class Profile extends Component {
 		console.log(data);
 		this.props.initU().put('user',
 			actions.noAction,
-			(res) => { alert('El usuario ha sido editado correctamente'); return actions.setUser(res); },
-			() => { alert('El usuario no pudo ser editado'); return { type: NO_ACTION }; }, data, {Authorization: this.props.user.token});
+			(res) => { alert(this.props.languages[this.props.language].alert.perfil_exito_edicion); return actions.setUser(res); },
+			() => { alert(this.props.languages[this.props.language].alert.perfil_error_edicion); return { type: NO_ACTION }; }, data, {Authorization: this.props.user.token});
 		this.props.history.push('/');
 	}
 	updateCategory(categoryID) {
@@ -42,6 +42,9 @@ class Profile extends Component {
 				.catch(err => console.log('error', err));
 		}
 	}
+	setUser() {
+		this.props.initU().get('user', actions.noAction, actions.setUser, actions.noAction, {Authorization: this.props.user.token});
+	}
 	render() {
 		const ages = [];
 		let age = 10;
@@ -56,7 +59,7 @@ class Profile extends Component {
 				<h2>{this.props.languages[this.props.language].perfil.perfil}</h2>
 				<div className="profilePic">
 					<img src={ 'http://138.197.8.69' + this.props.user.image } ></img>
-					<button>Cambiar Imagen</button>
+					<button onClick={ typeof capturePhotoUser !== 'undefined' ? capturePhotoUser.bind(this, this.props.user, this.setUser.bind(this)) : ()=>{} }>{this.props.languages[this.props.language].perfil.cambiar_imagen}</button>
 				</div>
 				<div>
 					<input ref="name" type="text" placeholder={this.props.languages[this.props.language].perfil.nombre} defaultValue={this.props.user && this.props.user.name} />
@@ -70,8 +73,8 @@ class Profile extends Component {
 				<div>
 					<select ref="gender" defaultValue={this.props.user && this.props.user.gender}>
 						<option>{this.props.languages[this.props.language].perfil.genero}</option>
-						<option value="m">MASCULINO</option>
-						<option value="f">FEMENINO</option>
+						<option value="m">{this.props.languages[this.props.language].perfil.hombre}</option>
+						<option value="f">{this.props.languages[this.props.language].perfil.mujer}</option>
 					</select>
 				</div>
 				<div>
@@ -89,7 +92,7 @@ class Profile extends Component {
 					</select>
 				</div>
 				<div>
-					<h4>Favorite Categories</h4>
+					<h4>{this.props.languages[this.props.language].perfil.categorias_favoritas}</h4>
 				</div>
 				<div className="notifications">
 					{this.props.categories.map((category) => {
@@ -106,12 +109,6 @@ class Profile extends Component {
 		);
 	}
 }
-
-/*
-<div>
-	<input type="text" placeholder={this.props.languages[this.props.language].perfil.avatar} defaultValue={this.props.user && this.props.user.image} />
-</div>
-*/
 
 Profile.propTypes = {
 	initU: PropTypes.func,
@@ -131,16 +128,9 @@ const mapStateToProps = (state) => {
 	};
 };
 
-/*
-Notifications
-<div className="notifications">
-	<span>{this.props.languages[this.props.language].perfil.notificaciones}</span> <input type="checkbox" style={{float: 'right'}}/>
-</div>
-*/
-
 const mapDispatchToProps = (dispatch) => {
 	return {
-		initU: () => { return fU(dispatch); }
+		initU: () => { return fU(dispatch); },
 	};
 };
 

@@ -1,5 +1,5 @@
-//alert("Hola mundito :D");
-//alert("jquery" + JSON.stringify(jquery));
+var pictureSource;   // picture source
+var destinationType; // sets the format of returned value
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -68,9 +68,10 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        pictureSource = navigator.camera.PictureSourceType;
+        destinationType = navigator.camera.DestinationType;
         console.log("DEVICE TERRILE REDY");
-        console.log("camera", navigator.camera);
-        //alert("DEVICE TERRILE REDY");
+
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event
@@ -236,9 +237,11 @@ function notification(data){
 
   navigator.notification.alert(
       data.message,         // message
-      null,                 // callback
+      function(res){
+        if(push) push("/chats/"+data.chat_id);
+      }.bind(data),                 // callback
       data.title,           // title
-      "Aceptar"                  // buttonName
+      "Ir"                  // buttonName
   );
   console.log("After Alert");
 }

@@ -7,7 +7,16 @@ import * as actions from '../actions';
 
 class CreateChat extends Component {
 	createChat(data) {
-		this.props.initU().post('chats', actions.noAction, actions.noAction, actions.noAction, data, {Authorization: this.props.user.token} );
+		this.props.initU().post('chats', actions.noAction, (res) => {
+			console.log('Create event success');
+			console.log(JSON.stringify(res));
+			uploadSavedImage(res, this.props.user);
+			return actions.noAction(res);
+		}, (err) => {
+			console.log('Create event error');
+			console.log(JSON.stringify(err));
+			return actions.noAction(err);
+		}, data, {Authorization: this.props.user.token} );
 	}
 	render() {
 		return (

@@ -4,6 +4,9 @@ import _ from 'underscore';
 export default function(dispatch) {
 	return {
 		apiUrl: 'http://138.197.8.69/',
+		setPush: function(pushMethod) {
+			window.push = pushMethod;
+		}, //	method to redirect on notification (it receives a string to redirect)
 		get: function(path, sending, success, failure, headers) {
 			const auxHeaders = headers ? headers : {};
 			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }

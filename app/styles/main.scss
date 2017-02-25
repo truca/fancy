@@ -248,6 +248,26 @@ button{
 /*CREATE CHAT-------------------------------------------------------------------------------------------------------*/
 #createChat, #updateChat{
 	padding-top: 15px;
+	div.profilePic{
+		img{
+			width: 150px;
+	    height: 150px;
+	    display: block;
+	    margin: 0 auto;
+	    border-radius: 50%;
+	    border: 2px solid $verde;
+		}
+		button{
+			width: 30%;
+			font-size: 0.8em;
+			margin-top: 5px;
+		}
+	}
+}
+#createChat{
+	div.profilePic{
+		
+	}
 }
 /*PROFILE-----------------------------------------------------------------------------------------------------------*/
 #profile{

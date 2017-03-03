@@ -13,7 +13,7 @@ export default function(dispatch) {
 			console.log('GET', this.apiUrl + path);
 			dispatch(sending());
 			axios.get(this.apiUrl + path)
-				.then(response => { console.log(path, response); dispatch(success(response.data)); })
+				.then(response => { console.log(path, response); dispatch(success(response.data.data)); })
 				.catch(error => { console.log(path, error); dispatch(failure(error)); });
 		},
 		post: function(path, sending, success, failure, data, headers) {

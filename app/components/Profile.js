@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import fU from '../Utils.js';
 import axios from 'axios';
-//	import languages from '../translate.js';
+import ToggleButton from 'react-toggle-button';
 
 class Profile extends Component {
 	componentDidMount() {
@@ -28,10 +28,10 @@ class Profile extends Component {
 			() => { alert(this.props.languages[this.props.language].alert.perfil_error_edicion); return { type: NO_ACTION }; }, data, {Authorization: this.props.user.token});
 		this.props.history.push('/');
 	}
-	updateCategory(categoryID) {
-		//	console.log(categoryID, this.refs['category-' + categoryID].checked);
+	updateCategory(categoryID, value) {
+		console.log(categoryID, value);
 		axios.defaults.headers.common.Authorization = this.props.user.token;
-		if(this.refs['category-' + categoryID].checked) {
+		if(value) {
 			//	POST con un objeto { favorite: { category_id: categoryID }} a /user/categories/favorites
 			axios.post('http://138.197.8.69/user/categories/favorites', { favorite: { category_id: categoryID }})
 				.then(res => console.log('success', res))
@@ -58,8 +58,15 @@ class Profile extends Component {
 			<div id="profile">
 				<h2>{this.props.languages[this.props.language].perfil.perfil}</h2>
 				<div className="profilePic">
-					<img src={ 'http://138.197.8.69' + this.props.user.image } ></img>
-					<button onClick={ typeof capturePhotoUser !== 'undefined' ? capturePhotoUser.bind(this, this.props.user, this.setUser.bind(this)) : ()=>{} }>{this.props.languages[this.props.language].perfil.cambiar_imagen}</button>
+					<img id="portrait" src={ 'http://138.197.8.69' + this.props.user.image } ></img>
+					<div id="changeImage">
+						<button onClick={ typeof capturePhotoUser !== 'undefined' ? capturePhotoUser.bind(this, this.props.user, this.setUser.bind(this), this.props.languages[this.props.language].imagen.exito, this.props.languages[this.props.language].imagen.error, pictureSource.CAMERA) : ()=>{} }>
+							<i className="fa fa-camera" aria-hidden="true"></i>
+						</button>
+						<button onClick={ typeof capturePhotoUser !== 'undefined' ? capturePhotoUser.bind(this, this.props.user, this.setUser.bind(this), this.props.languages[this.props.language].imagen.exito, this.props.languages[this.props.language].imagen.error, pictureSource.PHOTOLIBRARY) : ()=>{} }>
+							<i className="fa fa-th" aria-hidden="true"></i>
+						</button>
+					</div>
 				</div>
 				<div>
 					<input ref="name" type="text" placeholder={this.props.languages[this.props.language].perfil.nombre} defaultValue={this.props.user && this.props.user.name} />
@@ -80,8 +87,9 @@ class Profile extends Component {
 				<div>
 					<select ref="language" defaultValue={this.props.user && this.props.user.language}>
 						<option>{this.props.languages[this.props.language].perfil.lenguaje}</option>
-						<option value={0}>ESPAÑOL</option>
-						<option value={1}>ENGLISH</option>
+						{Object.keys(this.props.languages).map(language => {
+							return (<option>{language.toUpperCase()}</option>);
+						})}
 					</select>
 				</div>
 				<div>
@@ -96,10 +104,16 @@ class Profile extends Component {
 				</div>
 				<div className="notifications">
 					{this.props.categories.map((category) => {
+						console.log('Categories', this);
 						return (
-							<div key={category.id}>
+							<div key={category.id} style={{marginBottom: '5px'}}>
 								<span>{category.name.toUpperCase()}</span>
-								<input ref={'category-' + category.id} type="checkbox" defaultChecked={R.find(R.propEq('id', category.id), this.props.favoritesCategories)} style={{float: 'right'}} onChange={this.updateCategory.bind(this, category.id)} />
+								<span style={{float: 'right'}}>
+									<ToggleButton
+										value={R.find(R.propEq('id', category.id), this.props.favoritesCategories)}
+									  onToggle={(value) => { this.updateCategory.bind(this, category.id, !value); }}
+									/>
+								</span>
 							</div>
 						);
 					})}
@@ -109,6 +123,16 @@ class Profile extends Component {
 		);
 	}
 }
+
+
+/* <ToggleButton
+	style={{float: 'right'}}
+	inactiveLabel={<X/>}
+	activeLabel={<Check/>}
+	value={R.find(R.propEq('id', category.id), this.props.favoritesCategories)}
+	onToggle={(value) => { this.updateCategory.bind(this, category.id, !value); }}
+/>*/
+//	<input ref={'category-' + category.id} type="checkbox" defaultChecked={R.find(R.propEq('id', category.id), this.props.favoritesCategories)} style={{float: 'right'}} onChange={this.updateCategory.bind(this, category.id)} />
 
 Profile.propTypes = {
 	initU: PropTypes.func,

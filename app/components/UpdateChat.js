@@ -10,7 +10,10 @@ class UpdateChat extends Component {
 		this.props.initU().get('chats/' + this.props.params.id + '.json', actions.noAction, actions.setChat, actions.noAction);
 	}
 	updateChat(data) {
-		this.props.initU().put('chats/' + this.props.params.id, actions.noAction, actions.noAction, actions.noAction, data, {Authorization: this.props.user.token} );
+		this.props.initU().put('chats/' + this.props.params.id, actions.noAction, (res) => {
+			this.props.history.push('/mapa');
+			return actions.noAction(res);
+		}, actions.noAction, data, {Authorization: this.props.user.token} );
 	}
 	render() {
 		return (
@@ -30,6 +33,7 @@ UpdateChat.propTypes = {
 	initU: PropTypes.func,
 	user: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
+	history: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {

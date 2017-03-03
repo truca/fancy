@@ -10,7 +10,11 @@ class CreateChat extends Component {
 		this.props.initU().post('chats', actions.noAction, (res) => {
 			console.log('Create event success');
 			console.log(JSON.stringify(res));
-			uploadSavedImage(res, this.props.user);
+			this.props.history.push('/mapa');
+			uploadSavedImage(res, this.props.user,
+				this.props.languages[this.props.language].imagen.exito,
+				this.props.languages[this.props.language].imagen.error
+			);
 			return actions.noAction(res);
 		}, (err) => {
 			console.log('Create event error');
@@ -34,6 +38,7 @@ CreateChat.propTypes = {
 	language: PropTypes.string, languages: PropTypes.object,
 	initU: PropTypes.func,
 	user: PropTypes.object,
+	history: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {

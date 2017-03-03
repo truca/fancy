@@ -172,6 +172,16 @@ button{
 			}
 	}
 
+	#open{
+		text-align: center;
+		display: inline-block;
+		width: 100%;
+	}
+
+	#event-data{
+		height: 37%;
+	}
+
 
 	input{
 		margin-bottom: 0px;
@@ -257,21 +267,37 @@ button{
 	    border-radius: 50%;
 	    border: 2px solid $verde;
 		}
-		button{
-			width: 30%;
-			font-size: 0.8em;
-			margin-top: 5px;
+		#changeImage{
+			width: 61%;
+			display: block;
+			margin: 0 auto;
+			button{
+				display: inline-block;
+				width: 49.5%;
+				margin-left: 0.5%;
+			}
 		}
 	}
 }
 #createChat{
 	div.profilePic{
-		
+
 	}
 }
 /*PROFILE-----------------------------------------------------------------------------------------------------------*/
 #profile{
 	padding-top: 15px;
+
+	#changeImage{
+		width: 61%;
+		display: block;
+		margin: 0 auto;
+		button{
+			display: inline-block;
+			width: 49.5%;
+			margin-left: 0.5%;
+		}
+	}
 
 	div.profilePic{
 		img{

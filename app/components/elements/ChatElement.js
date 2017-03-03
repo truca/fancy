@@ -4,12 +4,12 @@ import {Socket} from 'phoenix-socket';
 import R from 'ramda';
 import fU from '../../Utils.js';
 import * as actions from '../../actions';
-//	import languages from '../../translate.js';
+import momentTimezone from 'moment-timezone';
 
 class ChatElement extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { chatData: {}, channel: null, messages: [], favorite: false };
+		this.state = { chatData: {}, channel: null, messages: [], favorite: false, open: false };
 	}
 	componentDidMount() {
 		const socket = new Socket('ws://138.197.8.69/socket', {params: { token: this.props.user.token }});
@@ -21,10 +21,11 @@ class ChatElement extends Component {
 		const channel = socket.channel('chat:' + this.props.params.id, {});
 
 		channel.join()
-		.receive('ok', resp => {
+		.receive('ok', function(resp) {
 			console.log('Joined successfully', resp);
-			this.setState({ chatData: resp.data, messages: resp.data.messages });
-		})
+			const found = R.find(event => event.id == resp.data.id, this.props.events);
+			this.setState({ chatData: R.merge(resp.data, found), messages: resp.data.messages });
+		}.bind(this))
 		.receive('error', resp => { console.log('Unable to join', resp); });
 
 		channel.on('message:new', payload => {
@@ -71,6 +72,9 @@ class ChatElement extends Component {
 				}.bind(this), actions.noAction, {}, {Authorization: this.props.user.token});
 		}
 	}
+	toggleOpen() {
+		this.setState({ open: !this.state.open });
+	}
 	toggleFavorite(eventID) {
 		// hacer el cambio remoto
 		console.log(eventID);
@@ -102,9 +106,26 @@ class ChatElement extends Component {
 					<i className={this.state.favorite ? 'fa fa-star' : 'fa fa-star-o'} aria-hidden="true" onClick={this.toggleFavorite.bind(this, this.state.chatData.id || -1 )} ></i>
 				</div>
 				<div>
-					<span>{this.state.chatData.description}</span>
+					<i id="open" onClick={this.toggleOpen.bind(this)} className={this.state.open ? 'fa fa-sort-asc' : 'fa fa-sort-desc'} aria-hidden="true"></i>
 				</div>
-				<div id="messages-container" style={{height: '80%', overflowY: 'scroll'}}>
+				<div id="event-data" style={{display: this.state.open ? 'block' : 'none'}}>
+					<h5>{this.props.languages[this.props.language].chat.descripcion}</h5>
+					<span>{this.state.chatData.description ?
+							this.state.chatData.description
+							: this.props.languages[this.props.language].chat.no_disponible
+						}</span>
+					<h5>{this.props.languages[this.props.language].chat.direccion}</h5>
+					<span>{this.state.chatData.address ?
+						this.state.chatData.address
+						: this.props.languages[this.props.language].chat.no_disponible
+					}</span>
+				<h5>{this.props.languages[this.props.language].chat.fecha_y_hora}</h5>
+					<span>{this.state.chatData.occurrence ?
+							momentTimezone(this.state.chatData.occurrence).tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm')
+							: this.props.languages[this.props.language].chat.no_disponible
+					}</span>
+				</div>
+				<div id="messages-container" style={{height: this.state.open ? '40%' : '80%', overflowY: 'scroll'}}>
 					{this.state.messages.map((message, i) => {
 						return (<div key={i} className={this.props.user.id == message.user_id ? 'right' : 'left' }>
 											<div onClick={ this.viewUser.bind(this, message.user_id) }>{message.name || 'Anónimo' }:</div>
@@ -126,6 +147,7 @@ class ChatElement extends Component {
 ChatElement.propTypes = {
 	params: PropTypes.object,
 	user: PropTypes.object,
+	events: PropTypes.array,
 	history: PropTypes.object,
 	initU: PropTypes.func,
 	userInspected: PropTypes.object,
@@ -134,6 +156,7 @@ ChatElement.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
+		events: state.events,
 		user: state.user,
 		userInspected: state.userInspected,
 		language: state.language, languages: state.languages,

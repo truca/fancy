@@ -1,5 +1,3 @@
-var pictureSource;   // picture source
-var destinationType; // sets the format of returned value
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file

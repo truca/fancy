@@ -129,7 +129,7 @@ const mapDispatchToProps = (dispatch) => {
 					axios.post(self.props.initU().apiUrl + 'users/sign_in.json', { user: R.merge(user.providerData[0], { uid: user.uid }) })
 						.then(userRegister => {
 							console.log('THEN sign_in', {user: userRegister.data} );
-							dispatch(actions.setUser(userRegister.data));
+							dispatch(actions.setUser(userRegister.data.data));
 							if(localStorage.getItem('clanapp_user_token')) {
 								console.log('localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 								console.log(localStorage.getItem('clanapp_user_token'));
@@ -148,8 +148,8 @@ const mapDispatchToProps = (dispatch) => {
 							console.log('CATCH sign_in', errorRegister);
 							axios.post(self.props.initU().apiUrl + 'users/sign_up.json', {user: R.merge(user.providerData[0], { uid: user.uid }) })
 								.then(userLogin => {
-									console.log('THEN sign_up', {user: userLogin.data});
-									dispatch(actions.setUser(userLogin.data));
+									console.log('THEN sign_up', {user: userLogin.data.data});
+									dispatch(actions.setUser(userLogin.data.data));
 									if(localStorage.getItem('clanapp_user_token')) {
 										console.log('localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 										console.log(localStorage.getItem('clanapp_user_token'));

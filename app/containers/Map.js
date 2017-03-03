@@ -119,7 +119,13 @@ class MapContainer extends Component {
 		GoogleMapsLoader.load(function(google) {
 			//	Google = google;
 			const myLatLng = {lat: position.lat, lng: position.lon};
-			const map = new google.maps.Map(document.getElementById('map'), { zoom: 11, center: myLatLng, zoomControl: true, mapTypeControl: false });
+			const map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 11,
+				center: myLatLng,
+				zoomControl: true,
+				mapTypeControl: false,
+				gestureHandling: 'greedy'
+			});
 
 			const myMarker = new google.maps.Marker({
 				map: map,
@@ -152,7 +158,7 @@ class MapContainer extends Component {
 					let marker = {lat: event.lat, lng: event.lng};
 					let icon = event.hot ? 'app/img/icons/hot/' : 'app/img/icons/';
 					icon += event.category.icon != '/icons/thumb/missing.png' ? event.category.icon : 'blank.png';
-					marker = new google.maps.Marker({ position: marker, icon, map: self.state.map, title: 'Hello World!' }); // icon: 'img/icons/' + event.category.icon,
+					marker = new google.maps.Marker({ position: marker, icon, map: self.state.map, title: 'Hello World!' }); // icon: 'app/img/icons/' + event.category.icon,
 					marker.event = event;
 					marker.addListener('click', () => {
 						if(self.props.user) {

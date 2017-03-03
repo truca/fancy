@@ -4,22 +4,15 @@ import * as actions from '../../actions';
 import fU from '../../Utils.js';
 import Datetime from 'react-datetime';
 import moment from 'moment';
-import ToggleButton from 'react-toggle-button';
 import momentTimezone from 'moment-timezone';
 
 class ChatForm extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { date: moment(), active: true };
+		this.state = { date: moment() };
 	}
 	componentDidMount() {
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-		this.setState({ active: this.props.item.active });
-	}
-	componentWillReceiveProps(nextProps) {
-		if(nextProps.item.active != this.props.item.active) {
-			this.setState({ active: nextProps.item.active });
-		}
 	}
 	buttonAction() {
 		if( this.refs.category.value && this.refs.name.value && this.refs.address.value && this.refs.description.value) {
@@ -59,15 +52,6 @@ class ChatForm extends Component {
 							<i className="fa fa-th" aria-hidden="true"></i>
 						</button>
 					</div>
-				</div>
-				<div style={{margin: '10px 0'}}>
-					<h5 style={{display: 'inline-block'}}>{this.props.languages[this.props.language].actualizar_chat.chat_activo}</h5>
-					<span style={{float: 'right'}}>
-						<ToggleButton
-							value={this.state.active}
-							onToggle={(value) => { this.setState({ active: !value }); }}
-						/>
-					</span>
 				</div>
 				<div key={this.props.item ? 'name' + this.props.item.id : 'name'}>
 					<input ref="name" type="text" placeholder={this.props.languages[this.props.language].crear_chat.nombre}

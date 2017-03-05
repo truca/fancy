@@ -36,9 +36,6 @@ class ChatElement extends Component {
 		this.setState({ channel });
 
 		box.scrollTop = box.scrollHeight;
-
-		/*	this.props.initU().get('chats/' + this.state.chatData.id + '/subscribe',
-			actions.noAction, actions.noAction, actions.noAction, data, {Authorization: this.props.user.token});*/
 	}
 	componentDidUpdate() {
 		const box = document.getElementById('messages-container');
@@ -52,6 +49,8 @@ class ChatElement extends Component {
 				.receive('error', resp => { console.log('err', resp); });
 		}
 		this.refs.message.value = '';
+		document.getElementById('message').focus();
+		document.getElementById('message').select();
 	}
 	viewUser(userID) {
 		console.log(userID);
@@ -125,7 +124,7 @@ class ChatElement extends Component {
 							: this.props.languages[this.props.language].chat.no_disponible
 					}</span>
 				</div>
-				<div id="messages-container" style={{height: this.state.open ? '40%' : '80%', overflowY: 'scroll'}}>
+				<div id="messages-container" style={{height: this.state.open ? '40%' : '80%', overflowY: 'scroll', paddingBottom: '70px'}}>
 					{this.state.messages.map((message, i) => {
 						return (<div key={i} className={this.props.user.id == message.user_id ? 'right' : 'left' }>
 											<div onClick={ this.viewUser.bind(this, message.user_id) }>{message.name || 'Anónimo' }:</div>
@@ -134,7 +133,7 @@ class ChatElement extends Component {
 					}
 				</div>
 				<div className="bg-green input-div">
-					<input ref="message" type="text" placeholder={this.props.languages[this.props.language].chat.escribe_un_mensaje} />
+					<input id="message" ref="message" type="text" placeholder={this.props.languages[this.props.language].chat.escribe_un_mensaje} />
 					<span onClick={this.sendMessage.bind(this)}>
 						<i className="fa fa-paper-plane fa-2x" aria-hidden="true"></i>
 					</span>

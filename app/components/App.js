@@ -63,7 +63,7 @@ class App extends Component {
 						<span className="back" onClick={this.goMap.bind(this)}>
 							<i className="fa fa-chevron-left fa-2x" aria-hidden="true"></i>
 						</span>
-						<Link to="/"><img className="logo" src="app/img/logo-blanco2.svg" ></img></Link>
+						<Link to="/"><img className="logo" src="img/logo-blanco2.svg" ></img></Link>
 						<span className="menu" onClick={this.props.openNav}>
 							<i className="fa fa-bars fa-2x" aria-hidden="true"></i>
 						</span>

@@ -114,9 +114,10 @@ class Profile extends Component {
 					{this.props.categories.map((category) => {
 						console.log('Categories', this);
 						let toggleValue = R.find(R.propEq('id', category.id), this.props.favoritesCategories) || false;
+						const name = R.find(categoryName => categoryName.code == this.props.acronym, category.category_names);
 						return (
 							<div key={category.id} style={{marginBottom: '5px'}}>
-								<span>{category.name.toUpperCase()}</span>
+								<span>{ typeof name !== 'undefined' ? name.name.toUpperCase() : category.name.toUpperCase()}</span>
 								<span style={{float: 'right'}}>
 									<ToggleButton
 										value={ toggleValue }
@@ -143,12 +144,14 @@ Profile.propTypes = {
 	history: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
 	countries: PropTypes.array,
+	acronym: PropTypes.string,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		language: state.language, languages: state.languages,
 		user: state.user,
+		acronym: state.languageAcronym.acronym,
 		categories: state.categories,
 		countries: state.countries,
 		favoritesCategories: state.favoritesCategories,

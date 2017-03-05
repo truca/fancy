@@ -25,7 +25,7 @@ class UserProfile extends Component {
 
 		axios.post('http://138.197.8.69/user/chats/personal', { user_id: this.props.userInspected.id }).then(chat => {
 			console.log('chat', chat);
-			this.props.history.push('/chats/' + chat.data.id );
+			this.props.history.push('/chats/' + chat.data.data.id );
 		});
 	}
 	block() {
@@ -60,9 +60,8 @@ class UserProfile extends Component {
 			buttons = null;
 		}else if(block) {
 			buttons = (
-				<button onClick={block ? this.unblock.bind(this) : this.block.bind(this) } >
-					{block ? this.props.languages[this.props.language].perfil_usuario.bloquear_usuario
-						: this.props.languages[this.props.language].perfil_usuario.desbloquear_usuario}
+				<button onClick={ this.unblock.bind(this) } >
+					{ this.props.languages[this.props.language].perfil_usuario.desbloquear_usuario }
 				</button>
 			);
 		}else{
@@ -71,9 +70,8 @@ class UserProfile extends Component {
 					<button onClick={this.createChat.bind(this)} >
 						{this.props.languages[this.props.language].perfil_de_usuario.chatear}
 					</button>
-					<button onClick={block ? this.unblock.bind(this) : this.block.bind(this) } >
-						{block ? this.props.languages[this.props.language].perfil_usuario.bloquear_usuario
-							: this.props.languages[this.props.language].perfil_usuario.desbloquear_usuario}
+					<button onClick={ this.block.bind(this) } >
+						{ this.props.languages[this.props.language].perfil_usuario.bloquear_usuario }
 					</button>
 				</div>
 			);

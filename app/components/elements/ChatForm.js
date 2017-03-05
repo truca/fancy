@@ -5,6 +5,7 @@ import fU from '../../Utils.js';
 import Datetime from 'react-datetime';
 import moment from 'moment';
 import momentTimezone from 'moment-timezone';
+import R from 'ramda';
 
 class ChatForm extends Component {
 	constructor(props) {
@@ -69,7 +70,10 @@ class ChatForm extends Component {
 					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.categoria}</h5>
 					<select ref="category" defaultValue={ this.props.item.category && this.props.item.category.id } >
 						<option>{this.props.languages[this.props.language].crear_chat.categoria}</option>
-						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id}>{category.name}</option>); })}
+						{this.props.categories.map((category) => {
+							const name = R.find(categoryName => categoryName.code == this.props.acronym, category.category_names);
+							return (<option key={category.id} value={category.id}>{ typeof name !== 'undefined' ? name.name : category.name }</option>);
+						})}
 					</select>
 				</div>
 				<div key={this.props.item ? 'description' + this.props.item.id : 'description'}>
@@ -90,16 +94,15 @@ ChatForm.propTypes = {
 	item: PropTypes.object,
 	buttonAction: PropTypes.func,
 	buttonText: PropTypes.string,
+	acronym: PropTypes.string,
 };
-/*	ChatForm.defaultProps = {
-	categories: []
-};*/
 
 const mapStateToProps = (state) => {
 	return {
 		categories: state.categories,
 		language: state.language, languages: state.languages,
 		user: state.user,
+		acronym: state.languageAcronym.acronym,
 	};
 };
 

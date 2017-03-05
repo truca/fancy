@@ -5,11 +5,16 @@ import * as actions from '../actions';
 import fU from '../Utils.js';
 import axios from 'axios';
 import ToggleButton from 'react-toggle-button';
+import * as types from '../actions/types';
 
 class Profile extends Component {
 	componentDidMount() {
+		this.props.initU().get('https://restcountries.eu/rest/v1/all', actions.noAction, actions.setCountries, actions.noAction);
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-		this.props.initU().get('/user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction);
+		this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction);
+	}
+	componentWillReceiveProps(nextProps) {
+		if(nextProps.categories.length != this.props.categories.length) this.setCategories(nextProps.categories);
 	}
 	updateUser() {
 		const data = {
@@ -25,19 +30,21 @@ class Profile extends Component {
 		this.props.initU().put('user',
 			actions.noAction,
 			(res) => { alert(this.props.languages[this.props.language].alert.perfil_exito_edicion); return actions.setUser(res); },
-			() => { alert(this.props.languages[this.props.language].alert.perfil_error_edicion); return { type: NO_ACTION }; }, data, {Authorization: this.props.user.token});
+			() => { alert(this.props.languages[this.props.language].alert.perfil_error_edicion); return { type: types.NO_ACTION }; }, data, {Authorization: this.props.user.token});
 		this.props.history.push('/');
 	}
-	updateCategory(categoryID, value) {
-		console.log(categoryID, value);
+	updateCategory(category, value) {
+		console.log('Update Category', category, value);
 		axios.defaults.headers.common.Authorization = this.props.user.token;
 		if(value) {
 			//	POST con un objeto { favorite: { category_id: categoryID }} a /user/categories/favorites
-			axios.post('http://138.197.8.69/user/categories/favorites', { favorite: { category_id: categoryID }})
+			this.props.addFavoriteCategory(category);
+			axios.post('http://138.197.8.69/user/categories/favorites', { favorite: { category_id: category.id }})
 				.then(res => console.log('success', res))
 				.catch(err => console.log('error', err));
 		}else{
-			axios.delete('http://138.197.8.69/user/categories/favorites/' + categoryID)
+			this.props.removeFavoriteCategory(category.id);
+			axios.delete('http://138.197.8.69/user/categories/favorites/' + category.id)
 				.then(res => console.log('success', res))
 				.catch(err => console.log('error', err));
 		}
@@ -88,15 +95,16 @@ class Profile extends Component {
 					<select ref="language" defaultValue={this.props.user && this.props.user.language}>
 						<option>{this.props.languages[this.props.language].perfil.lenguaje}</option>
 						{Object.keys(this.props.languages).map(language => {
-							return (<option>{language.toUpperCase()}</option>);
+							return (<option key={language}>{language.toUpperCase()}</option>);
 						})}
 					</select>
 				</div>
 				<div>
 					<select ref="country" defaultValue={this.props.user && this.props.user.country}>
 						<option>{this.props.languages[this.props.language].perfil.pais}</option>
-						<option value={0}>CHILE</option>
-						<option value={1}>ARGENTINA</option>
+						{this.props.countries.map(country => {
+							return (<option key={country.name}>{country.name.toUpperCase()}</option>);
+						})}
 					</select>
 				</div>
 				<div>
@@ -105,13 +113,14 @@ class Profile extends Component {
 				<div className="notifications">
 					{this.props.categories.map((category) => {
 						console.log('Categories', this);
+						let toggleValue = R.find(R.propEq('id', category.id), this.props.favoritesCategories) || false;
 						return (
 							<div key={category.id} style={{marginBottom: '5px'}}>
 								<span>{category.name.toUpperCase()}</span>
 								<span style={{float: 'right'}}>
 									<ToggleButton
-										value={R.find(R.propEq('id', category.id), this.props.favoritesCategories)}
-									  onToggle={(value) => { this.updateCategory.bind(this, category.id, !value); }}
+										value={ toggleValue }
+									  onToggle={(value) => { console.log('dis', this); this.updateCategory(category, !value).bind(this); }}
 									/>
 								</span>
 							</div>
@@ -124,23 +133,16 @@ class Profile extends Component {
 	}
 }
 
-
-/* <ToggleButton
-	style={{float: 'right'}}
-	inactiveLabel={<X/>}
-	activeLabel={<Check/>}
-	value={R.find(R.propEq('id', category.id), this.props.favoritesCategories)}
-	onToggle={(value) => { this.updateCategory.bind(this, category.id, !value); }}
-/>*/
-//	<input ref={'category-' + category.id} type="checkbox" defaultChecked={R.find(R.propEq('id', category.id), this.props.favoritesCategories)} style={{float: 'right'}} onChange={this.updateCategory.bind(this, category.id)} />
-
 Profile.propTypes = {
 	initU: PropTypes.func,
+	addFavoriteCategory: PropTypes.func,
+	removeFavoriteCategory: PropTypes.func,
 	user: PropTypes.object,
 	categories: PropTypes.array,
 	favoritesCategories: PropTypes.array,
 	history: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
+	countries: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
@@ -148,6 +150,7 @@ const mapStateToProps = (state) => {
 		language: state.language, languages: state.languages,
 		user: state.user,
 		categories: state.categories,
+		countries: state.countries,
 		favoritesCategories: state.favoritesCategories,
 	};
 };
@@ -155,6 +158,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		initU: () => { return fU(dispatch); },
+		addFavoriteCategory: (category) => { dispatch(actions.addFavoriteCategory(category)); },
+		removeFavoriteCategory: (categoryID) => { dispatch(actions.removeFavoriteCategory(categoryID)); },
 	};
 };
 

@@ -12,8 +12,9 @@ export default function(dispatch) {
 			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('GET', this.apiUrl + path);
 			dispatch(sending());
-			axios.get(this.apiUrl + path)
-				.then(response => { console.log(path, response); dispatch(success(response.data.data)); })
+			const url = path.indexOf('http') != -1 ? path : this.apiUrl + path;
+			axios.get(url)
+				.then(response => { console.log(path, response); dispatch(success(response.data.data ? response.data.data : response.data)); })
 				.catch(error => { console.log(path, error); dispatch(failure(error)); });
 		},
 		post: function(path, sending, success, failure, data, headers) {
@@ -21,7 +22,8 @@ export default function(dispatch) {
 			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('POST', this.apiUrl + path, data);
 			dispatch(sending(data));
-			axios.post(this.apiUrl + path, data)
+			const url = path.indexOf('http') != -1 ? path : this.apiUrl + path;
+			axios.post(url, data)
 				.then(response => { console.log(path, response); dispatch(success(response.data.data)); })
 				.catch(error => { console.log(path, error); dispatch(failure(error)); });
 		},
@@ -30,7 +32,8 @@ export default function(dispatch) {
 			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('PATCH', this.apiUrl + path, data);
 			dispatch(sending());
-			axios.put(this.apiUrl + path, data)
+			const url = path.indexOf('http') != -1 ? path : this.apiUrl + path;
+			axios.put(url, data)
 				.then(response => { console.log(path, response);	dispatch(success(response.data.data)); })
 				.catch(error => { console.log(path, error);	 dispatch(failure(error)); });
 		},
@@ -39,7 +42,8 @@ export default function(dispatch) {
 			for(const key in auxHeaders) { if (auxHeaders.hasOwnProperty(key)) { axios.defaults.headers.common[key] = auxHeaders[key]; } }
 			console.log('DELETE', this.apiUrl + path);
 			dispatch(sending());
-			axios.delete(this.apiUrl + path, data)
+			const url = path.indexOf('http') != -1 ? path : this.apiUrl + path;
+			axios.delete(url, data)
 				.then(response => { console.log(path, response); dispatch(success(response.data.data)); })
 				.catch(error => { console.log(path, error); dispatch(failure(error)); });
 		},

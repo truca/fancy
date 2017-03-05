@@ -15,7 +15,7 @@ class CreateChat extends Component {
 				this.props.languages[this.props.language].imagen.exito,
 				this.props.languages[this.props.language].imagen.error
 			);
-			return actions.noAction(res);
+			return actions.createChat(res);
 		}, (err) => {
 			console.log('Create event error');
 			console.log(JSON.stringify(err));

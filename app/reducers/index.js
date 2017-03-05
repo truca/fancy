@@ -25,6 +25,15 @@ const language = (state = 'english', action) => {
 	}
 };
 
+const countries = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_COUNTRIES:
+			return action.countries;
+		default:
+			return state;
+	}
+};
+
 const chat = (state = {}, action) => {
 	switch (action.type) {
 		case types.SET_CHAT:
@@ -41,6 +50,8 @@ const events = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_EVENTS:
 			return action.events;
+		case types.CREATE_CHAT:
+			return R.concat(state, [action.chat]);
 		case types.UPDATE_CHAT:
 			return R.map(chatAux => {
 				if(chatAux.id == action.chat.id) return action.chat;
@@ -76,8 +87,12 @@ const favoritesCategories = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_FAVORITES_CATEGORIES:
 			return action.favorites;
-		case types.DELETE_FAVORITE_CATEGORIES:
-			return R.filter(event => event.id != action.favorite.chat_id, state);
+		case types.ADD_FAVORITE_CATEGORY:
+			return R.concat(state, [action.category]);
+		case types.REMOVE_FAVORITE_CATEGORY:
+			return R.filter(event => event.id != action.categoryID, state);
+		case types.LOG_OUT:
+			return [];
 		default:
 			return state;
 	}
@@ -203,8 +218,25 @@ const languages = (state = lang, action) => {
 	}
 };
 
+const languageAcronym = (state = {acronym: 'en', langs: {}}, action) => {
+	switch (action.type) {
+		case types.SET_LANGUAGES:
+			const langs = {};
+			action.languages.forEach(auxLang => {
+				langs[auxLang.name.toLowerCase()] = auxLang.code;
+			});
+			return R.merge(state, { langs });
+		case types.SET_LANGUAGE:
+			return R.merge(state, { acronym: state.langs[action.language] });
+		default:
+			return state;
+	}
+};
+
 const rootReducer = combineReducers({
+	languageAcronym,
 	filter,
+	countries,
 	orderBy,
 	language,
 	languages,

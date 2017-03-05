@@ -53,6 +53,10 @@ class ChatForm extends Component {
 						</button>
 					</div>
 				</div>
+				<div key={this.props.item ? 'date' + this.props.item.id : 'date'}>
+					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.fecha_hora_del_evento}</h5>
+					<Datetime onChange={this.changeDate.bind(this)} defaultValue={this.props.item ? momentTimezone(this.props.item.occurrence).tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm') : '' } ref="date" />
+				</div>
 				<div key={this.props.item ? 'name' + this.props.item.id : 'name'}>
 					<input ref="name" type="text" placeholder={this.props.languages[this.props.language].crear_chat.nombre}
 						defaultValue={ this.props.item.name } />
@@ -60,10 +64,6 @@ class ChatForm extends Component {
 				<div key={this.props.item ? 'address' + this.props.item.id : 'address'}>
 					<input ref="address" type="text" placeholder={this.props.languages[this.props.language].crear_chat.direccion}
 						defaultValue={ this.props.item.address } />
-				</div>
-				<div key={this.props.item ? 'date' + this.props.item.id : 'date'}>
-					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.fecha_hora_del_evento}</h5>
-					<Datetime onChange={this.changeDate.bind(this)} defaultValue={this.props.item ? momentTimezone(this.props.item.occurrence).tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm') : null } ref="date" />
 				</div>
 				<div key={this.props.item ? 'category' + this.props.item.id : 'category'}>
 					<h5 style={{display: 'block'}}>{this.props.languages[this.props.language].crear_chat.categoria}</h5>

@@ -12,7 +12,7 @@ class UpdateChat extends Component {
 	updateChat(data) {
 		this.props.initU().put('chats/' + this.props.params.id, actions.noAction, (res) => {
 			this.props.history.push('/mapa');
-			return actions.noAction(res);
+			return actions.updateChat(res);
 		}, actions.noAction, data, {Authorization: this.props.user.token} );
 	}
 	render() {

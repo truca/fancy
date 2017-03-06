@@ -11,6 +11,7 @@ import fU from '../../Utils.js';
 class EventList extends Component {
 	componentDidMount() {
 		this.props.getEvents();
+		this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
 	}
 	render() {
 		return (

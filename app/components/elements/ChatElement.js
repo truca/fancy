@@ -12,6 +12,7 @@ class ChatElement extends Component {
 		this.state = { chatData: {}, channel: null, messages: [], favorite: false, open: false };
 	}
 	componentDidMount() {
+		this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
 		const socket = new Socket('ws://138.197.8.69/socket', {params: { token: this.props.user.token }});
 		const box = document.getElementById('messages-container');
 
@@ -36,6 +37,11 @@ class ChatElement extends Component {
 		this.setState({ channel });
 
 		box.scrollTop = box.scrollHeight;
+	}
+	componentWillReceiveProps(nextProps) {
+		if(this.props.favorites.length != nextProps.favorites.length) {
+			this.setState({ favorite: typeof R.find(fav => fav.id == this.props.params.id, nextProps.favorites) !== 'undefined' });
+		}
 	}
 	componentDidUpdate() {
 		const box = document.getElementById('messages-container');
@@ -151,6 +157,7 @@ ChatElement.propTypes = {
 	initU: PropTypes.func,
 	userInspected: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
+	favorites: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
@@ -159,6 +166,7 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		userInspected: state.userInspected,
 		language: state.language, languages: state.languages,
+		favorites: state.favorites,
 	};
 };
 

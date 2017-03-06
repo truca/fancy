@@ -57,6 +57,10 @@ const events = (state = [], action) => {
 				if(chatAux.id == action.chat.id) return action.chat;
 				return chatAux;
 			}, state);
+		case types.SET_FAVORITES:
+			return R.map(event => {
+				return R.merge( event, { favorite: (typeof R.find(fav => fav.id == event.id, action.favorites) !== 'undefined') } );
+			}, state);
 		case types.TOGGLE_FAVORITE:
 			return R.map(event => {
 				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;
@@ -70,7 +74,9 @@ const events = (state = [], action) => {
 const favorites = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_FAVORITES:
-			return action.favorites;
+			return R.map(fav => {
+				return R.merge(fav, { favorite: true });
+			}, action.favorites);
 		case types.UPDATE_CHAT:
 			return R.map(chatAux => {
 				if(chatAux.id == action.chat.id) return action.chat;
@@ -78,6 +84,29 @@ const favorites = (state = [], action) => {
 			}, state);
 		case types.DELETE_FAVORITE:
 			return R.filter(event => event.id != action.favorite.chat_id, state);
+		default:
+			return state;
+	}
+};
+
+const mine = (state = [], action) => {
+	switch (action.type) {
+		case types.SET_MINE:
+			return action.mine;
+		case types.SET_FAVORITES:
+			return R.map(event => {
+				return R.merge( event, { favorite: (typeof R.find(fav => fav.id == event.id, action.favorites) !== 'undefined') } );
+			}, state);
+		case types.TOGGLE_FAVORITE:
+			return R.map(event => {
+				const favoriteID = typeof action.favorite.chat_id == 'string' ? parseInt(action.favorite.chat_id, 10) : action.favorite.chat_id;
+				return event.id == favoriteID ? R.merge( event, { favorite: action.favorite.subscribed } ) : event;
+			}, state);
+		case types.UPDATE_CHAT:
+			return R.map(chatAux => {
+				if(chatAux.id == action.chat.id) return action.chat;
+				return chatAux;
+			}, state);
 		default:
 			return state;
 	}
@@ -102,6 +131,10 @@ const personal = (state = [], action) => {
 	switch (action.type) {
 		case types.SET_PERSONAL:
 			return action.personal;
+		case types.SET_FAVORITES:
+			return R.map(event => {
+				return R.merge( event, { favorite: (typeof R.find(fav => fav.id == event.id, action.favorites) !== 'undefined') } );
+			}, state);
 		case types.UPDATE_CHAT:
 			return R.map(chatAux => {
 				if(chatAux.id == action.chat.id) return action.chat;
@@ -125,6 +158,10 @@ const own = (state = [], action) => {
 			return R.map(chatAux => {
 				if(chatAux.id == action.chat.id) return action.chat;
 				return chatAux;
+			}, state);
+		case types.SET_FAVORITES:
+			return R.map(event => {
+				return R.merge( event, { favorite: (typeof R.find(fav => fav.id == event.id, action.favorites) !== 'undefined') } );
 			}, state);
 		case types.TOGGLE_FAVORITE:
 			return R.map(event => {
@@ -234,6 +271,7 @@ const languageAcronym = (state = {acronym: 'en', langs: {}}, action) => {
 };
 
 const rootReducer = combineReducers({
+	mine,
 	languageAcronym,
 	filter,
 	countries,

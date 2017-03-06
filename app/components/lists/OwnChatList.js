@@ -12,6 +12,7 @@ class OwnChatList extends Component {
 	componentDidMount() {
 		if(this.props.own.length == 0 ) {
 			this.props.initU().get('/user/chats/owned', actions.noAction, actions.setOwn, actions.noAction, {Authorization: this.props.user.token});
+			this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
 		}
 	}
 	createChat() {

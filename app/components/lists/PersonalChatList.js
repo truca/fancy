@@ -12,6 +12,7 @@ class PersonalChatList extends Component {
 	componentDidMount() {
 		if(this.props.personal.length == 0 ) {
 			this.props.initU().get('user/chats/personal.json', actions.noAction, actions.setPersonal, actions.noAction, {Authorization: this.props.user.token});
+			this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
 		}
 	}
 	render() {

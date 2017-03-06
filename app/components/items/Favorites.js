@@ -22,12 +22,33 @@ class Favorites extends Component {
 			() => { return { type: 'DELETE_FAVORITE', favorite: { chat_id: this.props.item.id, subscribed: false }}; },
 			actions.noAction, {}, {Authorization: this.props.user.token});
 	}
+	getSubtext(orderBy) {
+		switch(orderBy) {
+			case 'no': return '';
+			case 'distance': return this.props.item.distance.toPrecision(3) + ' km';
+			case 'liked':
+				let result = '';
+				if(typeof R.find(R.propEq('id', this.props.item.category.id), this.props.favoritesCategories) !== 'undefined') {
+					result = (<span className="liked">{this.props.item.category.name}</span>);
+				}else{
+					result = (<span>{this.props.item.category.name}</span>);
+				}
+				return result;
+			case 'date': return this.props.item.occurrence ? momentTimezone(this.props.item.occurrence).tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm') : null;
+			default: return '';
+		}
+	}
 	render() {
+		const subtext = this.getSubtext(this.props.orderBy);
 		return (
 			<div className="item">
-				<Link to={this.props.path}>{this.props.item.name}</Link>
+				<img className="profilePic" src={ 'http://138.197.8.69' + this.props.item.image }></img>
+				<div className="text">
+					<Link style={{cursor: 'pointer'}} to={this.props.path}>{this.props.item.name}</Link>
+					<span>{subtext}</span>
+				</div>
 				<i onClick={this.deleteFavorite.bind(this)}
-					className="fa fa-star right" aria-hidden="true"></i>
+					className="fav fa fa-star right" aria-hidden="true"></i>
 			</div>
 		);
 	}
@@ -39,11 +60,14 @@ Favorites.propTypes = {
 	toggleFavorite: PropTypes.func,
 	user: PropTypes.object,
 	initU: PropTypes.func,
+	orderBy: PropTypes.string,
+	favoritesCategories: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.user,
+		favoritesCategories: state.favoritesCategories,
 	};
 };
 

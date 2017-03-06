@@ -10,6 +10,7 @@ export const SET_FAVORITES = 'SET_FAVORITES';
 export const SET_FAVORITES_CATEGORIES = 'SET_FAVORITES_CATEGORIES';
 export const SET_PERSONAL = 'SET_PERSONAL';
 export const SET_OWN = 'SET_OWN';
+export const SET_MINE = 'SET_MINE';
 export const SET_BLOCK = 'SET_BLOCK';
 export const ADD_BLOCK = 'ADD_BLOCK';
 export const REMOVE_BLOCK = 'REMOVE_BLOCK';

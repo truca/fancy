@@ -11,6 +11,7 @@ export function updateChat(chat) { return { type: types.UPDATE_CHAT, chat }; }
 
 export function setCountries(countries) { return { type: types.SET_COUNTRIES, countries }; }
 export function setEvents(events) { return { type: types.SET_EVENTS, events }; }
+export function setMine(mine) { return { type: types.SET_MINE, mine }; }
 export function setFavorites(favorites) { return { type: types.SET_FAVORITES, favorites }; }
 export function setFavoritesCategories(favorites) { return { type: types.SET_FAVORITES_CATEGORIES, favorites }; }
 export function setPersonal(personal) { return { type: types.SET_PERSONAL, personal }; }

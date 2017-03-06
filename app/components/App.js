@@ -43,6 +43,7 @@ class App extends Component {
 							{this.props.user ? (
 								<div>
 									<li><Link onClick={this.props.closeNav} to="/chatsSuscritos">{this.props.languages[this.props.language].menu.chats_suscritos}</Link></li>
+									<li><Link onClick={this.props.closeNav} to="/chatsRecientes">{this.props.languages[this.props.language].lista.chats_mios}</Link></li>
 									<li><Link onClick={this.props.closeNav} to="/chatsPersonales">{this.props.languages[this.props.language].menu.chats_personales}</Link></li>
 									<li><Link onClick={this.props.closeNav} to="/panelPersonal">{this.props.languages[this.props.language].menu.panel_personal}</Link></li>
 									<li><a style={{cursor: 'pointer'}} onClick={this.props.logout}>{this.props.languages[this.props.language].menu.desconectarse}</a></li>

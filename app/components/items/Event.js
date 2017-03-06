@@ -45,6 +45,7 @@ class Evento extends Component {
 	}
 	render() {
 		const subtext = this.getSubtext(this.props.orderBy);
+		//	const fav = R.find(favorite => favorite.id == this.props.item.id, this.props.favorites);
 		return (
 			<div className="item">
 				<img className="profilePic" src={ 'http://138.197.8.69' + this.props.item.image }></img>
@@ -67,11 +68,13 @@ Evento.propTypes = {
 	initU: PropTypes.func,
 	orderBy: PropTypes.string,
 	favoritesCategories: PropTypes.array,
+	favorites: PropTypes.array,
 };
 
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		favorites: state.favorites,
 		orderBy: state.orderBy,
 		favoritesCategories: state.favoritesCategories,
 	};

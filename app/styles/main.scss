@@ -3,6 +3,9 @@ html{ width: 100%; overflow-x: hidden; }
 html, body, #root, #root > div, .container, .row, #main, .page{ height: 100%; }
 
 /*GENERAL-----------------------------------------------------------------------------------------------------------*/
+#accordion{
+	margin-bottom: 82px;
+}
 #nav{
 	position: fixed;
 	top: 0px;
@@ -385,6 +388,10 @@ button{
 }
 
 #main > div{
+	height: 100%;
+}
+
+#main > #list{
 	height: 100%;
 }
 

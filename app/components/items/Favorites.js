@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { toggleFavorite } from '../../actions';
 import * as actions from '../../actions';
 import fU from '../../Utils.js';
+import momentTimezone from 'moment-timezone';
 
 class Favorites extends Component {
 	constructor(props) {
@@ -67,6 +68,7 @@ Favorites.propTypes = {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		orderBy: state.orderBy,
 		favoritesCategories: state.favoritesCategories,
 	};
 };

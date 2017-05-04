@@ -54,7 +54,7 @@ class App extends Component {
 									<li><Link onClick={this.props.closeNav} to="/registro">{this.props.languages[this.props.language].menu.registro}</Link></li>
 								</div>
 							)}
-							<li><Link to="/acerca">{this.props.languages[this.props.language].menu.acerca}</Link></li>
+							<li><Link onClick={this.props.closeNav} to="/acerca">{this.props.languages[this.props.language].menu.acerca}</Link></li>
 						</ul>
 						<select ref="language" onChange={this.props.setLanguage.bind(this)} defaultValue={this.props.language} >
 							{Object.keys(this.props.languages).map((language, i) => <option key={i} value={language} >{language.toUpperCase()}</option> )}

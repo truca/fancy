@@ -213,7 +213,7 @@ const categories = (state = [], action) => {
 	}
 };
 
-const orderBy = (state = 'no', action) => {
+const orderBy = (state = 'distance', action) => {
 	switch (action.type) {
 		case types.ORDER_CHATS:
 			return action.orderBy;

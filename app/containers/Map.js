@@ -156,7 +156,7 @@ class MapContainer extends Component {
 				const filteredByCategory = (!self.state.category && self.state.category != 0) || self.state.category == -1 || self.state.category == event.category.id;
 				if( filteredByCategory && filteredByName ) {
 					let marker = {lat: event.lat, lng: event.lng};
-					let icon = event.hot ? 'img/icons/hot' : 'img/icons';
+					let icon = event.hot ? 'app/img/icons/hot' : 'app/img/icons';
 					icon += event.category.icon != '/icons/thumb/missing.png' && event.category.icon !== null ? '/' + event.category.icon : '/blank.png';
 					marker = new google.maps.Marker({ position: marker, icon, map: self.state.map, title: 'Hello World!' }); // icon: 'img/icons/' + event.category.icon,
 					marker.event = event;
@@ -171,7 +171,7 @@ class MapContainer extends Component {
 				}
 			});
 			const options = {gridSize: 50, maxZoom: 15, styles: [
-				{ height: 37, url: 'img/icons/blank.png', width: 32 }
+				{ height: 37, url: 'app/img/icons/blank.png', width: 32 }
 			]};
 
 			if(Object.keys(self.state.markerCluster).length == 0) {

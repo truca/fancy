@@ -22,7 +22,7 @@ class MapContainer extends Component {
 		this.getPosition((position) => {
 			this.props.initU().get('chats.json?lat=' + position.lat + '&lng=' + position.lon, actions.noAction, actions.setEvents, actions.noAction);
 			this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-
+			this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction);
 			this.drawMap(position, this.drawMarkers, this);
 		});
 	}
@@ -149,11 +149,13 @@ class MapContainer extends Component {
 			self.state.markers.forEach(marker => marker.setMap(null));
 
 			const newMarkers = [];
+			const favoritesCategoriesID = [];
+			if(self.state.categories == -2){
+				favoritesCategoriesID = R.map(category => category.id,self.props.favoritesCategories);
+			}
 			events.forEach(function(event) {
-				//	console.log('drawMarkers event', event);
-				//	console.log('filtering', this.state.category, event.category.id, !this.state.category || this.state.category == event.category.id);
 				const filteredByName = event.name.toLowerCase().indexOf(self.refs.filter.value.toLowerCase()) != -1;
-				const filteredByCategory = (!self.state.category && self.state.category != 0) || self.state.category == -1 || self.state.category == event.category.id;
+				const filteredByCategory = (!self.state.category && self.state.category != 0) || (self.state.category == -2 && R.find(categoryID => categoryID == event.category.id, favoritesCategoriesID) ) || self.state.category == -1 || self.state.category == -2 || self.state.category == event.category.id;
 				if( filteredByCategory && filteredByName ) {
 					let marker = {lat: event.lat, lng: event.lng};
 					let icon = event.hot ? 'app/img/icons/hot' : 'app/img/icons';
@@ -198,6 +200,7 @@ class MapContainer extends Component {
 					<input ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
 						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>
+						{this.props.user ? (<option value={-2} >Mis categorías</option>) : ''}
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}
 					</select>
 				</div>
@@ -206,6 +209,7 @@ class MapContainer extends Component {
 	}
 }
 
+//	this.props.languages[this.props.language].mapa.todas_las_categorias
 MapContainer.propTypes = {
 	filter: PropTypes.string,
 	onFilter: PropTypes.func,
@@ -214,6 +218,7 @@ MapContainer.propTypes = {
 	initU: PropTypes.func,
 	user: PropTypes.object,
 	history: PropTypes.object,
+	favoritesCategories: PropTypes.array,
 	language: PropTypes.string, languages: PropTypes.object,
 };
 
@@ -224,6 +229,7 @@ const mapStateToProps = (state) => {
 		events: state.events,
 		categories: state.categories,
 		language: state.language, languages: state.languages,
+		favoritesCategories: state.favoritesCategories,
 	};
 };
 

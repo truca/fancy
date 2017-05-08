@@ -149,9 +149,9 @@ class MapContainer extends Component {
 			self.state.markers.forEach(marker => marker.setMap(null));
 
 			const newMarkers = [];
-			const favoritesCategoriesID = [];
-			if(self.state.categories == -2){
-				favoritesCategoriesID = R.map(category => category.id,self.props.favoritesCategories);
+			let favoritesCategoriesID = [];
+			if(self.state.categories == -2) {
+				favoritesCategoriesID = R.map(category => category.id, self.props.favoritesCategories);
 			}
 			events.forEach(function(event) {
 				const filteredByName = event.name.toLowerCase().indexOf(self.refs.filter.value.toLowerCase()) != -1;

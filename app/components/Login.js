@@ -72,98 +72,22 @@ const mapDispatchToProps = (dispatch) => {
 
 			firebase.auth().signInWithRedirect(provider).then(function() {
 				firebase.auth().getRedirectResult().then(function(result) {
-					// This gives you a Google Access Token.
-					// You can use it to access the Google API.
-					//	var token = result.credential.accessToken;
-					// The signed-in user info.
-					const user = result.user;
-					// ...
-					alert('success ' + JSON.stringify(user));
+					console.log('success ' + JSON.stringify(result));
 				}).catch(function(error) {
-					// Handle Errors here.
-					const errorCode = error.code;
-					const errorMessage = error.message;
-					alert('errorCode ' + JSON.stringify(errorCode));
-					alert('errorMessage ' + JSON.stringify(errorMessage));
+					console.log('error ' + JSON.stringify(error));
 				});
 			});
-			/*if(typeof facebookConnectPlugin !== 'undefined') {
-				facebookConnectPlugin.login(['public_profile'], (result) => {
-					const provider = firebase.auth.FacebookAuthProvider.credential(result.authResponse.accessToken);
-					console.log('Facebook success: ' + JSON.stringify(result));
-
-					firebase.auth().signInWithCredential(provider)
-						.then(res => {
-							console.log('Firebase success: ' + JSON.stringify(res));
-						})
-						.catch(function(error) {
-							//	const errorCode = error.code;
-							const errorMessage = error.message;
-							console.log('Firebase failure: ' + JSON.stringify(error));
-							if(errorMessage == 'The email address is already in use by another account.') {
-								alert(this.props.languages[this.props.language].alert.login_email_en_uso);
-							}else if(errorMessage == 'The password is invalid or the user does not have a password.') {
-								alert(this.props.languages[this.props.language].alert.login_clave_incorrecta);
-							}else if(errorMessage == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
-								alert(this.props.languages[this.props.language].alert.login_clave_muy_corta);
-							}
-
-							//	var email = error.email;
-							//	var credential = error.authResponse;
-							reject(error);
-						});
-				}, (err) => {
-					console.log(JSON.stringify(err));
-				});
-			}
-
-			const provider = new firebase.auth.FacebookAuthProvider();
-			provider.addScope('email');
-			firebase.auth().signInWithPopup(provider).then(function(result) {
-				const token = result.credential.accessToken;
-				const user = result.user;
-				console.log('Facebook Success, ' + token + ', ' + JSON.stringify(user));
-			}).catch(function(error) {
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				const email = error.email;
-				const credential = error.credential;
-				console.log('Facebook Error ' + JSON.stringify(error));
-			});*/
 		},
 		loginWithGoogle: () => {
 			const provider = new firebase.auth.GoogleAuthProvider();
 
 			firebase.auth().signInWithRedirect(provider).then(function() {
 				firebase.auth().getRedirectResult().then(function(result) {
-					// This gives you a Google Access Token.
-					// You can use it to access the Google API.
-					//	var token = result.credential.accessToken;
-					// The signed-in user info.
-					const user = result.user;
-					// ...
-					alert('success ' + JSON.stringify(user));
+					console.log('success ' + JSON.stringify(result));
 				}).catch(function(error) {
-					// Handle Errors here.
-					const errorCode = error.code;
-					const errorMessage = error.message;
-					alert('errorCode ' + JSON.stringify(errorCode));
-					alert('errorMessage ' + JSON.stringify(errorMessage));
+					console.log('error ' + JSON.stringify(error));
 				});
 			});
-			/*	provider.addScope('https://www.googleapis.com/auth/plus.login');
-
-			firebase.auth().signInWithPopup(provider).then(function(result) {
-				const token = result.credential.accessToken;
-				const user = result.user;
-				console.log('Google Success, ' + token + ', ' + JSON.stringify(user));
-			}).catch(function(error) {
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				const email = error.email;
-				const credential = error.credential;
-				console.log('Google Error ' + JSON.stringify(error));
-			});*/
 		},
 		loginWithMail: (mail, pass) => {
 			if (firebase.apps.length === 0) {

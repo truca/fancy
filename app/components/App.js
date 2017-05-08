@@ -124,6 +124,17 @@ const mapDispatchToProps = (dispatch) => {
 			document.body.style.backgroundColor = 'white';
 		},
 		userHandler: (self) => {
+			//	To handle the errors for social login
+			firebase.auth().getRedirectResult().then(function(result) {
+				//	success case will be handled with onAuthStateChanged.
+				console.log(result);
+			}).catch(function(error) {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.log('error', errorCode, errorMessage);
+			});
+
 			firebase.auth().onAuthStateChanged(function(user) {
 				if(user && user.providerData.length === 1) {
 					console.log('changed', { user });

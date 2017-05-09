@@ -5,13 +5,6 @@ import * as actions from '../actions';
 import fU from '../Utils.js';
 import $ from 'jquery';
 import R from 'ramda';
-//	import languages from '../translate.js';
-
-//	let map = null;
-//	let markers = [];
-//	let markerCluster = {};
-//	let loader = GoogleMapsLoader;
-//	let Google = null;
 
 class MapContainer extends Component {
 	constructor(props) {
@@ -22,8 +15,8 @@ class MapContainer extends Component {
 		this.getPosition((position) => {
 			this.props.initU().get('chats.json?lat=' + position.lat + '&lng=' + position.lon, actions.noAction, actions.setEvents, actions.noAction);
 			this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-			this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction);
 			this.drawMap(position, this.drawMarkers, this);
+			this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction, {Authorization: this.props.user.token});
 		});
 	}
 	componentWillReceiveProps(nextProps) {
@@ -149,13 +142,9 @@ class MapContainer extends Component {
 			self.state.markers.forEach(marker => marker.setMap(null));
 
 			const newMarkers = [];
-			let favoritesCategoriesID = [];
-			if(self.state.categories == -2) {
-				favoritesCategoriesID = R.map(category => category.id, self.props.favoritesCategories);
-			}
 			events.forEach(function(event) {
 				const filteredByName = event.name.toLowerCase().indexOf(self.refs.filter.value.toLowerCase()) != -1;
-				const filteredByCategory = (!self.state.category && self.state.category != 0) || (self.state.category == -2 && R.find(categoryID => categoryID == event.category.id, favoritesCategoriesID) ) || self.state.category == -1 || self.state.category == -2 || self.state.category == event.category.id;
+				const filteredByCategory = (!self.state.category && self.state.category != 0) || (self.state.category == -2 && !!R.find(favoritesCategory => favoritesCategory.id == event.category.id, self.props.favoritesCategories) ) || self.state.category == -1 || self.state.category == event.category.id;
 				if( filteredByCategory && filteredByName ) {
 					let marker = {lat: event.lat, lng: event.lng};
 					let icon = event.hot ? 'app/img/icons/hot' : 'app/img/icons';

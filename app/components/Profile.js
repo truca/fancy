@@ -11,7 +11,9 @@ class Profile extends Component {
 	componentDidMount() {
 		this.props.initU().get('https://restcountries.eu/rest/v1/all', actions.noAction, actions.setCountries, actions.noAction);
 		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-		this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction);
+		if( this.props.user && this.props.user.token) {
+			this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction, {Authorization: this.props.user.token});
+		}
 	}
 	componentWillReceiveProps(nextProps) {
 		if(nextProps.categories.length != this.props.categories.length) this.setCategories(nextProps.categories);

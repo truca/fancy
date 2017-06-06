@@ -8,8 +8,8 @@ require('firebase/auth');
 class Login extends Component {
 	sendReset() {
 		firebase.auth().sendPasswordResetEmail(this.refs.mail.value)
-			.then(res => {alert(this.props.languages[this.props.language].reset_password.alerta_exito); console.log(res); })
-			.catch(err => {alert(this.props.languages[this.props.language].reset_password.alerta_error); console.log(err); });
+			.then(res => { console.log('success reset password', res); /* alert(this.props.languages[this.props.language].reset_password.alerta_exito);*/  })
+			.catch(err => { console.log('error reset password', err); /* alert(this.props.languages[this.props.language].reset_password.alerta_error);*/  });
 	}
 	render() {
 		return (
@@ -21,7 +21,7 @@ class Login extends Component {
 					RESET PASSWORD
 				</button>
 
-				<div><Link className="centered" to="/registro">
+				<div><Link className="centered" to="/conexion">
 					{this.props.languages[this.props.language].registro.ingreso}
 				</Link></div>
 			</div>
@@ -30,10 +30,6 @@ class Login extends Component {
 }
 //  {this.props.languages[this.props.language].reset.password}
 Login.propTypes = {
-	loginWithMail: PropTypes.func,
-	login: PropTypes.func,
-	loginWithGoogle: PropTypes.func,
-	loginWithFacebook: PropTypes.func,
 	language: PropTypes.string, languages: PropTypes.object,
 };
 

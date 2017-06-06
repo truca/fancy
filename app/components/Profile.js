@@ -16,24 +16,7 @@ class Profile extends Component {
 		}
 	}
 	componentWillReceiveProps(nextProps) {
-		if(nextProps.categories.length != this.props.categories.length) this.setCategories(nextProps.categories);
-	}
-	updateUser() {
-		const data = {
-			user: {
-				name: this.refs.name.value || null,
-				gender: this.refs.gender.value || null,
-				country: this.refs.country.value || null,
-				age: this.refs.age.value || null,
-				language: this.refs.language.value || null,
-			}
-		};
-		console.log(data);
-		this.props.initU().put('user',
-			actions.noAction,
-			(res) => { alert(this.props.languages[this.props.language].alert.perfil_exito_edicion); return actions.setUser(res); },
-			() => { alert(this.props.languages[this.props.language].alert.perfil_error_edicion); return { type: types.NO_ACTION }; }, data, {Authorization: this.props.user.token});
-		this.props.history.push('/');
+		if(nextProps.categories.length != this.props.categories.length) this.props.setCategories(nextProps.categories);
 	}
 	updateCategory(category, value) {
 		console.log('Update Category', category, value);
@@ -130,7 +113,7 @@ class Profile extends Component {
 						);
 					})}
 				</div>
-				<button onClick={this.updateUser.bind(this)} >{this.props.languages[this.props.language].perfil.enviar_cambios}</button>
+				<button onClick={this.props.updateUser.bind(this)} >{this.props.languages[this.props.language].perfil.enviar_cambios}</button>
 			</div>
 		);
 	}
@@ -146,6 +129,8 @@ Profile.propTypes = {
 	history: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
 	countries: PropTypes.array,
+	updateUser: PropTypes.func,
+	setCategories: PropTypes.func,
 	acronym: PropTypes.string,
 };
 
@@ -156,6 +141,7 @@ const mapStateToProps = (state) => {
 		acronym: state.languageAcronym.acronym,
 		categories: state.categories,
 		countries: state.countries,
+		shouldUpdateData: state.shouldUpdateData,
 		favoritesCategories: state.favoritesCategories,
 	};
 };
@@ -163,8 +149,27 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		initU: () => { return fU(dispatch); },
+		setCategories: (categories) => { dispatch(actions.setCategories(categories)); },
 		addFavoriteCategory: (category) => { dispatch(actions.addFavoriteCategory(category)); },
 		removeFavoriteCategory: (categoryID) => { dispatch(actions.removeFavoriteCategory(categoryID)); },
+		updateUser: function() {
+			dispatch(actions.setShouldUpdateData(false));
+			const data = {
+				user: {
+					name: this.refs.name && this.refs.name.value || null,
+					gender: this.refs.gender && this.refs.gender.value || null,
+					country: this.refs.country && this.refs.country.value || null,
+					age: this.refs.age && this.refs.age.value || null,
+					language: this.refs.language && this.refs.language.value || null,
+				}
+			};
+			console.log(data);
+			this.props.initU().put('user',
+				actions.noAction,
+				(res) => { alert(this.props.languages[this.props.language].alert.perfil_exito_edicion); return actions.setUser(res); },
+				() => { alert(this.props.languages[this.props.language].alert.perfil_error_edicion); return { type: types.NO_ACTION }; }, data, {Authorization: this.props.user.token});
+			this.props.history.push('/');
+		},
 	};
 };
 

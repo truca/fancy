@@ -16,6 +16,7 @@ export const ADD_BLOCK = 'ADD_BLOCK';
 export const REMOVE_BLOCK = 'REMOVE_BLOCK';
 export const SET_BLOCKED = 'SET_BLOCKED';
 export const SET_LOGIN_TYPE = 'SET_LOGIN_TYPE';
+export const SHOULD_UPDATE_DATA = 'SHOULD_UPDATE_DATA';
 
 export const SET_CHAT = 'SET_CHAT';
 export const CREATE_CHAT = 'CREATE_CHAT';

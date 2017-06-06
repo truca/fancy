@@ -529,7 +529,7 @@ input:not([type="checkbox"]){
 		height: 100%; /* 100% Full-height */
 		width: 0; /* 0 width - change this with JavaScript */
 		position: fixed; /* Stay in place */
-		z-index: 1; /* Stay on top */
+		z-index: 999999; /* Stay on top */
 		top: 0;
 		right: 0;
 		background-color: white; /* Black*/

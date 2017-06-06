@@ -15,6 +15,16 @@ const filter = (state = '', action) => {
 	}
 };
 
+//	user should update it's data after registering
+const shouldUpdateData = (state = false, action) => {
+	switch (action.type) {
+		case types.SHOULD_UPDATE_DATA:
+			return action.updateData;
+		default:
+			return state;
+	}
+};
+
 const language = (state = 'english', action) => {
 	switch (action.type) {
 		case types.SET_LANGUAGE:
@@ -271,6 +281,7 @@ const languageAcronym = (state = {acronym: 'en', langs: {}}, action) => {
 
 const rootReducer = combineReducers({
 	mine,
+	shouldUpdateData,
 	languageAcronym,
 	filter,
 	countries,

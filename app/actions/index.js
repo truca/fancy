@@ -21,6 +21,7 @@ export function addBlock(block) { return { type: types.ADD_BLOCK, block }; }
 export function removeBlock(toID) { return { type: types.REMOVE_BLOCK, toID }; }
 export function setBlocked(blocked) { return { type: types.SET_BLOCKED, blocked }; }
 export function setLoginType(loginType) { return { type: types.SET_LOGIN_TYPE, loginType }; }
+export function setShouldUpdateData(updateData) { return { type: types.SHOULD_UPDATE_DATA, updateData }; }
 
 export function toggleFavorite(favorite) { return { type: types.TOGGLE_FAVORITE, favorite }; }
 export function setCategories(categories) { return { type: types.SET_CATEGORIES, categories }; }

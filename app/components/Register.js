@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import { setLoginType } from '../actions';
+import { setLoginType, setShouldUpdateData } from '../actions';
 const firebase = require('firebase/app');
 require('firebase/auth');
 //	import languages from '../translate.js';
@@ -18,10 +18,10 @@ class Register extends Component {
 				<input ref="pass" type="password" placeholder={this.props.languages[this.props.language].registro.clave} /><br />
 				<input ref="pass_conf" type="password" placeholder={this.props.languages[this.props.language].registro.confirmar_clave} /><br />
 				<Link className="reset" to="/reset">Reset Password</Link>
-				<button style={{display: 'none'}} className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
+				<button className="btn btn-primary w50 l" onClick={this.props.loginWithGoogle.bind(this)} >
 					<i className="fa fa-google-plus" aria-hidden="true"></i>
 				</button>
-				<button style={{display: 'none'}} className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
+				<button className="btn btn-primary w50 r" onClick={this.props.loginWithFacebook.bind(this)} >
 					<i className="fa fa-facebook" aria-hidden="true"></i>
 				</button>
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.props.register.bind(this)}>
@@ -54,6 +54,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		loginType: (type) => { dispatch(setLoginType(type)); },
 		register() {
+			dispatch(setShouldUpdateData(true));
 			if(this.refs.mail.value === '') {
 				alert(this.props.languages[this.props.language].alert.login_mail_no_ingresado);
 			}else if(this.refs.mail.value.indexOf('@') === -1 || this.refs.mail.value.indexOf('.') === -1) {
@@ -70,33 +71,24 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		loginWithFacebook: () => {
 			const provider = new firebase.auth.FacebookAuthProvider();
-			provider.addScope('email');
-			firebase.auth().signInWithPopup(provider).then(function(result) {
-				const token = result.credential.accessToken;
-				const user = result.user;
-				console.log('Facebook Success, ' + token + ', ' + JSON.stringify(user));
-			}).catch(function(error) {
-				/*	const errorCode = error.code;
-				const errorMessage = error.message;
-				const email = error.email;
-				const credential = error.credential;*/
-				console.log('Facebook Error ' + JSON.stringify(error));
+
+			firebase.auth().signInWithRedirect(provider).then(function() {
+				firebase.auth().getRedirectResult().then(function(result) {
+					console.log('success ' + JSON.stringify(result));
+				}).catch(function(error) {
+					console.log('error ' + JSON.stringify(error));
+				});
 			});
 		},
 		loginWithGoogle: () => {
 			const provider = new firebase.auth.GoogleAuthProvider();
-			provider.addScope('https://www.googleapis.com/auth/plus.login');
 
-			firebase.auth().signInWithPopup(provider).then(function(result) {
-				const token = result.credential.accessToken;
-				const user = result.user;
-				console.log('Google Success, ' + token + ', ' + JSON.stringify(user));
-			}).catch(function(error) {
-				/*	const errorCode = error.code;
-				const errorMessage = error.message;
-				const email = error.email;
-				const credential = error.credential;*/
-				console.log('Google Error ' + JSON.stringify(error));
+			firebase.auth().signInWithRedirect(provider).then(function() {
+				firebase.auth().getRedirectResult().then(function(result) {
+					console.log('success ' + JSON.stringify(result));
+				}).catch(function(error) {
+					console.log('error ' + JSON.stringify(error));
+				});
 			});
 		},
 		registerWithMail: (mail, pass) => {

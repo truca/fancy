@@ -29,6 +29,9 @@ class App extends Component {
 		this.props.userHandler(this);
 	}
 	goMap() {
+		if(this.props.shouldUpdateData) {
+			return;
+		}
 		this.props.history.push('/mapa');
 	}
 	render() {
@@ -81,6 +84,7 @@ class App extends Component {
 App.propTypes = {
 	children: PropTypes.object,
 	loginType: PropTypes.string,
+	shouldUpdateData: PropTypes.bool,
 	user: PropTypes.object,
 	logout: PropTypes.func,
 	initU: PropTypes.func,
@@ -96,6 +100,7 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.user,
 		loginType: state.loginType,
+		shouldUpdateData: state.shouldUpdateData,
 		language: state.language,
 		languages: state.languages,
 	};
@@ -162,6 +167,7 @@ const mapDispatchToProps = (dispatch) => {
 								.then(userLogin => {
 									console.log('THEN sign_up', {user: userLogin.data.data});
 									dispatch(actions.setUser(userLogin.data.data));
+									dispatch(actions.setShouldUpdateData(true));
 									if(localStorage.getItem('clanapp_user_token')) {
 										console.log('localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
 										console.log(localStorage.getItem('clanapp_user_token'));
@@ -170,8 +176,8 @@ const mapDispatchToProps = (dispatch) => {
 												{Authorization: self.props.user.token});
 									}else{ console.log('NOT localStorage Token >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'); }
 
-
-									self.props.history.push('/mapa');
+									self.props.history.push('/perfil');
+									//	self.props.history.push('/mapa');
 									//	self.props.history.push(null, '/mapa');
 									//	self.context.router.push(null, '/mapa');
 								})

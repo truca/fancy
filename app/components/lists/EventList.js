@@ -50,6 +50,7 @@ const mapDispatchToProps = (dispatch) => {
 			}
 			axios.get('http://138.197.8.69/chats.json').then( r => {
 				const gets = [];
+				console.log('GetEvents >>>>>>>>>>>>>', r);
 				r.data.forEach(chat => {
 					axios.defaults.headers.common[key] = props.user.token;
 					gets.push(axios.get('http://138.197.8.69/chats/' + chat.id + '/subscribe.json'));

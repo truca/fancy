@@ -96,7 +96,7 @@ class UserProfile extends Component {
 					</div>
 					<div>
 						<span>{this.props.languages[this.props.language].perfil_de_usuario.genero}:</span>
-						<span className="right">{(this.props.userInspected && this.props.userInspected.gender) || this.props.languages[this.props.language].perfil_usuario.no_disponible }</span>
+						<span className="right">{(this.props.userInspected && this.props.userInspected.gender && this.props.userInspected.gender == 'm' ? this.props.languages[this.props.language].perfil.hombre : this.props.languages[this.props.language].perfil.mujer ) || this.props.languages[this.props.language].perfil_usuario.no_disponible }</span>
 					</div>
 				</div>
 				{buttons}

@@ -189,7 +189,7 @@ class MapContainer extends Component {
 					<input ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
 						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>
-						{this.props.user ? (<option value={-2} >Mis categorías</option>) : ''}
+						{this.props.user ? (<option value={-2} >{this.props.languages[this.props.language].mapa.mis_categorias}</option>) : ''}
 						{this.props.categories.map((category) => { return (<option key={category.id} value={category.id} >{category.name}</option>); })}
 					</select>
 				</div>

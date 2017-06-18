@@ -8,8 +8,13 @@ require('firebase/auth');
 class Login extends Component {
 	sendReset() {
 		firebase.auth().sendPasswordResetEmail(this.refs.mail.value)
-			.then(res => { console.log('success reset password', res); /* alert(this.props.languages[this.props.language].reset_password.alerta_exito);*/  })
-			.catch(err => { console.log('error reset password', err); /* alert(this.props.languages[this.props.language].reset_password.alerta_error);*/  });
+			.then(res => {
+				console.log('success reset password', res);
+				alert(this.props.languages[this.props.language].reset_password.alerta_exito);
+			}).catch(err => {
+				console.log('error reset password', err);
+				alert(this.props.languages[this.props.language].reset_password.alerta_error);
+			});
 	}
 	render() {
 		return (
@@ -18,7 +23,7 @@ class Login extends Component {
 				<input ref="mail" type="text" placeholder={this.props.languages[this.props.language].ingreso.email} /><br />
 
 				<button style={{marginTop: '15px'}} className="btn btn-primary" onClick={this.sendReset.bind(this)}>
-					RESET PASSWORD
+					{this.props.languages[this.props.language].reset_password.reset_password}
 				</button>
 
 				<div><Link className="centered" to="/conexion">

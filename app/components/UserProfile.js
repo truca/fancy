@@ -23,10 +23,31 @@ class UserProfile extends Component {
 		const key = 'Authorization';
 		axios.defaults.headers.common[key] = this.props.user.token;
 
-		axios.post('http://138.197.8.69/user/chats/personal', { user_id: this.props.userInspected.id }).then(chat => {
-			console.log('chat', chat);
-			this.props.history.push('/chats/' + chat.data.data.id );
-		});
+		axios.post('http://138.197.8.69/user/chats/personal', { user_id: this.props.userInspected.id })
+			.then(chat => {
+				console.log('chat', chat);
+				this.props.history.push('/chats/' + chat.data.data.id );
+			})
+			.catch(err => console.log(err));
+	}
+	report() {
+		if( !localStorage.getItem('clanapp-report-' + this.props.userInspected.id) ) {
+			console.log('report user');
+			//	denuncias, era POST a /user/reports con { user_id: id_del_otro_usuario }
+			const key = 'Authorization';
+			axios.defaults.headers.common[key] = this.props.user.token;
+			const data = { user_id: this.props.userInspected.id };
+			console.log(data);
+
+			axios.post('http://138.197.8.69/user/reports', data)
+				.then(res => {
+					console.log('report', res);
+					//	localStorage.setItem('clanapp-report-' + this.props.userInspected.id, 1);
+				})
+				.catch(err => console.log(err));
+		}else{
+			console.log('already reported');
+		}
 	}
 	block() {
 		const r = confirm(this.props.languages[this.props.language].perfil_usuario.alert_confirmar_bloqueo);
@@ -54,15 +75,21 @@ class UserProfile extends Component {
 		//	block means i blocked, blocked meand the other user blocked me.
 		const block = R.find(blockAux => blockAux.to_id == this.props.userInspected.id, this.props.block);
 		const blocked = R.find(blockedAux => blockedAux.from_id == this.props.userInspected.id, this.props.blocked);
+		const reported = this.props.userInspected && this.props.userInspected.id && !!localStorage.getItem('clanapp-report-' + this.props.userInspected.id);
 
 		let buttons = null;
 		if(blocked) {
 			buttons = null;
 		}else if(block) {
 			buttons = (
-				<button onClick={ this.unblock.bind(this) } >
-					{ this.props.languages[this.props.language].perfil_usuario.desbloquear_usuario }
-				</button>
+				<div>
+					<button onClick={ this.unblock.bind(this) } >
+						{ this.props.languages[this.props.language].perfil_usuario.desbloquear_usuario }
+					</button>
+					<button disabled={reported} onClick={ this.report.bind(this) } >
+						{ this.props.languages[this.props.language].perfil_usuario.denunciar_usuario }
+					</button>
+				</div>
 			);
 		}else{
 			buttons = (
@@ -72,6 +99,9 @@ class UserProfile extends Component {
 					</button>
 					<button onClick={ this.block.bind(this) } >
 						{ this.props.languages[this.props.language].perfil_usuario.bloquear_usuario }
+					</button>
+					<button disabled={reported} onClick={ this.report.bind(this) } >
+						{ this.props.languages[this.props.language].perfil_usuario.denunciar_usuario }
 					</button>
 				</div>
 			);

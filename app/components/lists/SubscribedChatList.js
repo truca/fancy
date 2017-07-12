@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import R from 'ramda';
 import FilterableList from '../../containers/FilterableList';
 import Evento from '../items/Favorites';
 import * as actions from '../../actions';

@@ -51,12 +51,12 @@ const mapDispatchToProps = (dispatch) => {
 			axios.get('http://138.197.8.69/chats.json').then( r => {
 				const gets = [];
 				console.log('GetEvents >>>>>>>>>>>>>', r);
-				r.data.forEach(chat => {
+				r.data.data.forEach(chat => {
 					axios.defaults.headers.common[key] = props.user.token;
 					gets.push(axios.get('http://138.197.8.69/chats/' + chat.id + '/subscribe.json'));
 				});
 				Promise.all(gets).then(res => {
-					let chats = r.data;
+					let chats = r.data.data;
 					const favorites = R.map(fav => fav.data, res);
 					//	console.log('RES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', chats, favorites);
 					chats = R.map(chat => {

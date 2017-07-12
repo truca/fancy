@@ -30,7 +30,7 @@ class Evento extends Component {
 	getSubtext(orderBy) {
 		switch(orderBy) {
 			case 'no': return '';
-			case 'distance': return this.props.item.distance.toPrecision(3) + ' km';
+			case 'distance': return this.props.item.distance ? this.props.item.distance.toPrecision(3) + ' km' : '';
 			case 'liked':
 				let result = '';
 				if(typeof R.find(R.propEq('id', this.props.item.category.id), this.props.favoritesCategories) !== 'undefined') {

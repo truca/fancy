@@ -11,8 +11,9 @@ import fU from '../../Utils.js';
 class PersonalChatList extends Component {
 	componentDidMount() {
 		if(this.props.personal.length == 0 ) {
-			this.props.initU().get('user/chats/personal.json', actions.noAction, actions.setPersonal, actions.noAction, {Authorization: this.props.user.token});
-			this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
+			this.props.getEvents();
+			//	this.props.initU().get('user/chats/personal.json', actions.noAction, actions.setPersonal, actions.noAction, {Authorization: this.props.user.token});
+			//	this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
 		}
 	}
 	render() {
@@ -28,6 +29,7 @@ class PersonalChatList extends Component {
 PersonalChatList.propTypes = {
 	personal: PropTypes.array,
 	initU: PropTypes.func,
+	getEvents: PropTypes.func,
 	user: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
 };
@@ -49,12 +51,12 @@ const mapDispatchToProps = (dispatch) => {
 			axios.defaults.headers.common[key] = props.user.token;
 			axios.get('http://138.197.8.69/user/chats/personal.json').then( r => {
 				const gets = [];
-				r.data.forEach(chat => {
+				r.data.data.forEach(chat => {
 					axios.defaults.headers.common[key] = props.user.token;
 					gets.push(axios.get('http://138.197.8.69/chats/' + chat.id + '/subscribe.json'));
 				});
 				Promise.all(gets).then(res => {
-					let chats = r.data;
+					let chats = r.data.data;
 					const favorites = R.map(fav => fav.data, res);
 					//	console.log('RES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', chats, favorites);
 					chats = R.map(chat => {
@@ -67,7 +69,7 @@ const mapDispatchToProps = (dispatch) => {
 						}
 						return chatAux;
 					}, chats);
-					dispatch(actions.setEvents(chats));
+					dispatch(actions.setPersonal(chats));
 					//	console.log('PROC>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', chats);
 				});
 			});

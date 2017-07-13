@@ -234,6 +234,7 @@ const orderBy = (state = 'distance', action) => {
 const user = (state = null, action) => {
 	switch (action.type) {
 		case types.SET_USER:
+			console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>> SET USER: ' + JSON.stringify(action));
 			return typeof action.user == 'object' ? action.user : JSON.parse(action.user);
 		case types.LOG_OUT:
 			return null;

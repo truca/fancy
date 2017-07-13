@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import {Socket} from 'phoenix-socket';
 import R from 'ramda';
+import axios from 'axios';
 import fU from '../../Utils.js';
 import * as actions from '../../actions';
 import momentTimezone from 'moment-timezone';
@@ -12,7 +13,8 @@ class ChatElement extends Component {
 		this.state = { chatData: {}, channel: null, messages: [], favorite: false, open: false };
 	}
 	componentDidMount() {
-		this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
+		//	this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
+		this.props.getFavorite(this);
 		const socket = new Socket('ws://138.197.8.69/socket', {params: { token: this.props.user.token }});
 		const box = document.getElementById('messages-container');
 
@@ -155,6 +157,7 @@ ChatElement.propTypes = {
 	events: PropTypes.array,
 	history: PropTypes.object,
 	initU: PropTypes.func,
+	getFavorite: PropTypes.func,
 	userInspected: PropTypes.object,
 	language: PropTypes.string, languages: PropTypes.object,
 	favorites: PropTypes.array,
@@ -172,7 +175,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		initU: () => { return fU(dispatch); }
+		initU: () => { return fU(dispatch); },
+		getFavorite: (self) => {
+			console.log('Chat Element ID', self.props.params.id);
+			const key = 'Authorization';
+			axios.defaults.headers.common[key] = self.props.user.token;
+			axios.get('http://138.197.8.69/chats/' + self.props.params.id + '/subscribe.json')
+				.then(r => {
+					self.setState({favorite: r.data.subscribed ? r.data.subscribed : false});
+				})
+				.catch(err => console.log(err));
+		}
 	};
 };
 

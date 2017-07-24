@@ -12,11 +12,13 @@ class MapContainer extends Component {
 		this.state = { category: null, map: null, markers: [], markerCluster: {} };
 	}
 	componentDidMount() {
+		this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
+		if(this.props.user) this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction, {Authorization: this.props.user.token});
+		this.drawMap(this.props.position ? this.props.position : {lat: 0, lon: 0}, this.drawMarkers, this);
 		this.getPosition((position) => {
+			if(!this.props.position) this.drawMap(position, this.drawMarkers, this);
+			this.props.setPosition(position);
 			this.props.initU().get('chats.json?lat=' + position.lat + '&lng=' + position.lon, actions.noAction, actions.setEvents, actions.noAction);
-			this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-			this.drawMap(position, this.drawMarkers, this);
-			this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction, {Authorization: this.props.user.token});
 		});
 	}
 	componentWillReceiveProps(nextProps) {
@@ -202,10 +204,12 @@ class MapContainer extends Component {
 MapContainer.propTypes = {
 	filter: PropTypes.string,
 	onFilter: PropTypes.func,
+	setPosition: PropTypes.func,
 	events: PropTypes.array,
 	categories: PropTypes.array,
 	initU: PropTypes.func,
 	user: PropTypes.object,
+	position: PropTypes.object,
 	history: PropTypes.object,
 	favoritesCategories: PropTypes.array,
 	language: PropTypes.string, languages: PropTypes.object,
@@ -214,6 +218,7 @@ MapContainer.propTypes = {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		position: state.position,
 		filter: state.filter,
 		events: state.events,
 		categories: state.categories,
@@ -224,7 +229,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		initU: () => { return fU(dispatch); }
+		initU: () => { return fU(dispatch); },
+		setPosition: (position) => { dispatch(actions.setPosition(position)); }
 	};
 };
 

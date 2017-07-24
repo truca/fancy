@@ -25,6 +25,15 @@ const shouldUpdateData = (state = false, action) => {
 	}
 };
 
+const position = (state = null, action) => {
+	switch (action.type) {
+		case types.SET_POSITION:
+			return action.position;
+		default:
+			return state;
+	}
+};
+
 const language = (state = 'english', action) => {
 	switch (action.type) {
 		case types.SET_LANGUAGE:
@@ -282,6 +291,7 @@ const languageAcronym = (state = {acronym: 'en', langs: {}}, action) => {
 
 const rootReducer = combineReducers({
 	mine,
+	position,
 	shouldUpdateData,
 	languageAcronym,
 	filter,

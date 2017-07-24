@@ -1,8 +1,16 @@
 $verde: rgb(41,180,115);
 html{ width: 100%; overflow-x: hidden; }
 html, body, #root, #root > div, .container, .row, #main, .page{ height: 100%; }
+#register, #login{
+	position: absolute;
+  width: 100%;
+}
 
 /*GENERAL-----------------------------------------------------------------------------------------------------------*/
+.dropdown .fa-plus:before {
+    margin: 3px 3px;
+    vertical-align: -20%;
+}
 #accordion{
 	margin-bottom: 82px;
 }

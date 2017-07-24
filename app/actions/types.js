@@ -1,4 +1,7 @@
 export const FILTER = 'FILTER';
+export const SET_MAP = 'SET_MAP';
+export const SET_POSITION = 'SET_POSITION';
+export const SET_MARKER = 'SET_MARKER';
 export const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE';
 export const DELETE_FAVORITE = 'DELETE_FAVORITE';
 export const DELETE_FAVORITE_CATEGORIES = 'DELETE_FAVORITE_CATEGORIES';

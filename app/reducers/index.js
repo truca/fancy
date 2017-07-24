@@ -15,6 +15,33 @@ const filter = (state = '', action) => {
 	}
 };
 
+const map = (state = null, action) => {
+	switch (action.type) {
+		case types.SET_MAP:
+			return action.map;
+		default:
+			return state;
+	}
+};
+
+const marker = (state = null, action) => {
+	switch (action.type) {
+		case types.SET_MARKER:
+			return action.marker;
+		default:
+			return state;
+	}
+};
+
+const position = (state = null, action) => {
+	switch (action.type) {
+		case types.SET_POSITION:
+			return action.position;
+		default:
+			return state;
+	}
+};
+
 //	user should update it's data after registering
 const shouldUpdateData = (state = false, action) => {
 	switch (action.type) {
@@ -281,6 +308,9 @@ const languageAcronym = (state = {acronym: 'en', langs: {}}, action) => {
 };
 
 const rootReducer = combineReducers({
+	map,
+	position,
+	marker,
 	mine,
 	shouldUpdateData,
 	languageAcronym,

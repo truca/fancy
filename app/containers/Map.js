@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 const GoogleMapsLoader = require('google-maps');
 import * as actions from '../actions';
+import { Link } from 'react-router';
 import fU from '../Utils.js';
 import $ from 'jquery';
 import R from 'ramda';
+import addLocationButton from '../addLocationButton';
 
 class MapContainer extends Component {
 	constructor(props) {
@@ -12,10 +14,21 @@ class MapContainer extends Component {
 		this.state = { category: null, map: null, markers: [], markerCluster: {} };
 	}
 	componentDidMount() {
+		//	tratar de reutilizar un mapa ya existente
+		/*	!this.props.map ?
+			this.createMap(this.props.position ? this.props.position : { lat: 0, lon: 0 })
+			: this.props.map;*/
+		this.createMap(this.props.position ? this.props.position : { lat: 0, lon: 0 });
+
 		this.getPosition((position) => {
+			this.props.setPosition(position);
+			//	recentrar
+			this.createMap(position);
+			//	this.props.map.setCenter({ lat: position.lat, lng: position.lon });
+			//	this.props.marker.setPosition({ lat: position.lat, lng: position.lon });
+
 			this.props.initU().get('chats.json?lat=' + position.lat + '&lng=' + position.lon, actions.noAction, actions.setEvents, actions.noAction);
 			this.props.initU().get('categories.json', actions.noAction, actions.setCategories, actions.noAction);
-			this.drawMap(position, this.drawMarkers, this);
 			this.props.initU().get('user/categories/favorites.json', actions.noAction, actions.setFavoritesCategories, actions.noAction, {Authorization: this.props.user.token});
 		});
 	}
@@ -24,6 +37,10 @@ class MapContainer extends Component {
 		const nEvents = R.sort((a, b) => a - b, R.map(event => event.id, nextProps.events));
 		if(!R.equals(events, nEvents)) {
 			this.drawMarkers(this, nextProps.events);
+		}
+
+		if(nextProps.map && nextProps.map === this.props.map) {
+			this.drawMarkers(this, this.props.events);
 		}
 	}
 	getPosition(callback) {
@@ -49,65 +66,7 @@ class MapContainer extends Component {
 			alert(this.props.languages[this.props.language].mapa.geolocalizacion_no_soportada);
 		}
 	}
-	drawMap(position, drawMarkers, self) {
-		console.log(self);
-		function addYourLocationButton(mapa, marker) {
-			const controlDiv = document.createElement('div');
-			const firstChild = document.createElement('button');
-			const secondChild = document.createElement('div');
-
-			firstChild.style.backgroundColor = '#fff';
-			firstChild.style.border = 'none';
-			firstChild.style.outline = 'none';
-			firstChild.style.width = '28px';
-			firstChild.style.height = '28px';
-			firstChild.style.borderRadius = '2px';
-			firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
-			firstChild.style.cursor = 'pointer';
-			firstChild.style.marginRight = '10px';
-			firstChild.style.padding = '0px';
-			firstChild.title = 'Your Location';
-			controlDiv.appendChild(firstChild);
-
-			secondChild.style.margin = '5px';
-			secondChild.style.width = '18px';
-			secondChild.style.height = '18px';
-			secondChild.style.backgroundImage = 'url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-1x.png)';
-			secondChild.style.backgroundSize = '180px 18px';
-			secondChild.style.backgroundPosition = '0px 0px';
-			secondChild.style.backgroundRepeat = 'no-repeat';
-			secondChild.id = 'you_location_img';
-			firstChild.appendChild(secondChild);
-
-			google.maps.event.addListener(mapa, 'dragend', function() {
-				$('#you_location_img').css('background-position', '0px 0px');
-			});
-
-			firstChild.addEventListener('click', function() {
-				let imgX = '0';
-				const animationInterval = setInterval(function() {
-					if(imgX == '-18') imgX = '0';
-					else imgX = '-18';
-					$('#you_location_img').css('background-position', imgX + 'px 0px');
-				}, 500);
-				if(navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function(pos) {
-						const latlng = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
-						marker.setPosition(latlng);
-						mapa.setCenter(latlng);
-						clearInterval(animationInterval);
-						$('#you_location_img').css('background-position', '-144px 0px');
-					});
-				}else{
-					clearInterval(animationInterval);
-					$('#you_location_img').css('background-position', '0px 0px');
-				}
-			});
-
-			controlDiv.index = 1;
-			self.state.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
-		}
-
+	createMap(position) {
 		GoogleMapsLoader.KEY = 'AIzaSyABifHRllp38ueVG59B9AeOgdIZpL6TaNs';
 		GoogleMapsLoader.load(function(google) {
 			//	Google = google;
@@ -126,12 +85,10 @@ class MapContainer extends Component {
 				position: myLatLng
 			});
 
-
-			this.setState({ map }, function() {
-				addYourLocationButton(map, myMarker);
-				drawMarkers(self, self.props.events);
-			});
-		}.bind(self));
+			addLocationButton(map, myMarker);
+			this.props.setMap(map);
+			this.props.setMarker(myMarker);
+		}.bind(this));
 	}
 	changeFilter() {
 		this.drawMarkers(this, this.props.events);
@@ -149,7 +106,7 @@ class MapContainer extends Component {
 					let marker = {lat: event.lat, lng: event.lng};
 					let icon = event.hot ? 'app/img/icons/hot' : 'app/img/icons';
 					icon += event.category.icon != '/icons/thumb/missing.png' && event.category.icon !== null ? '/' + event.category.icon : '/blank.png';
-					marker = new google.maps.Marker({ position: marker, icon, map: self.state.map, title: 'Hello World!' }); // icon: 'img/icons/' + event.category.icon,
+					marker = new google.maps.Marker({ position: marker, icon, map: self.props.map, title: 'Hello World!' }); // icon: 'img/icons/' + event.category.icon,
 					marker.event = event;
 					marker.addListener('click', () => {
 						if(self.props.user) {
@@ -166,7 +123,7 @@ class MapContainer extends Component {
 			]};
 
 			if(Object.keys(self.state.markerCluster).length == 0) {
-				self.setState({ markerCluster: new MarkerClusterer(self.state.map, newMarkers, options)});
+				self.setState({ markerCluster: new MarkerClusterer(self.props.map, newMarkers, options)});
 			}else{
 				self.state.markerCluster.clearMarkers();
 				self.state.markerCluster.addMarkers(newMarkers);
@@ -186,7 +143,12 @@ class MapContainer extends Component {
 					<span className="sr-only">{this.props.languages[this.props.language].mapa.cargando}</span>
 				</div>
 				<div className="dropdown">
-					<input ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>
+					<div>
+						<Link to="/create/chats">
+							<i style={{color: 'white', width: this.props.user ? '30px' : '0'}} className="fa fa-plus fa-2x"></i>
+						</Link>
+						<input style={{width: `calc(100% - ${this.props.user ? 30 : 0}px)`}} ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>
+					</div>
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
 						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>
 						{this.props.user ? (<option value={-2} >{this.props.languages[this.props.language].mapa.mis_categorias}</option>) : ''}
@@ -201,6 +163,12 @@ class MapContainer extends Component {
 //	this.props.languages[this.props.language].mapa.todas_las_categorias
 MapContainer.propTypes = {
 	filter: PropTypes.string,
+	map: PropTypes.object,
+	position: PropTypes.object,
+	marker: PropTypes.object,
+	setMap: PropTypes.func,
+	setPosition: PropTypes.func,
+	setMarker: PropTypes.func,
 	onFilter: PropTypes.func,
 	events: PropTypes.array,
 	categories: PropTypes.array,
@@ -213,6 +181,9 @@ MapContainer.propTypes = {
 
 const mapStateToProps = (state) => {
 	return {
+		map: state.map,
+		position: state.position,
+		marker: state.marker,
 		user: state.user,
 		filter: state.filter,
 		events: state.events,
@@ -224,7 +195,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		initU: () => { return fU(dispatch); }
+		initU: () => { return fU(dispatch); },
+		setMap: map => { dispatch(actions.setMap(map)); },
+		setMarker: marker => { dispatch(actions.setMarker(marker)); },
+		setPosition: position => { dispatch(actions.setPosition(position)); }
 	};
 };
 

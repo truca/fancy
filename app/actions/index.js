@@ -3,6 +3,9 @@ import * as types from './types';
 
 export function noAction() { return { type: types.NO_ACTION, ...arguments }; }
 export function filterTable(filter) { return { type: types.FILTER, filter }; }
+export function setMap(map) { return { type: types.SET_MAP, map }; }
+export function setPosition(position) { return { type: types.SET_POSITION, position }; }
+export function setMarker(marker) { return { type: types.SET_MARKER, marker }; }
 
 export function orderChats(orderBy) { return { type: types.ORDER_CHATS, orderBy }; }
 export function setChat(chat) { return { type: types.SET_CHAT, chat }; }

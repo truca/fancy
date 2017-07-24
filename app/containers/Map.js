@@ -5,6 +5,7 @@ import * as actions from '../actions';
 import fU from '../Utils.js';
 import $ from 'jquery';
 import R from 'ramda';
+import { Link } from 'react-router';
 
 class MapContainer extends Component {
 	constructor(props) {
@@ -188,7 +189,12 @@ class MapContainer extends Component {
 					<span className="sr-only">{this.props.languages[this.props.language].mapa.cargando}</span>
 				</div>
 				<div className="dropdown">
-					<input ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>
+					<div>
+						<Link to="/create/chats">
+							<i style={{color: 'white', width: this.props.user ? '30px' : '0'}} className="fa fa-plus fa-2x"></i>
+						</Link>
+						<input style={{width: `calc(100% - ${this.props.user ? 30 : 0}px)`}} ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>
+					</div>
 					<select ref="category" onChange={ this.changeCategory.bind(this) }>
 						<option value={-1} >{this.props.languages[this.props.language].mapa.todas_las_categorias}</option>
 						{this.props.user ? (<option value={-2} >{this.props.languages[this.props.language].mapa.mis_categorias}</option>) : ''}

@@ -45,7 +45,9 @@ class Favorites extends Component {
 			<div className="item">
 				<img className="profilePic" src={ 'http://138.197.8.69' + this.props.item.image }></img>
 				<div className="text">
-					<Link style={{cursor: 'pointer'}} to={this.props.path}>{this.props.item.name}</Link>
+					<Link style={{cursor: 'pointer'}} to={this.props.path} onClick={this.props.user ? null : alert(this.props.languages[this.props.language].mapa.alerta_necesitas_estar_conectado)}>
+						{this.props.item.name}
+					</Link>
 					<span>{subtext}</span>
 				</div>
 				<i onClick={this.deleteFavorite.bind(this)}
@@ -63,6 +65,7 @@ Favorites.propTypes = {
 	initU: PropTypes.func,
 	orderBy: PropTypes.string,
 	favoritesCategories: PropTypes.array,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
@@ -70,6 +73,7 @@ const mapStateToProps = (state) => {
 		user: state.user,
 		orderBy: state.orderBy,
 		favoritesCategories: state.favoritesCategories,
+		language: state.language, languages: state.languages,
 	};
 };
 

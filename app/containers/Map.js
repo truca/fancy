@@ -190,7 +190,7 @@ class MapContainer extends Component {
 				</div>
 				<div className="dropdown">
 					<div>
-						<Link to="/create/chats">
+						<Link to="/create/chats" style={{display: this.props.user ? 'inline' : 'none'}}>
 							<i style={{color: 'white', width: this.props.user ? '30px' : '0'}} className="fa fa-plus fa-2x"></i>
 						</Link>
 						<input style={{width: `calc(100% - ${this.props.user ? 30 : 0}px)`}} ref="filter" type="text" placeholder={this.props.languages[this.props.language].lista.filtrar} onChange={this.changeFilter.bind(this)}></input>

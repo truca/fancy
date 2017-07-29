@@ -13,6 +13,7 @@ class ChatElement extends Component {
 		this.state = { chatData: {}, channel: null, messages: [], favorite: false, open: false };
 	}
 	componentDidMount() {
+		window.chatId = this.props.params.id;
 		//	this.props.initU().get('user/chats/subscribed.json', actions.noAction, actions.setFavorites, actions.noAction, {Authorization: this.props.user.token});
 		this.props.getFavorite(this);
 		const socket = new Socket('ws://138.197.8.69/socket', {params: { token: this.props.user.token }});
@@ -48,6 +49,9 @@ class ChatElement extends Component {
 	componentDidUpdate() {
 		const box = document.getElementById('messages-container');
 		box.scrollTop = box.scrollHeight;
+	}
+	componentWillUnmount() {
+		window.chatId = null;
 	}
 	sendMessage() {
 		console.log('enviando', this.refs.message.value);

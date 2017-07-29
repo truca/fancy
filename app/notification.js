@@ -233,13 +233,15 @@ function notification(data){
   }
   console.log("Navigator Notification Alert exist");
 
+  if(window.chatId == data.chat_id) return;
+  
   navigator.notification.alert(
-      data.message,         // message
+      window.message? window.message + " " + data.message : data.message,         // message
       function(res){
         if(push) push("/chats/"+data.chat_id);
       }.bind(data),                 // callback
       data.title,           // title
-      "Ir"                  // buttonName
+      window.go? window.go : "Go"                  // buttonName
   );
   console.log("After Alert");
 }

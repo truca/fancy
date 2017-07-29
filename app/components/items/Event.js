@@ -43,6 +43,9 @@ class Evento extends Component {
 			default: return '';
 		}
 	}
+	print() {
+		alert(this.props.languages[this.props.language].mapa.alerta_necesitas_estar_conectado);
+	}
 	render() {
 		const subtext = this.getSubtext(this.props.orderBy);
 		//	const fav = R.find(favorite => favorite.id == this.props.item.id, this.props.favorites);
@@ -50,7 +53,9 @@ class Evento extends Component {
 			<div className="item">
 				<img className="profilePic" src={ 'http://138.197.8.69' + this.props.item.image }></img>
 				<div className="text">
-					<Link style={{cursor: 'pointer'}} to={this.props.user ? this.props.path : null}>{this.props.item.name}</Link>
+					<Link style={{cursor: 'pointer'}} to={this.props.user ? this.props.path : null} onClick={this.props.user ? null : this.print.bind(this)}>
+						{this.props.item.name}
+					</Link>
 					<span>{subtext}</span>
 				</div>
 				<i onClick={this.toggleFavorite.bind(this)}
@@ -69,6 +74,7 @@ Evento.propTypes = {
 	orderBy: PropTypes.string,
 	favoritesCategories: PropTypes.array,
 	favorites: PropTypes.array,
+	language: PropTypes.string, languages: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {
@@ -77,6 +83,7 @@ const mapStateToProps = (state) => {
 		favorites: state.favorites,
 		orderBy: state.orderBy,
 		favoritesCategories: state.favoritesCategories,
+		language: state.language, languages: state.languages,
 	};
 };
 

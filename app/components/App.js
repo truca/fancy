@@ -11,7 +11,22 @@ import R from 'ramda';
 class App extends Component {
 	componentDidMount() {
 		this.props.initU().setPush(this.props.history.push);
-		this.props.initU().get('languages.json', actions.noAction, actions.setLanguages, actions.noAction);
+		this.props.initU().get('languages.json', actions.noAction, (languages) => {
+			const languagesAction = actions.setLanguages(languages);
+			let languageName = this.props.language;
+			languageName = languageName.charAt(0).toUpperCase() + languageName.slice(1);
+			const language = R.find((lang) => lang.name == languageName, languagesAction.languages).data;
+			console.log('LANGUAGES ACTION >>>>>');
+			console.log(languagesAction.languages);
+			console.log(languageName);
+			console.log(language);
+
+			//	R.find()
+
+			window.message = language.notificacion.mensaje;
+			window.go = language.notificacion.go;
+			return languagesAction;
+		}, actions.noAction);
 
 		const anchor = document.getElementById('main');
 		if(anchor.addEventListener) anchor.addEventListener('click', this.props.closeNav, false);

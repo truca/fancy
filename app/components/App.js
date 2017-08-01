@@ -7,21 +7,20 @@ const axios = require('axios');
 const firebase = require('firebase/app');
 require('firebase/auth');
 import R from 'ramda';
+const ReactToastr = require('react-toastr');
+const {ToastContainer} = ReactToastr;
+const ToastMessageFactory = React.createFactory(ReactToastr.ToastMessage.animation);
 
 class App extends Component {
 	componentDidMount() {
+		window.self = this;
+		window.addAlert = this.addAlert;
 		this.props.initU().setPush(this.props.history.push);
 		this.props.initU().get('languages.json', actions.noAction, (languages) => {
 			const languagesAction = actions.setLanguages(languages);
 			let languageName = this.props.language;
 			languageName = languageName.charAt(0).toUpperCase() + languageName.slice(1);
 			const language = R.find((lang) => lang.name == languageName, languagesAction.languages).data;
-			console.log('LANGUAGES ACTION >>>>>');
-			console.log(languagesAction.languages);
-			console.log(languageName);
-			console.log(language);
-
-			//	R.find()
 
 			window.message = language.notificacion.mensaje;
 			window.go = language.notificacion.go;
@@ -43,6 +42,17 @@ class App extends Component {
 		}
 		this.props.userHandler(this);
 	}
+	addAlert(message) {
+		const t = this ? this : self;
+		t.container.success(
+			'',
+			message, {
+				timeOut: 30000,
+				extendedTimeOut: 10000,
+				closeButton: true,
+				progressBar: true
+			});
+	}
 	goMap() {
 		if(this.props.shouldUpdateData) {
 			return;
@@ -52,6 +62,7 @@ class App extends Component {
 	render() {
 		return (
 			<div className="container">
+				<ToastContainer ref={(input) => {this.container = input;}} toastMessageFactory={ToastMessageFactory} onClick={() => { console.log('click'); push('/chats/' + pushChatId); }} className="toast-top-center" />
 				<div className="row">
 					<div id="mySidenav" className="sidenav">
 						<ul>

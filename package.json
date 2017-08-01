@@ -33,6 +33,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.4.0",
     "react-router-redux": "^4.0.4",
+    "react-toastr": "^2.8.2",
     "react-toggle-button": "^2.1.0",
     "redux": "^3.5.2",
     "underscore": "^1.8.3"
